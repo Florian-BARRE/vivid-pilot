@@ -10,7 +10,7 @@ import { LitElement, html, nothing } from "lit";
 import { renderIcon } from "../theme/icon";
 import { sharedStyles, themeTokens } from "../theme/styles";
 import { leafEditorStyles } from "./leaf-editor.styles";
-import { CATEGORIES } from "../tree/categories";
+import { CATEGORIES, reasonLabel } from "../tree/categories";
 import type { PanelModel } from "../tree/panel-model";
 import { nodeKey, type CategoryId, type NodeKey, type TreeLeaf } from "../tree/types";
 
@@ -124,7 +124,7 @@ export class VividPilotLeafEditor extends LitElement {
           <span class="pill ${leaf.source === "manual" ? "manual" : ""}"
             >${leaf.source === "manual" ? "corrigé" : "auto"}</span
           >
-          ${leaf.source === "manual" ? "Choisi à la main." : `Détecté : ${leaf.reason}.`}
+          ${leaf.source === "manual" ? "Choisi à la main." : `Détecté : ${reasonLabel(leaf.reason)}.`}
           ${
             leaf.source === "manual"
               ? html`<button type="button" class="link" @click=${() => pick(null)}>

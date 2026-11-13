@@ -175,18 +175,15 @@ export class VividPilotPanel extends LitElement {
   }
 
   private renderTree(model: PanelModel) {
+    // The graph needs the whole width: it replaces the side tree.
+    if (this.mode === "graph") {
+      return html`<main class="full">
+        <vivid-pilot-graph .model=${model} selected=${this.selected}></vivid-pilot-graph>
+      </main>`;
+    }
     return html`
       <aside><vivid-pilot-tree .model=${model} selected=${this.selected}></vivid-pilot-tree></aside>
-      <main>
-        ${
-          this.mode === "graph"
-            ? html`<vivid-pilot-graph
-                .model=${model}
-                selected=${this.selected}
-              ></vivid-pilot-graph>`
-            : html`<vivid-pilot-node .model=${model} selected=${this.selected}></vivid-pilot-node>`
-        }
-      </main>
+      <main><vivid-pilot-node .model=${model} selected=${this.selected}></vivid-pilot-node></main>
     `;
   }
 
