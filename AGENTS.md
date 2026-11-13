@@ -25,7 +25,7 @@ New modules (rooms, memory, automations, utilities) each get their own sub-packa
 ## Rules
 
 - **Code, comments and identifiers in English.** User-facing texts go through translations (`strings.json`, `translations/fr.json`, `translations/en.json`; French first for the panel).
-- **Rooms come from area membership, never from entity ids or names.** Roles come from the registries (platform, device class, supported features). Generated entities belong to a per-room virtual device placed in the area, with stable `unique_id`s (`<area_id>__<role>`) and a `translation_key` per role.
+- **Rooms come from area membership, never from entity ids or names.** Roles come from the registries (platform, device class, supported features). Generated entities follow the tree (all → room → category, see `docs/architecture.md`), use the `vivid_pilot_` entity id prefix, belong to a per-room virtual device placed in the area, and have stable `unique_id`s (`<area_id>__<category>__<kind>`) and a `translation_key` per kind.
 - Every file starts with a `====== Code Summary ======` header, 400 lines max, one main class per file, settings injected through constructors (only `runtime.py` assembles them).
 - Logs narrate `START <operation> (key=value)` / `END …`, no secrets.
 - **Version source of truth: `manifest.json`.** `pyproject.toml` and `frontend/package.json` must match (`scripts/check_versions.py`, enforced in CI).
