@@ -9,7 +9,12 @@ from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResultType
 from homeassistant.setup import async_setup_component
 
-from custom_components.vivid_pilot.const import DOMAIN, PANEL_URL_PATH, WS_TYPE_INFO
+from custom_components.vivid_pilot.const import (
+    DOMAIN,
+    PANEL_URL_PATH,
+    WS_TYPE_INFO,
+    WS_TYPE_TREE_SUBSCRIBE,
+)
 
 
 async def _create_entry(hass: HomeAssistant) -> config_entries.ConfigEntry:
@@ -35,7 +40,14 @@ async def test_setup_registers_panel_and_api(hass: HomeAssistant, hass_ws_client
     await client.send_json_auto_id({"type": WS_TYPE_INFO})
     msg = await client.receive_json()
     assert msg["success"]
-    assert msg["result"] == {"version": "0.1.0", "overrides": 0, "memories": 0}
+    assert msg["result"] == {"version": "0.2.0", "overrides": 0, "memories": 0}
+
+    await client.send_json_auto_id({"type": WS_TYPE_TREE_SUBSCRIBE})
+    msg = await client.receive_json()
+    assert msg["success"]
+    event = await client.receive_json()
+    assert event["type"] == "event"
+    assert event["event"] == {"rooms": [], "unassigned": [], "ignored": []}
 
 
 async def test_single_instance(hass: HomeAssistant) -> None:

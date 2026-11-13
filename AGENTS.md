@@ -14,6 +14,7 @@ Read this before changing anything. The design lives in `docs/architecture.md`.
 | `├── storage/` | `PilotStore` — the only persistence point (`.storage/vivid_pilot`) |
 | `├── panel/` | `PanelRegistrar` — serves the bundle, adds the sidebar panel |
 | `├── api/` | `PilotWebsocketApi` — commands called by the panel |
+| `├── tree/` | Categories, `CategoryDetector`, `TreeBuilder`, live `PilotTree` (all → room → category → entities) |
 | `├── frontend/` | Built panel bundle (generated, not committed) |
 | `frontend/` | Panel sources (Lit + TypeScript + Vite) |
 | `tests/` | pytest with `pytest-homeassistant-custom-component` |
@@ -42,7 +43,7 @@ New modules (rooms, memory, automations, utilities) each get their own sub-packa
 uv run ruff check . && uv run ruff format --check .
 uv run python scripts/check_versions.py
 uv run pytest
-cd frontend && npm run lint && npm run format:check && npm run build
+cd frontend && npm run lint && npm run format:check && npm test && npm run build
 ```
 
 ## Git and releases
