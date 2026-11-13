@@ -40,7 +40,7 @@ async def test_setup_registers_panel_and_api(hass: HomeAssistant, hass_ws_client
     await client.send_json_auto_id({"type": WS_TYPE_INFO})
     msg = await client.receive_json()
     assert msg["success"]
-    assert msg["result"] == {"version": "0.1.0", "overrides": 0, "memories": 0}
+    assert msg["result"] == {"version": "0.2.0", "overrides": 0, "memories": 0}
 
     await client.send_json_auto_id({"type": WS_TYPE_TREE_SUBSCRIBE})
     msg = await client.receive_json()
