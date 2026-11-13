@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.2 — 2026-11-13
+
+- **Power source per light / LED / switch**, chosen in its sheet: Auto, existing meter, WLED estimate (estimated current × strip voltage), nominal power, or none. Choosing anything but the meter takes the device's meter out of totals, so an old template power sensor can be replaced without deleting it.
+- The strip voltage only shows when the WLED estimate is used; the nominal power only when it is.
+
 ## 0.3.1 — 2026-11-13
 
 - Graph view uses the whole width of the panel.

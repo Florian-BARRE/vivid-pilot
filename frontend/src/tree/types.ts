@@ -21,6 +21,15 @@ export interface LeafOptions {
   voltage?: number;
   upstream?: string;
   counted?: boolean;
+  power_source?: PowerSourceKind;
+}
+
+export type PowerSourceKind = "auto" | "measured" | "wled" | "nominal" | "none";
+
+export interface PowerChoice {
+  available: PowerSourceKind[];
+  chosen: PowerSourceKind;
+  effective: PowerSourceKind;
 }
 
 export interface TreeLeaf {
@@ -102,6 +111,8 @@ export interface PilotPayload {
   /** strip light -> its computed power sensor */
   strips: Record<string, string>;
   power: PowerSourceInfo[];
+  /** light / LED / switch leaf -> its power source choice */
+  power_choices: Record<string, PowerChoice>;
   presence: Record<string, PresenceInfo>;
   settings: { memory_master: boolean; memory_debounce: number };
 }

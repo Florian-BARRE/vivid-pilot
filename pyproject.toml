@@ -1,6 +1,6 @@
 [project]
 name = "vivid-pilot"
-version = "0.3.1"
+version = "0.3.2"
 description = "Home Assistant integration: rooms, memories and automations for the Vivid family"
 readme = "README.md"
 license = "MIT"

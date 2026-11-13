@@ -6,7 +6,10 @@
 #   wled      a WLED strip without measured power: estimated current x voltage
 #   nominal   a light / switch with no measure at all: power set by hand,
 #             counted while it is on (scaled by brightness for lights)
-# A source with an upstream meter, or unchecked "counted", stays out of totals.
+# Each light / LED / switch can choose its source (power_source option:
+# auto, measured, wled, nominal, none); auto prefers measured > wled >
+# nominal. Choosing anything but the meter takes the device's meters out of
+# totals. A source with an upstream meter, or unchecked "counted", stays out.
 
 from __future__ import annotations
 
@@ -52,6 +55,8 @@ class PowerModel:
         self._hass = hass
         self._settings = settings
         self._sources: list[PowerSource] = []
+        # leaf id -> {"available": [...], "chosen": ..., "effective": ...}
+        self._choices: dict[str, dict[str, object]] = {}
 
     @property
     def sources(self) -> list[PowerSource]:
@@ -60,10 +65,16 @@ class PowerModel:
     def rebuild(self, tree: HomeTree) -> None:
         """Recompute the sources from a new tree."""
         sources: list[PowerSource] = []
+        self._choices = {}
         for room in tree.rooms:
             leaves = [leaf for node in room.categories for leaf in node.leaves]
             sources.extend(self._room_sources(room.area_id, leaves))
         self._sources = sources
+
+    @property
+    def choices(self) -> dict[str, dict[str, object]]:
+        """Power source choices of every light / LED / switch leaf."""
+        return dict(self._choices)
 
     def inputs(self) -> set[str]:
         """Entities whose state changes the totals."""
@@ -127,19 +138,49 @@ class PowerModel:
         meters = [leaf for leaf in leaves if leaf.category is Category.POWER]
         consumers = [leaf for leaf in leaves if leaf.category in ATTRIBUTABLE]
         # Without a device, a meter cannot be tied to a consumer.
-        owner = consumers[0].category if consumers and device_id else None
-        sources = [
-            PowerSource(
-                "measured", area_id, owner, meter.entity_id, meter.entity_id, _counted(meter)
-            )
-            for meter in meters
-        ]
-        measured = device_id is not None and any(_counted(meter) for meter in meters)
+        tied = device_id is not None and bool(consumers)
+        owner = consumers[0].category if tied else None
+        counted_meter = tied and any(_counted(meter) for meter in meters)
+
+        # 1. Each consumer's source: its choice, else measured > WLED > nominal.
+        sources: list[PowerSource] = []
+        replaced = False
         for leaf in consumers:
-            if measured:
-                continue
             current = self._current_sensor(leaf, device_id)
-            if current is not None:
+            nominal = _as_float(leaf.option("nominal_power"), 0.0)
+            available = [
+                k
+                for k, ok in (
+                    ("measured", tied and bool(meters)),
+                    ("wled", current is not None),
+                    ("nominal", True),
+                    ("none", True),
+                )
+                if ok
+            ]
+            chosen = leaf.option("power_source") or "auto"
+            if chosen not in available:
+                chosen = "auto"
+            effective = chosen
+            if chosen == "auto":
+                effective = (
+                    "measured"
+                    if counted_meter
+                    else "wled"
+                    if current
+                    else "nominal"
+                    if nominal > 0
+                    else "none"
+                )
+            else:
+                # An explicit choice other than the meter takes the meter out of totals.
+                replaced = replaced or chosen != "measured"
+            self._choices[leaf.entity_id] = {
+                "available": available,
+                "chosen": chosen,
+                "effective": effective,
+            }
+            if effective == "wled" and current is not None:
                 voltage = _as_float(leaf.option("voltage"), self._settings.default_voltage)
                 sources.append(
                     PowerSource(
@@ -152,9 +193,7 @@ class PowerModel:
                         voltage,
                     )
                 )
-                continue
-            nominal = _as_float(leaf.option("nominal_power"), 0.0)
-            if nominal > 0:
+            elif effective == "nominal" and nominal > 0:
                 sources.append(
                     PowerSource(
                         "nominal",
@@ -166,7 +205,20 @@ class PowerModel:
                         nominal,
                     )
                 )
-        return sources
+
+        # 2. The device's meters, counted unless a consumer chose another source.
+        meter_sources = [
+            PowerSource(
+                "measured",
+                area_id,
+                owner,
+                meter.entity_id,
+                meter.entity_id,
+                _counted(meter) and not replaced,
+            )
+            for meter in meters
+        ]
+        return meter_sources + sources
 
     def _current_sensor(self, leaf: TreeLeaf, device_id: str | None) -> str | None:
         """The estimated-current sensor of a strip's device, if any."""

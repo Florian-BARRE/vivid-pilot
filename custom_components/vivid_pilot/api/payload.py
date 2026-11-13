@@ -76,6 +76,7 @@ class PayloadBuilder:
             "entities": entities,
             "strips": strips,
             "power": sources,
+            "power_choices": runtime.power.choices,
             "presence": presence,
             "settings": {
                 "memory_master": runtime.memory.master,
