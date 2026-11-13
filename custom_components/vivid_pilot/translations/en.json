@@ -119,7 +119,7 @@
       "fields": {
         "node": {
           "name": "Node",
-          "description": "Node key: "all", an area id (salon), or an area id and a category (salon__led)."
+          "description": "Node key: all, an area id (salon), or an area id and a category (salon__led)."
         }
       }
     },
@@ -129,7 +129,7 @@
       "fields": {
         "node": {
           "name": "Node",
-          "description": "Node key: "all", an area id (salon), or an area id and a category (salon__led)."
+          "description": "Node key: all, an area id (salon), or an area id and a category (salon__led)."
         }
       }
     },
@@ -139,7 +139,7 @@
       "fields": {
         "node": {
           "name": "Node",
-          "description": "Node key: "all", an area id (salon), or an area id and a category (salon__led)."
+          "description": "Node key: all, an area id (salon), or an area id and a category (salon__led)."
         }
       }
     }
