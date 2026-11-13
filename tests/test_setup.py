@@ -9,12 +9,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResultType
 from homeassistant.setup import async_setup_component
 
-from custom_components.vivid_pilot.const import (
-    DOMAIN,
-    PANEL_URL_PATH,
-    WS_TYPE_INFO,
-    WS_TYPE_TREE_SUBSCRIBE,
-)
+from custom_components.vivid_pilot.const import DOMAIN, PANEL_URL_PATH
 
 
 async def _create_entry(hass: HomeAssistant) -> config_entries.ConfigEntry:
@@ -37,17 +32,17 @@ async def test_setup_registers_panel_and_api(hass: HomeAssistant, hass_ws_client
     assert PANEL_URL_PATH in hass.data["frontend_panels"]
 
     client = await hass_ws_client(hass)
-    await client.send_json_auto_id({"type": WS_TYPE_INFO})
+    await client.send_json_auto_id({"type": "vivid_pilot/info"})
     msg = await client.receive_json()
     assert msg["success"]
-    assert msg["result"] == {"version": "0.2.0", "overrides": 0, "memories": 0}
+    assert msg["result"] == {"version": "0.3.0", "overrides": 0, "memories": 0}
 
-    await client.send_json_auto_id({"type": WS_TYPE_TREE_SUBSCRIBE})
+    await client.send_json_auto_id({"type": "vivid_pilot/subscribe"})
     msg = await client.receive_json()
     assert msg["success"]
     event = await client.receive_json()
     assert event["type"] == "event"
-    assert event["event"] == {"rooms": [], "unassigned": [], "ignored": []}
+    assert event["event"]["tree"] == {"rooms": [], "unassigned": [], "ignored": []}
 
 
 async def test_single_instance(hass: HomeAssistant) -> None:

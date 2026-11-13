@@ -9,5 +9,139 @@
     "abort": {
       "single_instance_allowed": "Vivid Pilot est déjà configuré."
     }
+  },
+  "entity": {
+    "light": {
+      "room_lights": {
+        "name": "Éclairage"
+      },
+      "home_lights": {
+        "name": "Éclairage"
+      },
+      "light_group": {
+        "name": "Lumières"
+      },
+      "led_group": {
+        "name": "LEDs"
+      }
+    },
+    "switch": {
+      "switch_group": {
+        "name": "Interrupteurs"
+      },
+      "auto_lighting": {
+        "name": "Éclairage automatique"
+      }
+    },
+    "scene": {
+      "home_state": {
+        "name": "État"
+      },
+      "room_state": {
+        "name": "État"
+      },
+      "light_state": {
+        "name": "État des lumières"
+      },
+      "led_state": {
+        "name": "État des LEDs"
+      },
+      "switch_state": {
+        "name": "État des interrupteurs"
+      }
+    },
+    "binary_sensor": {
+      "doors": {
+        "name": "Portes"
+      },
+      "windows": {
+        "name": "Fenêtres"
+      },
+      "presence": {
+        "name": "Présence"
+      }
+    },
+    "sensor": {
+      "power": {
+        "name": "Puissance"
+      },
+      "light_power": {
+        "name": "Puissance lumières"
+      },
+      "led_power": {
+        "name": "Puissance LEDs"
+      },
+      "switch_power": {
+        "name": "Puissance interrupteurs"
+      },
+      "temperature_mean": {
+        "name": "Température"
+      },
+      "temperature_min": {
+        "name": "Température min"
+      },
+      "temperature_max": {
+        "name": "Température max"
+      },
+      "humidity_mean": {
+        "name": "Humidité"
+      },
+      "humidity_min": {
+        "name": "Humidité min"
+      },
+      "humidity_max": {
+        "name": "Humidité max"
+      },
+      "pressure_mean": {
+        "name": "Pression"
+      },
+      "pressure_min": {
+        "name": "Pression min"
+      },
+      "pressure_max": {
+        "name": "Pression max"
+      },
+      "co2_mean": {
+        "name": "CO₂"
+      },
+      "co2_min": {
+        "name": "CO₂ min"
+      },
+      "co2_max": {
+        "name": "CO₂ max"
+      }
+    }
+  },
+  "services": {
+    "save": {
+      "name": "Mémoriser",
+      "description": "Mémorise l'état actuel d'un nœud.",
+      "fields": {
+        "node": {
+          "name": "Nœud",
+          "description": "Clé du nœud : all, l'id d'une zone, ou <id de zone>__<catégorie>."
+        }
+      }
+    },
+    "restore": {
+      "name": "Rétablir",
+      "description": "Remet un nœud dans son état mémorisé.",
+      "fields": {
+        "node": {
+          "name": "Nœud",
+          "description": "Clé du nœud : all, l'id d'une zone, ou <id de zone>__<catégorie>."
+        }
+      }
+    },
+    "forget": {
+      "name": "Oublier",
+      "description": "Efface l'état mémorisé d'un nœud.",
+      "fields": {
+        "node": {
+          "name": "Nœud",
+          "description": "Clé du nœud : all, l'id d'une zone, ou <id de zone>__<catégorie>."
+        }
+      }
+    }
   }
 }

@@ -21,6 +21,17 @@ class TreeLeaf:
     source: LeafSource
     reason: str
     device_id: str | None
+    platform: str = ""
+    # Manual options besides the category (power: nominal, voltage, upstream...).
+    options: tuple[tuple[str, Any], ...] = ()
+
+    @property
+    def domain(self) -> str:
+        return self.entity_id.split(".", 1)[0]
+
+    def option(self, name: str, default: Any = None) -> Any:
+        """Return one manual option, or default."""
+        return dict(self.options).get(name, default)
 
     def to_dict(self) -> dict[str, Any]:
         """Serialise for the panel."""
@@ -31,6 +42,8 @@ class TreeLeaf:
             "source": self.source.value,
             "reason": self.reason,
             "device_id": self.device_id,
+            "platform": self.platform,
+            "options": dict(self.options),
         }
 
 

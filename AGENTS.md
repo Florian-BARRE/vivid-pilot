@@ -15,6 +15,12 @@ Read this before changing anything. The design lives in `docs/architecture.md`.
 | `├── panel/` | `PanelRegistrar` — serves the bundle, adds the sidebar panel |
 | `├── api/` | `PilotWebsocketApi` — commands called by the panel |
 | `├── tree/` | Categories, `CategoryDetector`, `TreeBuilder`, live `PilotTree` (all → room → category → entities) |
+| `├── nodes/` | `NodeKey` (all / room / category), `NodeSettings`, `NodeMembers` (group and memory members) |
+| `├── power/` | `PowerModel`: measured, WLED and nominal sources, no double counting |
+| `├── memory/` | `MemoryEngine`: per-node debounced capture, persistence, restore |
+| `├── control/` | `GroupController`: turn a node on (restore) / off |
+| `├── automation/` | `PresenceAutomation` |
+| `├── entities/` | `EntityCatalog` (what to generate), `EntitySync`, entity classes; platform files (`light.py`…) only register |
 | `├── frontend/` | Built panel bundle (generated, not committed) |
 | `frontend/` | Panel sources (Lit + TypeScript + Vite) |
 | `tests/` | pytest with `pytest-homeassistant-custom-component` |

@@ -1,0 +1,21 @@
+save:
+  fields:
+    node:
+      required: true
+      example: salon
+      selector:
+        text:
+restore:
+  fields:
+    node:
+      required: true
+      example: salon__led
+      selector:
+        text:
+forget:
+  fields:
+    node:
+      required: true
+      example: salon
+      selector:
+        text:

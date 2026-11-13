@@ -1,6 +1,6 @@
 // ====== Code Summary ======
-// Shapes of the tree sent by vivid_pilot/tree/subscribe (mirror of
-// custom_components/vivid_pilot/tree/model.py to_dict()).
+// Shapes of the payload sent by vivid_pilot/subscribe (mirror of
+// custom_components/vivid_pilot/api/payload.py and tree/model.py).
 
 export type CategoryId =
   | "light"
@@ -16,6 +16,13 @@ export type CategoryId =
   | "power"
   | "ignored";
 
+export interface LeafOptions {
+  nominal_power?: number;
+  voltage?: number;
+  upstream?: string;
+  counted?: boolean;
+}
+
 export interface TreeLeaf {
   entity_id: string;
   name: string;
@@ -23,6 +30,8 @@ export interface TreeLeaf {
   source: "auto" | "manual";
   reason: string;
   device_id: string | null;
+  platform?: string;
+  options?: LeafOptions;
 }
 
 export interface CategoryNode {
@@ -42,4 +51,73 @@ export interface HomeTree {
   rooms: RoomNode[];
   unassigned: TreeLeaf[];
   ignored: TreeLeaf[];
+}
+
+export interface NodeSettings {
+  memory_enabled: boolean;
+  memory_categories: CategoryId[];
+  memory_excluded: string[];
+  group_excluded: string[];
+}
+
+export interface MemorySummary {
+  active: boolean;
+  saved_at: string | null;
+  count: number;
+  on: number;
+  colors: [number, number, number][];
+  members: string[];
+}
+
+export interface NodeInfo {
+  settings: NodeSettings;
+  memory: MemorySummary;
+  group: string[];
+}
+
+export interface PowerSourceInfo {
+  kind: "measured" | "wled" | "nominal";
+  area_id: string;
+  category: CategoryId | null;
+  entity_id: string;
+  leaf_id: string;
+  counted: boolean;
+  factor: number;
+  value: number | null;
+}
+
+export interface PresenceInfo {
+  enabled: boolean;
+  delay: number;
+  sensors: string[];
+  available: boolean;
+}
+
+export interface PilotPayload {
+  version: string;
+  tree: HomeTree;
+  nodes: Record<string, NodeInfo>;
+  /** node key -> "platform:kind" -> generated entity id */
+  entities: Record<string, Record<string, string>>;
+  /** strip light -> its computed power sensor */
+  strips: Record<string, string>;
+  power: PowerSourceInfo[];
+  presence: Record<string, PresenceInfo>;
+  settings: { memory_master: boolean; memory_debounce: number };
+}
+
+/** "all", "<area>", "all__<cat>" or "<area>__<cat>" */
+export type NodeKey = string;
+
+export function nodeKey(areaId: string | null, category?: CategoryId | null): NodeKey {
+  const base = areaId ?? "all";
+  return category ? `${base}__${category}` : base;
+}
+
+export function parseNodeKey(key: NodeKey): { areaId: string | null; category: CategoryId | null } {
+  const [base, category] = key.split("__");
+  return {
+    areaId: base === "all" ? null : base,
+    category: (category as CategoryId | undefined) ?? null,
+  };
 }

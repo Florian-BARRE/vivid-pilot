@@ -5,10 +5,12 @@
 
 from __future__ import annotations
 
+import contextlib
 import logging
 from collections.abc import Callable, Mapping
 from typing import Any
 
+from homeassistant.const import EVENT_HOMEASSISTANT_STARTED
 from homeassistant.core import CALLBACK_TYPE, Event, HomeAssistant, callback
 from homeassistant.helpers import area_registry as ar
 from homeassistant.helpers import device_registry as dr
@@ -63,13 +65,21 @@ class PilotTree:
             ar.EVENT_AREA_REGISTRY_UPDATED,
         ):
             self._unsubscribers.append(self._hass.bus.async_listen(event_type, self._on_change))
+        # At boot other integrations are still loading (their entities look
+        # "restored"): rebuild once Home Assistant has fully started.
+        if not self._hass.is_running:
+            self._unsubscribers.append(
+                self._hass.bus.async_listen_once(EVENT_HOMEASSISTANT_STARTED, self._on_change)
+            )
         _LOGGER.debug("END tree engine start (rooms=%d)", len(self._tree.rooms))
 
     @callback
     def async_stop(self) -> None:
         """Stop following the registries and drop the listeners."""
         for unsubscribe in self._unsubscribers:
-            unsubscribe()
+            # A one-shot listener that already fired cannot be removed twice.
+            with contextlib.suppress(ValueError):
+                unsubscribe()
         self._unsubscribers.clear()
         self._listeners.clear()
         self._debouncer.async_shutdown()
@@ -85,6 +95,11 @@ class PilotTree:
                 self._listeners.remove(listener)
 
         return _unsubscribe
+
+    @callback
+    def async_rebuild_now(self) -> None:
+        """Rebuild immediately (after a manual correction)."""
+        self._hass.async_create_task(self._async_rebuild())
 
     async def async_request_rebuild(self) -> None:
         """Ask for a rebuild (debounced), e.g. after an override changed."""

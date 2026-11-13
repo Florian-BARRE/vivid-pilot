@@ -9,5 +9,139 @@
     "abort": {
       "single_instance_allowed": "Vivid Pilot is already configured."
     }
+  },
+  "entity": {
+    "light": {
+      "room_lights": {
+        "name": "Lighting"
+      },
+      "home_lights": {
+        "name": "Lighting"
+      },
+      "light_group": {
+        "name": "Lights"
+      },
+      "led_group": {
+        "name": "LEDs"
+      }
+    },
+    "switch": {
+      "switch_group": {
+        "name": "Switches"
+      },
+      "auto_lighting": {
+        "name": "Presence lighting"
+      }
+    },
+    "scene": {
+      "home_state": {
+        "name": "State"
+      },
+      "room_state": {
+        "name": "State"
+      },
+      "light_state": {
+        "name": "Lights state"
+      },
+      "led_state": {
+        "name": "LEDs state"
+      },
+      "switch_state": {
+        "name": "Switches state"
+      }
+    },
+    "binary_sensor": {
+      "doors": {
+        "name": "Doors"
+      },
+      "windows": {
+        "name": "Windows"
+      },
+      "presence": {
+        "name": "Presence"
+      }
+    },
+    "sensor": {
+      "power": {
+        "name": "Power"
+      },
+      "light_power": {
+        "name": "Lights power"
+      },
+      "led_power": {
+        "name": "LEDs power"
+      },
+      "switch_power": {
+        "name": "Switches power"
+      },
+      "temperature_mean": {
+        "name": "Temperature"
+      },
+      "temperature_min": {
+        "name": "Temperature min"
+      },
+      "temperature_max": {
+        "name": "Temperature max"
+      },
+      "humidity_mean": {
+        "name": "Humidity"
+      },
+      "humidity_min": {
+        "name": "Humidity min"
+      },
+      "humidity_max": {
+        "name": "Humidity max"
+      },
+      "pressure_mean": {
+        "name": "Pressure"
+      },
+      "pressure_min": {
+        "name": "Pressure min"
+      },
+      "pressure_max": {
+        "name": "Pressure max"
+      },
+      "co2_mean": {
+        "name": "CO2"
+      },
+      "co2_min": {
+        "name": "CO2 min"
+      },
+      "co2_max": {
+        "name": "CO2 max"
+      }
+    }
+  },
+  "services": {
+    "save": {
+      "name": "Save memory",
+      "description": "Store the current state of a node.",
+      "fields": {
+        "node": {
+          "name": "Node",
+          "description": "Node key: all, an area id, or <area id>__<category>."
+        }
+      }
+    },
+    "restore": {
+      "name": "Restore memory",
+      "description": "Bring a node back to its stored state.",
+      "fields": {
+        "node": {
+          "name": "Node",
+          "description": "Node key: all, an area id, or <area id>__<category>."
+        }
+      }
+    },
+    "forget": {
+      "name": "Forget memory",
+      "description": "Delete the stored state of a node.",
+      "fields": {
+        "node": {
+          "name": "Node",
+          "description": "Node key: all, an area id, or <area id>__<category>."
+        }
+      }
+    }
   }
 }

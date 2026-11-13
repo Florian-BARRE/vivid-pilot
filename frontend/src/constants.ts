@@ -1,8 +1,17 @@
 // ====== Code Summary ======
 // Names shared by the panel; they mirror custom_components/vivid_pilot/const.py.
 
-export const PANEL_ELEMENT_NAME = "vivid-pilot-panel";
-export const TREE_ELEMENT_NAME = "vivid-pilot-tree";
-export const ROOM_ELEMENT_NAME = "vivid-pilot-room";
-export const WS_TYPE_INFO = "vivid_pilot/info";
-export const WS_TYPE_TREE_SUBSCRIBE = "vivid_pilot/tree/subscribe";
+export const WS_PREFIX = "vivid_pilot";
+
+export const ELEMENT_NAMES = {
+  panel: "vivid-pilot-panel",
+  tree: "vivid-pilot-tree",
+  node: "vivid-pilot-node",
+  graph: "vivid-pilot-graph",
+  leafEditor: "vivid-pilot-leaf-editor",
+  memoryTab: "vivid-pilot-memory-tab",
+  memoryEditor: "vivid-pilot-memory-editor",
+  automationTab: "vivid-pilot-automation-tab",
+  utilitiesTab: "vivid-pilot-utilities-tab",
+  logo: "vivid-pilot-logo",
+} as const;

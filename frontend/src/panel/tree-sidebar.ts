@@ -1,30 +1,26 @@
 // ====== Code Summary ======
 // VividPilotTree: the left-hand tree (Maison → rooms → categories). Rooms
-// expand in place; clicking Maison, a room, "Sans pièce" or "Ignorés"
-// fires a "vp-select" event with the selection key.
+// expand in place; Maison, a room, a category, "Sans pièce" and "Ignorés"
+// are all clickable and fire "vp-select" with the node key ("all",
+// "<area>", "<area>__<category>", "unassigned", "ignored").
 
 import { LitElement, css, html, nothing } from "lit";
 
 import { renderIcon, CHEVRON_ICON, HOME_ICON } from "../theme/icon";
 import { sharedStyles, themeTokens } from "../theme/styles";
 import { CATEGORIES } from "../tree/categories";
-import type { LiveAggregator } from "../tree/live-aggregator";
-import type { HomeTree, RoomNode } from "../tree/types";
-import type { HomeAssistant } from "../types/home-assistant";
+import type { PanelModel } from "../tree/panel-model";
+import { nodeKey, type RoomNode } from "../tree/types";
 
 export class VividPilotTree extends LitElement {
   static override properties = {
-    hass: { attribute: false },
-    tree: { attribute: false },
-    aggregator: { attribute: false },
+    model: { attribute: false },
     selected: { type: String },
     expanded: { state: true },
   };
 
-  hass?: HomeAssistant;
-  tree?: HomeTree;
-  aggregator?: LiveAggregator;
-  selected = "home";
+  model?: PanelModel;
+  selected = "all";
   expanded = new Set<string>();
 
   private select(key: string): void {
@@ -40,46 +36,59 @@ export class VividPilotTree extends LitElement {
     this.expanded = next;
   }
 
+  override willUpdate(): void {
+    // Keep the branch of the selected node open.
+    const area = this.selected.split("__")[0];
+    if (this.model?.room(area) && !this.expanded.has(area)) {
+      this.expanded = new Set([...this.expanded, area]);
+    }
+  }
+
+  private watts(value: number | null) {
+    return value === null
+      ? nothing
+      : html`<span class="power">${this.model!.aggregator.formatNumber(value)} W</span>`;
+  }
+
   protected override render() {
-    if (!this.hass || !this.tree || !this.aggregator) return nothing;
-    const home = this.aggregator.home(this.tree, this.hass.states);
+    const model = this.model;
+    if (!model) return nothing;
+    const home = model.aggregator.home(model.payload.tree, model.hass.states);
+    const fmt = (value: number) => model.aggregator.formatNumber(value);
     return html`
       <nav aria-label="Arbre" class="card">
         <button
           type="button"
-          class="row home ${this.selected === "home" ? "selected" : ""}"
-          @click=${() => this.select("home")}
+          class="row home ${this.selected === "all" ? "selected" : ""}"
+          @click=${() => this.select("all")}
         >
           ${renderIcon(HOME_ICON, "currentColor")}
           <span class="name">Maison</span>
-          ${home.power === null ? nothing : html`<span class="power">${this.aggregator.formatNumber(home.power)} W</span>`}
+          ${this.watts(model.power(null))}
         </button>
         <div class="summary muted">
-          ${home.lightsOn}/${home.lightsTotal} allumées
-          ${
+          ${home.lightsOn}/${home.lightsTotal}
+          allumées${
             home.temperature
-              ? html` ·
-                ${this.aggregator.formatNumber(home.temperature.min)}–${this.aggregator.formatNumber(home.temperature.max)}
-                °C`
-              : nothing
+              ? ` · ${fmt(home.temperature.min)}–${fmt(home.temperature.max)} °C`
+              : ""
           }
         </div>
-        <div class="rooms">${this.tree.rooms.map((room) => this.renderRoom(room))}</div>
-        ${this.renderExtra("unassigned", "Sans pièce", this.tree.unassigned.length, true)}
-        ${this.renderExtra("ignored", "Ignorés", this.tree.ignored.length, false)}
+        <div class="rooms">${model.rooms.map((room) => this.renderRoom(room))}</div>
+        ${this.renderExtra("unassigned", "Sans pièce", model.payload.tree.unassigned.length, true)}
+        ${this.renderExtra("ignored", "Ignorés", model.payload.tree.ignored.length, false)}
       </nav>
     `;
   }
 
   private renderRoom(room: RoomNode) {
-    const hass = this.hass!;
-    const aggregator = this.aggregator!;
+    const model = this.model!;
     const open = this.expanded.has(room.area_id);
-    const key = `room:${room.area_id}`;
-    const summary = aggregator.room(room, hass.states);
+    const summary = model.aggregator.room(room, model.hass.states);
+    const lit = summary.lightsOn;
     return html`
       <div class="room">
-        <div class="row ${this.selected === key ? "selected" : ""}">
+        <div class="row ${this.selected === room.area_id ? "selected" : ""}">
           <button
             type="button"
             class="chevron ${open ? "open" : ""}"
@@ -89,12 +98,12 @@ export class VividPilotTree extends LitElement {
           >
             ${renderIcon(CHEVRON_ICON, "currentColor", 14)}
           </button>
-          <button type="button" class="room-button" @click=${() => this.select(key)}>
+          <button type="button" class="room-button" @click=${() => this.select(room.area_id)}>
             <span class="name">${room.name}</span>
             <span class="muted small"
-              >${summary.lightsOn > 0 ? `${summary.lightsOn} allumée(s)` : "éteinte"}</span
+              >${lit > 0 ? `${lit} allumée${lit > 1 ? "s" : ""}` : "éteinte"}</span
             >
-            ${summary.power === null ? nothing : html`<span class="power">${aggregator.formatNumber(summary.power)} W</span>`}
+            ${this.watts(model.power(room.area_id))}
           </button>
         </div>
         ${
@@ -102,11 +111,18 @@ export class VividPilotTree extends LitElement {
             ? html`<div class="categories">
                 ${room.categories.map((node) => {
                   const meta = CATEGORIES[node.category];
-                  return html`<div class="category">
+                  const key = nodeKey(room.area_id, node.category);
+                  return html`<button
+                    type="button"
+                    class="category ${this.selected === key ? "selected" : ""}"
+                    @click=${() => this.select(key)}
+                  >
                     ${renderIcon(meta.icon, meta.color, 15)}
                     <span class="name">${meta.label}</span>
-                    <span class="muted small">${aggregator.category(node, hass.states).text}</span>
-                  </div>`;
+                    <span class="muted small"
+                      >${model.aggregator.category(node, model.hass.states).text}</span
+                    >
+                  </button>`;
                 })}
               </div>`
             : nothing
@@ -139,7 +155,8 @@ export class VividPilotTree extends LitElement {
         flex-direction: column;
         gap: 2px;
       }
-      .row {
+      .row,
+      .category {
         display: flex;
         align-items: center;
         gap: 8px;
@@ -153,10 +170,11 @@ export class VividPilotTree extends LitElement {
         text-align: left;
         box-sizing: border-box;
       }
-      .row.selected {
-        background: var(--vp-selected);
+      .selected {
+        background: var(--vp-selected) !important;
       }
-      .row:hover:not(.selected) {
+      .row:hover,
+      .category:hover {
         background: var(--vp-raised);
       }
       .home .name {
@@ -176,12 +194,14 @@ export class VividPilotTree extends LitElement {
       }
       .small {
         font-size: 12px;
+        white-space: nowrap;
       }
       .power {
         font-size: 12px;
         font-weight: 700;
         min-width: 44px;
         text-align: right;
+        white-space: nowrap;
       }
       .rooms {
         margin-left: 12px;
@@ -192,9 +212,13 @@ export class VividPilotTree extends LitElement {
         padding: 0 4px;
         gap: 2px;
       }
+      .room .row:hover {
+        background: transparent;
+      }
       .chevron {
         width: 32px;
         height: 32px;
+        flex: none;
         border: 0;
         border-radius: 8px;
         background: transparent;
@@ -215,21 +239,23 @@ export class VividPilotTree extends LitElement {
         gap: 8px;
         min-height: 44px;
         border: 0;
+        border-radius: 10px;
+        padding: 0 6px;
         background: transparent;
         cursor: pointer;
         text-align: left;
         min-width: 0;
       }
+      .room-button:hover {
+        background: var(--vp-raised);
+      }
       .categories {
         display: flex;
         flex-direction: column;
-        margin: 0 0 6px 34px;
+        margin: 0 0 6px 30px;
       }
       .category {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 6px 8px;
+        min-height: 38px;
         color: var(--vp-muted);
       }
       .category .name {

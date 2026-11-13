@@ -103,9 +103,9 @@ Entity ids use the `vivid_pilot_` prefix (HA forbids hyphens in entity ids): `vi
 ## Phases
 
 0. Skeleton: config entry, store, panel, websocket, CI, release. ✅ (0.1.0)
-1. Registries, detection, live tree, read-only panel (the tree with live values) — `feature/phase-1-tree`, awaiting validation.
-2. Corrections in the panel (categories, rooms, exclusions, upstream meters, voltages).
-3. Virtual room devices and entities: light / led / switch groups, openings, presence, climate, power, up to `all`.
-4. Memory per node (scenes, settings, services).
-5. Presence automation.
+1. Registries, detection, live tree, read-only panel. ✅ 0.2.0
+2. Corrections in the panel (categories, rooms, exclusions, upstream meters, voltages). ✅ 0.3.0
+3. Virtual room devices and entities: light / led / switch groups, openings, presence, climate, power, up to `all`. ✅ 0.3.0
+4. Memory per node (scenes, settings, services). ✅ 0.3.0
+5. Presence automation. ✅ 0.3.0
 6. Vivid Cards discovery by area + role, then migration of Flo's Home Assistant.

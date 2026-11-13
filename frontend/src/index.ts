@@ -2,15 +2,29 @@
 // Bundle entry: defines the panel and its child elements once, even if the
 // module is loaded twice by the frontend.
 
-import { PANEL_ELEMENT_NAME, ROOM_ELEMENT_NAME, TREE_ELEMENT_NAME } from "./constants";
-import { VividPilotRoom } from "./panel/room-view";
+import { ELEMENT_NAMES } from "./constants";
+import { VividPilotAutomationTab } from "./panel/automation-tab";
+import { VividPilotGraph } from "./panel/graph-view";
+import { VividPilotLeafEditor } from "./panel/leaf-editor";
+import { VividPilotMemoryEditor } from "./panel/memory-editor";
+import { VividPilotMemoryTab } from "./panel/memory-tab";
+import { VividPilotNode } from "./panel/node-view";
 import { VividPilotTree } from "./panel/tree-sidebar";
+import { VividPilotUtilitiesTab } from "./panel/utilities-tab";
 import { VividPilotPanel } from "./panel/vivid-pilot-panel";
+import { VividPilotLogo } from "./theme/logo";
 
 const ELEMENTS: Array<[string, CustomElementConstructor]> = [
-  [TREE_ELEMENT_NAME, VividPilotTree],
-  [ROOM_ELEMENT_NAME, VividPilotRoom],
-  [PANEL_ELEMENT_NAME, VividPilotPanel],
+  [ELEMENT_NAMES.logo, VividPilotLogo],
+  [ELEMENT_NAMES.tree, VividPilotTree],
+  [ELEMENT_NAMES.node, VividPilotNode],
+  [ELEMENT_NAMES.graph, VividPilotGraph],
+  [ELEMENT_NAMES.leafEditor, VividPilotLeafEditor],
+  [ELEMENT_NAMES.memoryTab, VividPilotMemoryTab],
+  [ELEMENT_NAMES.memoryEditor, VividPilotMemoryEditor],
+  [ELEMENT_NAMES.automationTab, VividPilotAutomationTab],
+  [ELEMENT_NAMES.utilitiesTab, VividPilotUtilitiesTab],
+  [ELEMENT_NAMES.panel, VividPilotPanel],
 ];
 
 for (const [name, element] of ELEMENTS) {
