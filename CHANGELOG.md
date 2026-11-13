@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.2 — 2026-11-13
+
+- **Lamp and LED groups offer their members' colors**: color modes, color, color temperature and effects are merged like a Home Assistant light group, so a card (or the more-info dialog) shows the color picker and the effect list of a WLED group. Setting a color or an effect on the group sets it on every member.
+
 ## 0.5.1 — 2026-11-13
 
 - "Lights" are called lamps everywhere (entity names and panel), with a lamp icon: lamps, LEDs and switches stay three distinct things, as in Vivid Cards.
