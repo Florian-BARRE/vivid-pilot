@@ -88,6 +88,15 @@ export class VividPilotNode extends LitElement {
           ? html`<p class="muted empty">Rien à afficher ici.</p>`
           : html`<div class="grid ${view.category ? "single" : ""}">
               ${view.cards.map((node) => this.renderCard(model, view, node))}
+              ${
+                view.key
+                  ? html`<vivid-pilot-power-sources
+                      .model=${model}
+                      .areaId=${view.areaId}
+                      .category=${view.category}
+                    ></vivid-pilot-power-sources>`
+                  : nothing
+              }
             </div>`
       }
     `;

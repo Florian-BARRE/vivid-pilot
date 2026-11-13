@@ -2,7 +2,7 @@
 # GroupController: turns a node's group on and off. Turning a node on with no
 # parameter restores its memory when it has one; otherwise the command goes
 # straight to the real entities (never through nested groups). Used by the
-# generated group entities, the presence automation and the panel.
+# generated group entities, the services and the panel.
 
 from __future__ import annotations
 

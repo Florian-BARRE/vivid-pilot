@@ -39,9 +39,27 @@ class EntitySync:
 
     @callback
     def register_platform(self, platform: str, add_entities: AddEntitiesCallback) -> None:
-        """A platform is ready: create its entities for the current specs."""
+        """A platform is ready: create its entities, drop leftovers of older versions."""
         self._adders[platform] = add_entities
         self._apply(platform)
+        self._prune(platform)
+
+    @callback
+    def _prune(self, platform: str) -> None:
+        """Remove registry entries of ours that no spec produces any more."""
+        wanted = {spec.unique_id for spec in self._specs if spec.platform == platform}
+        registry = er.async_get(self._hass)
+        stale = [
+            entry.entity_id
+            for entry in list(registry.entities.values())
+            if entry.platform == self._context.domain
+            and entry.domain == platform
+            and entry.unique_id not in wanted
+        ]
+        for entity_id in stale:
+            registry.async_remove(entity_id)
+        if stale:
+            _LOGGER.info("END entity prune (platform=%s, removed=%d)", platform, len(stale))
 
     @callback
     def update(self, specs: list[EntitySpec]) -> None:

@@ -1,8 +1,8 @@
 # ====== Code Summary ======
 # PilotRuntime: the composition root of the integration. It builds every
 # object once with its injected settings, wires them together and drives
-# them: each new tree updates the power model, the memories, the presence
-# automation and the generated entities, then refreshes the panel. Any state
+# them: each new tree updates the power model, the memories and the
+# generated entities, then refreshes the panel. Any state
 # change of a tree entity refreshes the generated entities.
 
 from __future__ import annotations
@@ -17,7 +17,6 @@ from homeassistant.helpers.event import async_track_state_change_event
 from homeassistant.loader import async_get_integration
 
 from .api import PanelHub, PayloadBuilder, PilotServices, PilotWebsocketApi
-from .automation import PresenceAutomation
 from .const import (
     CURRENT_TRANSLATION_KEYS,
     DEFAULT_STRIP_VOLTAGE,
@@ -61,7 +60,6 @@ class PilotRuntime:
     power: PowerModel
     memory: MemoryEngine
     groups: GroupController
-    presence: PresenceAutomation
     catalog: EntityCatalog
     entities: EntitySync
     hub: PanelHub
@@ -98,7 +96,6 @@ class PilotRuntime:
         hub = PanelHub(hass)
         memory = MemoryEngine(hass, store, hub.notify, MEMORY_DEBOUNCE_SECONDS)
         groups = GroupController(hass, memory, members)
-        presence = PresenceAutomation(hass, store, groups, hub.notify)
         power = PowerModel(
             hass,
             PowerSettings(
@@ -115,7 +112,6 @@ class PilotRuntime:
             groups=groups,
             memory=memory,
             power=power,
-            presence=presence,
         )
         panel = PanelRegistrar(
             hass,
@@ -138,7 +134,6 @@ class PilotRuntime:
             power=power,
             memory=memory,
             groups=groups,
-            presence=presence,
             catalog=EntityCatalog(HOME_DEVICE_NAME),
             entities=EntitySync(hass, context, FACTORIES),
             hub=hub,
@@ -175,7 +170,6 @@ class PilotRuntime:
         if self._untrack:
             self._untrack()
         self.memory.async_stop()
-        self.presence.async_stop()
         self.tree.async_stop()
         self.hub.async_stop()
         await self.store.save()
@@ -196,8 +190,7 @@ class PilotRuntime:
         members = self.members()
         self.power.rebuild(tree)
         self.memory.async_rebuild(members)
-        self.presence.async_rebuild(tree)
-        self.specs = self.catalog.build(tree, members, self.power, self.presence)
+        self.specs = self.catalog.build(tree, members, self.power)
         self.entities.update(self.specs)
         self._track(tree)
         self.hub.notify()

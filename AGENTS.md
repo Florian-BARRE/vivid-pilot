@@ -19,7 +19,6 @@ Read this before changing anything. The design lives in `docs/architecture.md`.
 | `├── power/` | `PowerModel`: measured, WLED and nominal sources, no double counting |
 | `├── memory/` | `MemoryEngine`: per-node debounced capture, persistence, restore |
 | `├── control/` | `GroupController`: turn a node on (restore) / off |
-| `├── automation/` | `PresenceAutomation` |
 | `├── entities/` | `EntityCatalog` (what to generate), `EntitySync`, entity classes; platform files (`light.py`…) only register |
 | `├── frontend/` | Built panel bundle (generated, not committed) |
 | `frontend/` | Panel sources (Lit + TypeScript + Vite) |
@@ -27,7 +26,7 @@ Read this before changing anything. The design lives in `docs/architecture.md`.
 | `scripts/` | Release helpers (`check_versions.py`) |
 | `docs/` | Architecture and module documentation |
 
-New modules (rooms, memory, automations, utilities) each get their own sub-package under `custom_components/vivid_pilot/` with a facade `__init__.py`, and are built in `runtime.py`.
+New modules (rooms, memory, utilities) each get their own sub-package under `custom_components/vivid_pilot/` with a facade `__init__.py`, and are built in `runtime.py`.
 
 ## Rules
 

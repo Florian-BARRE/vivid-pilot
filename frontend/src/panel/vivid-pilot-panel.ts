@@ -13,11 +13,10 @@ import { PanelModel } from "../tree/panel-model";
 import type { PilotPayload } from "../tree/types";
 import type { HomeAssistant } from "../types/home-assistant";
 
-type Tab = "tree" | "memory" | "automation" | "utilities";
+type Tab = "tree" | "memory" | "utilities";
 const TABS: Array<[Tab, string]> = [
   ["tree", "Arbre"],
   ["memory", "Mémoire"],
-  ["automation", "Automatisations"],
   ["utilities", "Utilitaires"],
 ];
 
@@ -32,6 +31,7 @@ export class VividPilotPanel extends LitElement {
     editing: { state: true },
     memoryNode: { state: true },
     error: { state: true },
+    toast: { state: true },
   };
 
   hass?: HomeAssistant;
@@ -43,6 +43,8 @@ export class VividPilotPanel extends LitElement {
   editing = "";
   memoryNode = "";
   error = "";
+  toast = "";
+  private toastTimer?: number;
 
   private aggregator?: LiveAggregator;
   private api?: PilotApi;
@@ -88,6 +90,11 @@ export class VividPilotPanel extends LitElement {
   };
   private onMemoryEdit = (event: CustomEvent<string>) => {
     this.memoryNode = event.detail;
+  };
+  private onToast = (event: CustomEvent<string>) => {
+    this.toast = event.detail;
+    window.clearTimeout(this.toastTimer);
+    this.toastTimer = window.setTimeout(() => (this.toast = ""), 6000);
   };
   private onClose = () => {
     this.editing = "";
@@ -152,6 +159,7 @@ export class VividPilotPanel extends LitElement {
         @vp-edit-leaf=${this.onEdit}
         @vp-memory-edit=${this.onMemoryEdit}
         @vp-close=${this.onClose}
+        @vp-toast=${this.onToast}
       >
         ${this.tab === "tree" ? this.renderTree(model) : html`<main class="full">${this.renderTab(model)}</main>`}
         ${
@@ -191,8 +199,6 @@ export class VividPilotPanel extends LitElement {
     switch (this.tab) {
       case "memory":
         return html`<vivid-pilot-memory-tab .model=${model}></vivid-pilot-memory-tab>`;
-      case "automation":
-        return html`<vivid-pilot-automation-tab .model=${model}></vivid-pilot-automation-tab>`;
       default:
         return html`<vivid-pilot-utilities-tab .model=${model}></vivid-pilot-utilities-tab>`;
     }
@@ -277,6 +283,19 @@ export class VividPilotPanel extends LitElement {
       }
       .message {
         padding: 24px;
+      }
+      .toast {
+        position: fixed;
+        z-index: 20;
+        left: 50%;
+        bottom: 24px;
+        transform: translateX(-50%);
+        max-width: min(560px, calc(100vw - 32px));
+        padding: 12px 16px;
+        border-radius: 12px;
+        background: var(--vp-text);
+        color: var(--vp-card);
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
       }
     `,
   ];

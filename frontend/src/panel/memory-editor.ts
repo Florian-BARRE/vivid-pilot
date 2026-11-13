@@ -141,7 +141,17 @@ export class VividPilotMemoryEditor extends LitElement {
           <button type="button" @click=${() => model.api.memory("forget", this.node)}>
             Oublier
           </button>
-          <button type="button" @click=${() => model.api.memory("save", this.node)}>
+          <button
+            type="button"
+            @click=${async () =>
+              this.dispatchEvent(
+                new CustomEvent("vp-toast", {
+                  detail: await model.saveMemory(this.node),
+                  bubbles: true,
+                  composed: true,
+                }),
+              )}
+          >
             Mémoriser maintenant
           </button>
           <button
