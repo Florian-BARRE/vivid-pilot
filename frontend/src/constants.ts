@@ -9,6 +9,7 @@ export const ELEMENT_NAMES = {
   node: "vivid-pilot-node",
   graph: "vivid-pilot-graph",
   leafEditor: "vivid-pilot-leaf-editor",
+  leafPower: "vivid-pilot-leaf-power",
   memoryTab: "vivid-pilot-memory-tab",
   memoryEditor: "vivid-pilot-memory-editor",
   powerSources: "vivid-pilot-power-sources",

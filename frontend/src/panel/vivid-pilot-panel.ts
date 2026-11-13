@@ -7,17 +7,23 @@
 import { LitElement, css, html, nothing, type PropertyValues } from "lit";
 
 import { PilotApi } from "../api/pilot-api";
+import { renderIcon } from "../theme/icon";
 import { sharedStyles, themeTokens } from "../theme/styles";
+import { UI_ICONS } from "../theme/ui-icons";
 import { LiveAggregator } from "../tree/live-aggregator";
 import { PanelModel } from "../tree/panel-model";
 import type { PilotPayload } from "../tree/types";
 import type { HomeAssistant } from "../types/home-assistant";
 
 type Tab = "tree" | "memory" | "utilities";
-const TABS: Array<[Tab, string]> = [
-  ["tree", "Arbre"],
-  ["memory", "Mémoire"],
-  ["utilities", "Utilitaires"],
+const TABS: Array<[Tab, string, string]> = [
+  ["tree", "Arbre", UI_ICONS.tree],
+  ["memory", "Mémoire", UI_ICONS.memory],
+  ["utilities", "Utilitaires", UI_ICONS.utilities],
+];
+const MODES: Array<["list" | "graph", string, string]> = [
+  ["list", "Cartes", UI_ICONS.cards],
+  ["graph", "Graphe", UI_ICONS.graph],
 ];
 
 export class VividPilotPanel extends LitElement {
@@ -110,34 +116,32 @@ export class VividPilotPanel extends LitElement {
         </div>
         <nav aria-label="Modules">
           ${TABS.map(
-            ([id, label]) =>
+            ([id, label, icon]) =>
               html`<button
                 type="button"
                 class="tab ${this.tab === id ? "active" : ""}"
                 aria-current=${this.tab === id ? "page" : "false"}
                 @click=${() => (this.tab = id)}
               >
-                ${label}
+                ${renderIcon(icon, "currentColor", 17)}<span>${label}</span>
               </button>`,
           )}
         </nav>
         ${
           this.tab === "tree"
             ? html`<div class="modes" role="group" aria-label="Affichage">
-                <button
-                  type="button"
-                  class=${this.mode === "list" ? "on" : ""}
-                  @click=${() => (this.mode = "list")}
-                >
-                  Liste
-                </button>
-                <button
-                  type="button"
-                  class=${this.mode === "graph" ? "on" : ""}
-                  @click=${() => (this.mode = "graph")}
-                >
-                  Graphe
-                </button>
+                ${MODES.map(
+                  ([id, label, icon]) =>
+                    html`<button
+                      type="button"
+                      class=${this.mode === id ? "on" : ""}
+                      title=${label}
+                      aria-pressed=${this.mode === id ? "true" : "false"}
+                      @click=${() => (this.mode = id)}
+                    >
+                      ${renderIcon(icon, "currentColor", 17)}<span>${label}</span>
+                    </button>`,
+                )}
               </div>`
             : nothing
         }
@@ -227,7 +231,8 @@ export class VividPilotPanel extends LitElement {
         align-items: center;
         gap: 10px;
         font-size: 18px;
-        font-weight: 500;
+        font-weight: 600;
+        margin-right: 8px;
       }
       nav,
       .modes {
@@ -243,13 +248,36 @@ export class VividPilotPanel extends LitElement {
       }
       .tab,
       .modes button {
-        min-height: 40px;
-        padding: 0 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        min-height: 38px;
+        padding: 0 14px 0 12px;
         border: 0;
         border-radius: 999px;
         background: transparent;
         cursor: pointer;
         color: var(--vp-muted);
+        transition:
+          background 0.15s ease,
+          color 0.15s ease;
+      }
+      .tab:hover,
+      .modes button:hover {
+        color: var(--vp-text);
+      }
+      .modes button.on {
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+      }
+      @media (max-width: 720px) {
+        .tab span,
+        .modes span {
+          display: none;
+        }
+        .tab,
+        .modes button {
+          padding: 0 11px;
+        }
       }
       .tab.active,
       .modes button.on {

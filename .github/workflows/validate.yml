@@ -27,5 +27,3 @@ jobs:
       - uses: hacs/action@main
         with:
           category: integration
-          # Brand icons are submitted to home-assistant/brands separately.
-          ignore: brands

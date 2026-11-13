@@ -70,18 +70,25 @@ export class VividPilotPowerSources extends LitElement {
     return html`
       <section class="card">
         <div class="head">
-          ${renderIcon(CATEGORIES.power.icon, CATEGORIES.power.color)}
-          <h2>Puissance calculée</h2>
-          <span class="total">${fmt(counted)} W comptés</span>
+          <span class="tile" style="--accent: ${CATEGORIES.power.color}"
+            >${renderIcon(CATEGORIES.power.icon, CATEGORIES.power.color)}</span
+          >
+          <div class="head-text">
+            <h2>Puissance calculée</h2>
+            <div class="muted small">Estimée par Vivid Pilot, sans compteur</div>
+          </div>
+          <span class="total" title="Compté dans les totaux">${fmt(counted)} W</span>
         </div>
         <ul>
           ${sources.map((source) => {
             const value = this.value(model, source);
             const place = model.place(source.leaf_id);
+            const meta = CATEGORIES[place?.leaf.category ?? "power"];
             return html`<li>
               <button
                 type="button"
                 class="row ${source.counted ? "" : "off"}"
+                title=${this.shownEntity(model, source)}
                 @click=${() =>
                   this.dispatchEvent(
                     new CustomEvent("vp-edit-leaf", {
@@ -91,11 +98,16 @@ export class VividPilotPowerSources extends LitElement {
                     }),
                   )}
               >
+                <span class="tile small-tile" style="--accent: ${meta.color}"
+                  >${renderIcon(meta.icon, meta.color, 15)}</span
+                >
                 <span class="text">
                   <span class="name">${place?.leaf.name ?? source.leaf_id}</span>
-                  <span class="mono"
-                    >${this.areaId === null ? `${place?.room?.name ?? ""} · ` : ""}${this.shownEntity(model, source)}</span
-                  >
+                  ${
+                    this.areaId === null && place?.room
+                      ? html`<span class="muted small">${place.room.name}</span>`
+                      : nothing
+                  }
                 </span>
                 <span class="pill kind-${source.kind}"
                   >${KIND_LABELS[source.kind as ComputedKind]}</span
@@ -126,15 +138,39 @@ export class VividPilotPowerSources extends LitElement {
         gap: 10px;
         padding: 4px;
       }
+      .head-text {
+        flex: 1;
+        min-width: 0;
+      }
+      .small {
+        font-size: 12px;
+      }
+      .tile {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: none;
+        background: color-mix(in srgb, var(--accent) 16%, transparent);
+      }
+      .small-tile {
+        width: 32px;
+        height: 32px;
+      }
       h2 {
         margin: 0;
-        flex: 1;
         font-size: 15px;
         font-weight: 600;
       }
       .total {
         font-weight: 700;
+        font-size: 13px;
         white-space: nowrap;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: color-mix(in srgb, #f5b042 16%, transparent);
       }
       ul {
         list-style: none;
@@ -147,19 +183,20 @@ export class VividPilotPowerSources extends LitElement {
       .row {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 12px;
         width: 100%;
         min-height: 48px;
-        padding: 6px 10px;
+        padding: 6px 12px 6px 8px;
         border: 0;
-        border-radius: 10px;
-        background: var(--vp-raised);
+        border-radius: 12px;
+        background: transparent;
         cursor: pointer;
         text-align: left;
         box-sizing: border-box;
+        transition: background 0.15s ease;
       }
       .row:hover {
-        outline: 2px solid color-mix(in srgb, var(--vp-primary) 40%, transparent);
+        background: var(--vp-raised);
       }
       .row.off {
         opacity: 0.6;

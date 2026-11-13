@@ -42,14 +42,23 @@ export const nodeViewStyles = css`
     font-size: 12px;
   }
   .memory-line {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 10px;
-    margin-top: 8px;
-    min-width: 0;
+    gap: 7px;
+    margin-top: 10px;
+    padding: 5px 10px 5px 9px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--vp-card) 70%, transparent);
+    border: 1px solid var(--vp-divider);
+    color: var(--vp-muted);
+    font-size: 12px;
+    cursor: default;
   }
-  .bar {
-    width: 72px;
+  .memory-line.off {
+    opacity: 0.7;
+  }
+  .swatch {
+    width: 34px;
     height: 8px;
     border-radius: 999px;
     flex: none;
@@ -60,34 +69,73 @@ export const nodeViewStyles = css`
     gap: 10px;
   }
   .chip {
-    background: var(--vp-raised);
-    border-radius: 12px;
-    padding: 10px 14px;
-    min-width: 96px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: color-mix(in srgb, var(--vp-card) 75%, transparent);
+    border: 1px solid var(--vp-divider);
+    border-radius: 14px;
+    padding: 10px 14px 10px 10px;
+  }
+  .chip-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: color-mix(in srgb, var(--accent) 16%, transparent);
+    flex: none;
   }
   .chip-value {
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 700;
     white-space: nowrap;
+    line-height: 1.2;
   }
   .actions {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
   }
+  .actions {
+    flex-basis: 100%;
+  }
   .actions button {
-    height: 44px;
-    padding: 0 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 40px;
+    padding: 0 16px 0 13px;
     border-radius: 12px;
     border: 1px solid var(--vp-divider);
-    background: var(--vp-raised);
+    background: var(--vp-card);
     cursor: pointer;
+    font-weight: 500;
+    transition:
+      background 0.15s ease,
+      transform 0.1s ease;
+  }
+  .actions button:hover {
+    background: var(--vp-raised);
+  }
+  .actions button:active {
+    transform: scale(0.97);
   }
   .actions button.primary {
     border: 0;
     background: var(--vp-primary);
     color: var(--text-primary-color, #fff);
     font-weight: 600;
+    box-shadow: 0 4px 14px color-mix(in srgb, var(--vp-primary) 35%, transparent);
+  }
+  .actions button.primary:hover {
+    background: color-mix(in srgb, var(--vp-primary) 88%, black);
+  }
+  .actions button.icon-only {
+    width: 40px;
+    padding: 0;
+    justify-content: center;
   }
   .grid {
     display: grid;
@@ -101,7 +149,7 @@ export const nodeViewStyles = css`
     padding: 12px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
     min-width: 0;
   }
   .card-head {
@@ -141,7 +189,11 @@ export const nodeViewStyles = css`
   }
   .aggregate {
     font-weight: 700;
+    font-size: 13px;
     white-space: nowrap;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--accent) 14%, transparent);
   }
   ul {
     list-style: none;
@@ -154,22 +206,43 @@ export const nodeViewStyles = css`
   .leaf {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     width: 100%;
-    min-height: 52px;
-    padding: 6px 10px;
+    min-height: 48px;
+    padding: 6px 12px 6px 8px;
     border: 0;
-    border-radius: 10px;
-    background: var(--vp-raised);
+    border-radius: 12px;
+    background: transparent;
     cursor: pointer;
     text-align: left;
     box-sizing: border-box;
+    transition: background 0.15s ease;
   }
   .leaf:hover {
-    outline: 2px solid color-mix(in srgb, var(--vp-primary) 40%, transparent);
+    background: var(--vp-raised);
+  }
+  .leaf:focus-visible {
+    outline: 2px solid var(--vp-primary);
   }
   .leaf.unavailable {
-    opacity: 0.55;
+    opacity: 0.5;
+  }
+  .leaf-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    background: color-mix(in srgb, var(--accent) 14%, transparent);
+    transition:
+      background 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+  .leaf.lit .leaf-icon {
+    background: var(--glow);
+    box-shadow: 0 0 14px color-mix(in srgb, var(--glow) 70%, transparent);
   }
   .leaf-text {
     flex: 1;
@@ -177,23 +250,35 @@ export const nodeViewStyles = css`
     display: flex;
     flex-direction: column;
   }
-  .leaf-name,
-  .leaf-text .mono {
+  .leaf-name {
+    font-weight: 500;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  .leaf-name {
-    font-weight: 500;
-  }
-  .pill {
+  .fixed {
     flex: none;
+    display: flex;
+    width: 24px;
+    height: 24px;
+    border-radius: 8px;
+    align-items: center;
+    justify-content: center;
+    color: var(--vp-warning);
+    background: color-mix(in srgb, var(--vp-warning) 16%, transparent);
   }
   .value {
     flex: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
     font-size: 13px;
-    min-width: 64px;
-    text-align: right;
+    min-width: 56px;
+    color: var(--vp-muted);
+  }
+  .value .on {
+    color: var(--vp-text);
+    font-weight: 600;
   }
   .empty {
     padding: 24px;

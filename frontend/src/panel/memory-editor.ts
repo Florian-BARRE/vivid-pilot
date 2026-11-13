@@ -5,7 +5,10 @@
 
 import { LitElement, css, html, nothing } from "lit";
 
+import { renderIcon } from "../theme/icon";
 import { sharedStyles, themeTokens } from "../theme/styles";
+import { UI_ICONS } from "../theme/ui-icons";
+import { leafEditorStyles } from "./leaf-editor.styles";
 import { CATEGORIES } from "../tree/categories";
 import type { PanelModel } from "../tree/panel-model";
 import { parseNodeKey, type CategoryId, type NodeKey, type TreeLeaf } from "../tree/types";
@@ -62,104 +65,116 @@ export class VividPilotMemoryEditor extends LitElement {
       else next.delete(value);
       void update({ memory_categories: [...next] });
     };
+    const scene = model.generated(this.node, "scene:state") ?? "";
     return html`
       <div class="backdrop" @click=${this.close}></div>
       <section class="sheet card" role="dialog" aria-modal="true" aria-label=${`Mémoire ${title}`}>
         <header>
-          <div>
-            <div class="muted eyebrow">Mémoire</div>
-            <h1>${title}</h1>
-            <div class="mono">${model.generated(this.node, "scene:state") ?? ""}</div>
+          <div class="badge" style="background: color-mix(in srgb, #8a3ffc 18%, transparent)">
+            ${renderIcon(UI_ICONS.memory, "#8a3ffc", 22)}
           </div>
-          <button type="button" class="icon" aria-label="Fermer" @click=${this.close}>✕</button>
-        </header>
-        <label class="check"
-          ><input
+          <div class="head-text">
+            <h1>Mémoire · ${title}</h1>
+            <div class="mono">${scene}</div>
+          </div>
+          <input
             type="checkbox"
             role="switch"
+            class="switch"
+            title="Mémoire active"
+            aria-label="Mémoire active"
             .checked=${settings.memory_enabled}
             @change=${(e: Event) => update({ memory_enabled: (e.target as HTMLInputElement).checked })}
           />
-          Mémoire active</label
-        >
+          <button type="button" class="icon" aria-label="Fermer" @click=${this.close}>
+            ${renderIcon(UI_ICONS.close, "currentColor", 18)}
+          </button>
+        </header>
         ${
           category
             ? nothing
-            : html`<fieldset>
-                <legend>Ce que la mémoire couvre</legend>
-                <div class="chips">
-                  ${CAPABLE.map(
-                    (value) =>
-                      html`<label
-                        class="chip ${settings.memory_categories.includes(value) ? "on" : ""}"
-                        ><input
-                          type="checkbox"
-                          .checked=${settings.memory_categories.includes(value)}
-                          @change=${(e: Event) => toggleCategory(value, (e.target as HTMLInputElement).checked)}
-                        />
-                        ${CATEGORIES[value].label}</label
-                      >`,
-                  )}
+            : html`<section class="block">
+                <h2>${renderIcon(UI_ICONS.layers, "currentColor", 16)} Ce qu'elle couvre</h2>
+                <div class="choices">
+                  ${CAPABLE.map((value) => {
+                    const on = settings.memory_categories.includes(value);
+                    const meta = CATEGORIES[value];
+                    return html`<button
+                      type="button"
+                      class="chip ${on ? "on" : ""}"
+                      style="--accent: ${meta.color}"
+                      aria-pressed=${on ? "true" : "false"}
+                      @click=${() => toggleCategory(value, !on)}
+                    >
+                      ${renderIcon(meta.icon, meta.color, 15)} ${meta.label}
+                    </button>`;
+                  })}
                 </div>
-              </fieldset>`
+              </section>`
         }
-        <fieldset>
-          <legend>Membres détectés</legend>
-          <div class="hint">
-            « Groupe » : ce que ce nœud allume et éteint. « Mémoire » : ce qu'il rétablit.
-          </div>
-          <div class="table" role="table">
-            <div class="tr th" role="row">
-              <span>Appareil</span><span>Catégorie</span><span>Groupe</span><span>Mémoire</span>
-            </div>
+        <section class="block">
+          <h2>${renderIcon(UI_ICONS.device, "currentColor", 16)} Membres</h2>
+          <div class="members">
+            <span></span>
+            <span class="col" title="Ce que ce nœud allume et éteint">Groupe</span>
+            <span class="col" title="Ce que ce nœud rétablit">Mémoire</span>
             ${this.leaves(model).map((leaf) => {
+              const meta = CATEGORIES[leaf.category];
               const coveredCategory =
                 category !== null || settings.memory_categories.includes(leaf.category);
-              return html`<div class="tr" role="row">
-                <span class="name">${leaf.name}</span>
-                <span class="muted">${CATEGORIES[leaf.category].label}</span>
-                <span
-                  ><input
-                    type="checkbox"
-                    aria-label="Dans le groupe"
-                    .checked=${!settings.group_excluded.includes(leaf.entity_id)}
-                    @change=${(e: Event) => toggleList("group_excluded", leaf.entity_id, (e.target as HTMLInputElement).checked)}
-                /></span>
-                <span
-                  ><input
-                    type="checkbox"
-                    aria-label="Dans la mémoire"
-                    ?disabled=${!coveredCategory}
-                    .checked=${coveredCategory && !settings.memory_excluded.includes(leaf.entity_id)}
-                    @change=${(e: Event) => toggleList("memory_excluded", leaf.entity_id, (e.target as HTMLInputElement).checked)}
-                /></span>
-              </div>`;
+              return html`<span class="name"
+                  >${renderIcon(meta.icon, meta.color, 15)} ${leaf.name}</span
+                >
+                <input
+                  type="checkbox"
+                  role="switch"
+                  class="switch"
+                  aria-label=${`${leaf.name} : groupe`}
+                  .checked=${!settings.group_excluded.includes(leaf.entity_id)}
+                  @change=${(e: Event) => toggleList("group_excluded", leaf.entity_id, (e.target as HTMLInputElement).checked)}
+                />
+                <input
+                  type="checkbox"
+                  role="switch"
+                  class="switch"
+                  aria-label=${`${leaf.name} : mémoire`}
+                  ?disabled=${!coveredCategory}
+                  .checked=${coveredCategory && !settings.memory_excluded.includes(leaf.entity_id)}
+                  @change=${(e: Event) => toggleList("memory_excluded", leaf.entity_id, (e.target as HTMLInputElement).checked)}
+                />`;
             })}
           </div>
-        </fieldset>
+        </section>
         <footer>
-          <button type="button" @click=${() => model.api.memory("forget", this.node)}>
-            Oublier
-          </button>
-          <button
-            type="button"
-            @click=${async () =>
-              this.dispatchEvent(
-                new CustomEvent("vp-toast", {
-                  detail: await model.saveMemory(this.node),
-                  bubbles: true,
-                  composed: true,
-                }),
-              )}
-          >
-            Mémoriser maintenant
-          </button>
+          <span class="group">
+            <button
+              type="button"
+              class="ghost"
+              @click=${() => model.api.memory("forget", this.node)}
+            >
+              ${renderIcon(UI_ICONS.forget, "currentColor", 16)} Oublier
+            </button>
+            <button
+              type="button"
+              class="ghost"
+              @click=${async () =>
+                this.dispatchEvent(
+                  new CustomEvent("vp-toast", {
+                    detail: await model.saveMemory(this.node),
+                    bubbles: true,
+                    composed: true,
+                  }),
+                )}
+            >
+              ${renderIcon(UI_ICONS.save, "currentColor", 16)} Mémoriser
+            </button>
+          </span>
           <button
             type="button"
             class="primary"
             @click=${() => model.api.memory("restore", this.node)}
           >
-            Rétablir
+            ${renderIcon(UI_ICONS.restore, "currentColor", 16)} Rétablir
           </button>
         </footer>
       </section>
@@ -169,136 +184,23 @@ export class VividPilotMemoryEditor extends LitElement {
   static override styles = [
     themeTokens,
     sharedStyles,
+    leafEditorStyles,
     css`
-      .backdrop {
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.45);
-        z-index: 10;
-      }
-      .sheet {
-        position: fixed;
-        z-index: 11;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: min(760px, calc(100vw - 24px));
-        max-height: calc(100vh - 48px);
-        overflow: auto;
-        padding: 18px;
-        box-sizing: border-box;
+      .members .name {
         display: flex;
-        flex-direction: column;
-        gap: 14px;
-      }
-      header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 12px;
-      }
-      .eyebrow {
-        font-size: 12px;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-      }
-      h1 {
-        margin: 2px 0;
-        font-size: 22px;
-        font-weight: 500;
-      }
-      fieldset {
-        border: 1px solid var(--vp-divider);
-        border-radius: 12px;
-        padding: 12px;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      }
-      legend {
-        font-weight: 600;
-        padding: 0 6px;
-      }
-      .hint {
-        font-size: 12px;
-        color: var(--vp-muted);
-      }
-      .chips {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-      }
-      .chip,
-      .check {
-        display: inline-flex;
         align-items: center;
         gap: 8px;
-        min-height: 44px;
-        cursor: pointer;
+        min-width: 0;
       }
-      .chip {
-        padding: 0 14px;
-        border-radius: 999px;
-        border: 1px solid var(--vp-divider);
-        background: var(--vp-raised);
+      input.switch:disabled {
+        opacity: 0.35;
+        cursor: default;
       }
-      .chip.on {
-        border-color: var(--vp-primary);
-        background: var(--vp-selected);
-      }
-      .table {
+      footer .group {
         display: flex;
-        flex-direction: column;
         gap: 4px;
       }
-      .tr {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) 110px 70px 70px;
-        gap: 8px;
-        align-items: center;
-        min-height: 40px;
-        padding: 0 10px;
-        border-radius: 10px;
-        background: var(--vp-raised);
-      }
-      .tr.th {
-        background: none;
-        font-size: 12px;
-        color: var(--vp-muted);
-        min-height: 24px;
-      }
-      .name {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-      input[type="checkbox"] {
-        width: 18px;
-        height: 18px;
-      }
-      button {
-        min-height: 40px;
-        padding: 0 14px;
-        border-radius: 10px;
-        border: 1px solid var(--vp-divider);
-        background: var(--vp-raised);
-        cursor: pointer;
-      }
       button.primary {
-        border: 0;
-        background: var(--vp-primary);
-        color: var(--text-primary-color, #fff);
-        font-weight: 600;
-      }
-      button.icon {
-        width: 40px;
-        padding: 0;
-      }
-      footer {
-        display: flex;
-        justify-content: flex-end;
-        flex-wrap: wrap;
         gap: 8px;
       }
     `,
