@@ -166,3 +166,33 @@ async def test_corrections(hass: HomeAssistant, home, loaded, hass_ws_client) ->
         "salon" in payload["nodes"]
         and payload["entities"]["salon"]["light:group"] == "light.vivid_pilot_salon"
     )
+
+
+async def test_power_source_choice(hass: HomeAssistant, home, loaded, hass_ws_client) -> None:
+    """A strip with its own meter uses it; choosing "wled" switches to the estimate."""
+    entities = er.async_get(hass)
+    strip_device = entities.async_get(home["strip"]).device_id
+    meter = entities.async_get_or_create(
+        "sensor", "template", "strip_meter", device_id=strip_device, original_device_class="power"
+    ).entity_id
+    hass.states.async_set(meter, "3", {"unit_of_measurement": "W"})
+    await hass.async_block_till_done()
+    async_fire_time_changed(hass, dt_util.utcnow() + timedelta(seconds=2))
+    await hass.async_block_till_done()
+    # Measured by the meter: 12.5 (plug) + 3 (strip meter).
+    assert hass.states.get("sensor.vivid_pilot_salon_power").state == "15.5"
+    assert loaded.runtime_data.power.choices[home["strip"]]["effective"] == "measured"
+
+    client = await hass_ws_client(hass)
+    await client.send_json_auto_id(
+        {
+            "type": "vivid_pilot/leaf/update",
+            "entity_id": home["strip"],
+            "options": {"power_source": "wled", "voltage": 12},
+        }
+    )
+    assert (await client.receive_json())["success"]
+    await hass.async_block_till_done()
+    # 2000 mA x 12 V = 24 W replaces the 3 W meter.
+    assert hass.states.get("sensor.vivid_pilot_salon_power").state == "36.5"
+    assert loaded.runtime_data.power.choices[home["strip"]]["effective"] == "wled"

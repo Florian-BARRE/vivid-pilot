@@ -40,6 +40,9 @@ OPTION_SCHEMA = vol.Schema(
         vol.Optional("voltage"): vol.Any(None, vol.Coerce(float)),
         vol.Optional("upstream"): vol.Any(None, str),
         vol.Optional("counted"): vol.Any(None, bool),
+        vol.Optional("power_source"): vol.Any(
+            None, vol.In(["auto", "measured", "wled", "nominal", "none"])
+        ),
     }
 )
 NODE = {vol.Required("node"): str}

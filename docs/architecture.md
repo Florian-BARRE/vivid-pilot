@@ -74,6 +74,7 @@ Entity ids use the `vivid_pilot_` prefix (HA forbids hyphens in entity ids): `vi
 
 - WLED strips: power (W) = estimated current (mA, WLED sensor found by device + `translation_key`) / 1000 × strip voltage (set per strip in the panel, default 5 V). It is an estimate that depends on WLED's current limiter setting.
 - No double counting: each power source can declare an **upstream meter** ("already measured by…", e.g. a strip powered through a metering plug). A source with an upstream meter is left out of totals but keeps its own sensor. Each source can also be included or excluded from its totals.
+- **Source choice** (0.3.2): each light / LED / switch picks its source in its sheet — auto (meter > WLED > nominal), meter, WLED estimate, nominal or none. Any explicit choice other than the meter takes the device's meters out of totals.
 - Sums go up the tree: category → room → `all`.
 - **Nominal power** (agreed 13 November 2026): a light or switch with no power information at all (e.g. a Hue bulb) can get a power set by hand in the panel, counted while it is on (optionally scaled by brightness).
 

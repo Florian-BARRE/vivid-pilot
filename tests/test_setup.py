@@ -35,7 +35,7 @@ async def test_setup_registers_panel_and_api(hass: HomeAssistant, hass_ws_client
     await client.send_json_auto_id({"type": "vivid_pilot/info"})
     msg = await client.receive_json()
     assert msg["success"]
-    assert msg["result"] == {"version": "0.3.1", "overrides": 0, "memories": 0}
+    assert msg["result"] == {"version": "0.3.2", "overrides": 0, "memories": 0}
 
     await client.send_json_auto_id({"type": "vivid_pilot/subscribe"})
     msg = await client.receive_json()

@@ -190,12 +190,18 @@ export class VividPilotLeafEditor extends LitElement {
   private renderPower(model: PanelModel, leaf: TreeLeaf, areaId: string | null) {
     const options = leaf.options ?? {};
     const sources = model.sourcesFor(leaf);
-    const set = (name: "nominal_power" | "voltage" | "upstream" | "counted", value: unknown) =>
-      this.run(() => model.api.setOptions(leaf.entity_id, { [name]: value as never }));
-    const measured = sources.some(
-      (source) => source.kind === "measured" && source.leaf_id !== leaf.entity_id,
-    );
-    const isStrip = leaf.category === "led" && leaf.platform === "wled";
+    const set = (
+      name: "nominal_power" | "voltage" | "upstream" | "counted" | "power_source",
+      value: unknown,
+    ) => this.run(() => model.api.setOptions(leaf.entity_id, { [name]: value as never }));
+    const choice = model.payload.power_choices?.[leaf.entity_id];
+    const effective = choice?.effective;
+    const labels: Record<string, string> = {
+      measured: "Mesure existante",
+      wled: "Calcul WLED",
+      nominal: "Nominale",
+      none: "Aucune",
+    };
     const meters = areaId
       ? model.meters(areaId).filter((meter) => meter.entity_id !== leaf.entity_id)
       : [];
@@ -222,7 +228,30 @@ export class VividPilotLeafEditor extends LitElement {
             : html`<div class="hint">Aucune puissance connue pour l'instant.</div>`
         }
         ${
-          isStrip
+          choice
+            ? html`<div class="row">
+                  <span class="label">Source de la puissance</span>
+                  ${(["auto", ...choice.available] as const).map(
+                    (kind) =>
+                      html`<button
+                        type="button"
+                        class=${choice.chosen === kind ? "on" : ""}
+                        aria-pressed=${choice.chosen === kind ? "true" : "false"}
+                        @click=${() => set("power_source", kind === "auto" ? null : kind)}
+                      >
+                        ${kind === "auto" ? `Auto (${labels[choice.effective]})` : labels[kind]}
+                      </button>`,
+                  )}
+                </div>
+                <div class="hint">
+                  Auto : la mesure d'un capteur de l'appareil si elle existe, sinon le calcul WLED,
+                  sinon la puissance nominale. Choisir une autre source que la mesure retire ce
+                  capteur des totaux.
+                </div>`
+            : nothing
+        }
+        ${
+          effective === "wled"
             ? html`<div class="row">
                 <span class="label">Tension du bandeau</span>
                 ${VOLTAGES.map(
@@ -240,7 +269,7 @@ export class VividPilotLeafEditor extends LitElement {
             : nothing
         }
         ${
-          SWITCHABLE.has(leaf.category) && !isStrip && !measured
+          effective === "nominal" || choice?.chosen === "nominal"
             ? html`<label class="row"
                 ><span class="label">Puissance nominale</span>
                 <input
