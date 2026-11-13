@@ -79,7 +79,8 @@ def home(hass: HomeAssistant) -> dict[str, str]:
         "lonely": entities.async_get_or_create("light", "hue", "no_area").entity_id,
     }
     # An entity's own area wins over its device's.
-    ids["bedside"] = add("light", "hue", "bedside")
+    # (Recent HA versions only allow it for entities with a name of their own.)
+    ids["bedside"] = add("light", "hue", "bedside", original_name="Chevet", has_entity_name=True)
     entities.async_update_entity(ids["bedside"], area_id=chambre)
     ids["salon"] = salon
     ids["device"] = device.id
