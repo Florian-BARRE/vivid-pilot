@@ -58,13 +58,13 @@ Entity ids use the `vivid_pilot_` prefix (HA forbids hyphens in entity ids): `vi
 
 | Node | Entities |
 |---|---|
-| `<room>/light`, `<room>/led` | `light.vivid_pilot_<room>_<cat>` (group), `scene.vivid_pilot_<room>_<cat>_state` (memory), `sensor.vivid_pilot_<room>_<cat>_power` |
+| `<room>/light`, `<room>/led` | `light.vivid_pilot_<room>_<cat>` (group; its `entity_id` attribute lists the members, so cards can show each one), `scene.vivid_pilot_<room>_<cat>_state` (memory), `sensor.vivid_pilot_<room>_<cat>_power` |
 | WLED strip (leaf) | `sensor.vivid_pilot_<strip>_power` = estimated current × voltage |
 | `<room>/switch` | `switch.vivid_pilot_<room>_switch`, `scene…_switch_state` (memory), `sensor…_switch_power` |
 | `<room>/door`, `window`, `presence` | `binary_sensor.vivid_pilot_<room>_<cat>`: `on` if any member is on; attributes `count_on`, `members_on` |
 | `<room>/temperature` (same for humidity, pressure, co2) | three sensors: `…_temperature` (mean), `…_temperature_min`, `…_temperature_max`; attributes name the sensor holding the min / max |
-| `<room>` | `light.vivid_pilot_<room>`, `scene.vivid_pilot_<room>_state`, `sensor.vivid_pilot_<room>_power` |
-| `all` | the same aggregates over every room (`scene.vivid_pilot_all_state`, `sensor.vivid_pilot_all_power`, min / mean / max of each climate measure…) |
+| `<room>` | `scene.vivid_pilot_<room>_state`, `sensor.vivid_pilot_<room>_power`. No combined light group: lights and LEDs stay distinct. |
+| `all` | the same aggregates over every room (`light.vivid_pilot_all_light`, `light.vivid_pilot_all_led`, `switch.vivid_pilot_all_switch`, `scene.vivid_pilot_all_state`, `sensor.vivid_pilot_all_power`, min / mean / max of each climate measure…) |
 
 - Each room has a virtual device "Room · <name>" placed in its area; its generated entities belong to it. `all` entities belong to a "Home" device without area.
 - Stable `unique_id`s: `<area_id>__<category>__<kind>` (`all` for the top). A `translation_key` per kind, so Vivid Cards finds entities by area + platform `vivid_pilot` + `translation_key`; renaming entity ids never breaks a card.

@@ -6,7 +6,7 @@ Home Assistant integration of the Vivid family (companion of [Vivid Cards](https
 
 Vivid Pilot reads your areas and devices, guesses what each one is (LED strip, lamp, outlet, door, window, presence, power meter…), and builds per-room groups, aggregates and LED power for you. It remembers the last light state of every room; your own automations just call the generated groups and scenes. Everything is configured from a sidebar panel: every detection is visible and can be corrected.
 
-> **Status: 0.4.0, in active development.** Detection, corrections, generated entities, power and memories are in; see [the roadmap](docs/architecture.md#phases).
+> **Status: 0.4.1, in active development.** Detection, corrections, generated entities, power and memories are in; see [the roadmap](docs/architecture.md#phases).
 
 ## Modules
 

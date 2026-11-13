@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.1 — 2026-11-13
+
+- **No combined "Éclairage" group** any more, in the rooms or at home: lights and LEDs stay distinct. The home gets its own Lumières, LEDs and Interrupteurs groups. The old `light.vivid_pilot_<room>` and `light.vivid_pilot_all` entities are removed.
+- The power card of a node becomes **"Puissance calculée"**: only what Vivid Pilot computes (WLED estimates, nominal powers), with live values; measured meters stay in their own card. A WLED line shows its generated power sensor.
+
 ## 0.4.0 — 2026-11-13
 
 - **Presence lighting removed**: automations belong in Home Assistant; the `switch.vivid_pilot_<room>_auto_lighting` entities and the Automations tab are gone, and entities Vivid Pilot no longer generates are removed from the registry.

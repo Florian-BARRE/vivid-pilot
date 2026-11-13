@@ -89,7 +89,9 @@ async def loaded(hass: HomeAssistant, home: dict[str, str]) -> config_entries.Co
 
 async def test_generated_entities(hass: HomeAssistant, home, loaded) -> None:
     """Groups, climate, power and scenes appear with the expected values."""
-    assert hass.states.get("light.vivid_pilot_salon") is not None
+    # Lights and LEDs stay distinct: no combined room group.
+    assert hass.states.get("light.vivid_pilot_salon") is None
+    assert hass.states.get("light.vivid_pilot_all_light") is not None
     assert hass.states.get("light.vivid_pilot_salon_light").attributes["entity_id"] == [
         home["lamp"]
     ]
@@ -166,7 +168,7 @@ async def test_corrections(hass: HomeAssistant, home, loaded, hass_ws_client) ->
     assert plug["source"] == "manual" and plug["category"] == "light"
     assert (
         "salon" in payload["nodes"]
-        and payload["entities"]["salon"]["light:group"] == "light.vivid_pilot_salon"
+        and payload["entities"]["salon__light"]["light:group"] == "light.vivid_pilot_salon_light"
     )
 
 

@@ -12,12 +12,6 @@
   },
   "entity": {
     "light": {
-      "room_lights": {
-        "name": "Éclairage"
-      },
-      "home_lights": {
-        "name": "Éclairage"
-      },
       "light_group": {
         "name": "Lumières"
       },
