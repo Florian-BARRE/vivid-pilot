@@ -13,7 +13,7 @@
   "entity": {
     "light": {
       "light_group": {
-        "name": "Lights"
+        "name": "Lamps"
       },
       "led_group": {
         "name": "LEDs"
@@ -32,7 +32,7 @@
         "name": "State"
       },
       "light_state": {
-        "name": "Lights state"
+        "name": "Lamps state"
       },
       "led_state": {
         "name": "LEDs state"
@@ -57,7 +57,7 @@
         "name": "Power"
       },
       "light_power": {
-        "name": "Lights power"
+        "name": "Lamps power"
       },
       "led_power": {
         "name": "LEDs power"
@@ -117,7 +117,7 @@
         "name": "Energy"
       },
       "light_energy": {
-        "name": "Lights energy"
+        "name": "Lamps energy"
       },
       "led_energy": {
         "name": "LEDs energy"
