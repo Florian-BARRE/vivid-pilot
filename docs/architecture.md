@@ -41,11 +41,13 @@ all                                  the whole home
   | `light` | `light` not from a strip platform (lamps, bulbs) |
   | `led` | `light` from the `wled` platform (or a platform configured as strip) |
   | `switch` | `switch` entities (outlets included) |
-  | `door` / `window` | `binary_sensor` `door` / `window` (`opening` → to classify) |
+  | `door` / `window` | `binary_sensor` `door` / `garage_door` / `window`; generic `opening` contacts default to `window` |
   | `presence` | `binary_sensor` `motion` / `occupancy` / `presence` |
   | `temperature` / `humidity` / `pressure` / `co2` | `sensor` with the matching device class |
   | `power` sources | `sensor` with device class `power`, plus computed WLED power |
   | `ignored` | manual |
+
+  Never candidates: disabled entities, entities hidden by an integration (e.g. the switch behind a `switch_as_x` light), configuration / diagnostic entities, `group` entities and Vivid Pilot's own entities.
 
   `light` and `led` are siblings, never nested. Typical correction: an outlet driving a lamp moves from `switch` to `light` (on/off member).
 - **Aggregates go up one level at a time**: category → room → `all`. Commands are always sent straight to the leaves and node states are computed from the leaves, so there is no group-of-groups lag.
@@ -73,6 +75,7 @@ Entity ids use the `vivid_pilot_` prefix (HA forbids hyphens in entity ids): `vi
 - WLED strips: power (W) = estimated current (mA, WLED sensor found by device + `translation_key`) / 1000 × strip voltage (set per strip in the panel, default 5 V). It is an estimate that depends on WLED's current limiter setting.
 - No double counting: each power source can declare an **upstream meter** ("already measured by…", e.g. a strip powered through a metering plug). A source with an upstream meter is left out of totals but keeps its own sensor. Each source can also be included or excluded from its totals.
 - Sums go up the tree: category → room → `all`.
+- **Nominal power** (agreed 13 November 2026): a light or switch with no power information at all (e.g. a Hue bulb) can get a power set by hand in the panel, counted while it is on (optionally scaled by brightness).
 
 ## Memory (state of each node)
 
@@ -100,9 +103,9 @@ Entity ids use the `vivid_pilot_` prefix (HA forbids hyphens in entity ids): `vi
 ## Phases
 
 0. Skeleton: config entry, store, panel, websocket, CI, release. ✅ (0.1.0)
-1. Registries, detection, tree model, virtual room devices, read-only panel (the tree).
+1. Registries, detection, live tree, read-only panel (the tree with live values) — `feature/phase-1-tree`, awaiting validation.
 2. Corrections in the panel (categories, rooms, exclusions, upstream meters, voltages).
-3. Entities: light / led / switch groups, openings, presence, climate, power, up to `all`.
+3. Virtual room devices and entities: light / led / switch groups, openings, presence, climate, power, up to `all`.
 4. Memory per node (scenes, settings, services).
 5. Presence automation.
 6. Vivid Cards discovery by area + role, then migration of Flo's Home Assistant.

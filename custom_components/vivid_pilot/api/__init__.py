@@ -1,6 +1,6 @@
 # ====== Code Summary ======
 # Public facade of the api package.
 
-from .websocket import PilotWebsocketApi
+from .websocket import PilotWebsocketApi, WebsocketCommands
 
-__all__ = ["PilotWebsocketApi"]
+__all__ = ["PilotWebsocketApi", "WebsocketCommands"]
