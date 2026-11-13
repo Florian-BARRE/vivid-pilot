@@ -9,7 +9,7 @@ import { LitElement, html, nothing } from "lit";
 import { renderIcon } from "../theme/icon";
 import { sharedStyles, themeTokens } from "../theme/styles";
 import { nodeViewStyles } from "./node-view.styles";
-import { CATEGORIES } from "../tree/categories";
+import { CATEGORIES, reasonLabel } from "../tree/categories";
 import type { PanelModel } from "../tree/panel-model";
 import {
   nodeKey,
@@ -243,7 +243,9 @@ export class VividPilotNode extends LitElement {
             <span class="leaf-name">${leaf.name}</span>
             <span class="mono">${room ? `${room} · ` : ""}${leaf.entity_id}</span>
           </span>
-          <span class="pill ${leaf.source === "manual" ? "manual" : ""}" title=${leaf.reason}
+          <span
+            class="pill ${leaf.source === "manual" ? "manual" : ""}"
+            title=${reasonLabel(leaf.reason)}
             >${leaf.source === "manual" ? "corrigé" : "auto"}</span
           >
           <span class="value"

@@ -92,3 +92,17 @@ export const CATEGORIES: Record<CategoryId, CategoryMeta> = {
     kind: "binary",
   },
 };
+
+/** Detection reason from the integration (English), told in French. */
+export function reasonLabel(reason: string): string {
+  const platform = /^light from the (.+) platform$/.exec(reason);
+  if (platform) return `lumière de la plateforme ${platform[1]} (bandeau LED)`;
+  const deviceClass = /^device class (.+)$/.exec(reason);
+  if (deviceClass) return `classe d'appareil « ${deviceClass[1]} »`;
+  const words: Record<string, string> = {
+    light: "entité lumière",
+    switch: "entité interrupteur",
+    "set by hand": "choisi à la main",
+  };
+  return words[reason] ?? reason;
+}
