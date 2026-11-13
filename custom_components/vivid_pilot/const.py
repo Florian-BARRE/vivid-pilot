@@ -19,15 +19,26 @@ STORAGE_VERSION: Final = 1
 PANEL_URL_PATH: Final = "vivid-pilot"
 PANEL_ELEMENT_NAME: Final = "vivid-pilot-panel"
 PANEL_TITLE: Final = "Vivid Pilot"
-PANEL_ICON: Final = "mdi:home-automation"
+PANEL_ICON: Final = "mdi:steering"
 PANEL_STATIC_URL: Final = "/vivid_pilot_static"
 PANEL_BUNDLE_FILE: Final = "vivid-pilot-panel.js"
 PANEL_FRONTEND_DIR: Final = "frontend"
 
 # ====== Websocket API ======
-WS_TYPE_INFO: Final = f"{DOMAIN}/info"
-WS_TYPE_TREE_GET: Final = f"{DOMAIN}/tree/get"
-WS_TYPE_TREE_SUBSCRIBE: Final = f"{DOMAIN}/tree/subscribe"
+# Commands are "vivid_pilot/<name>"; see api/websocket.py for the list.
+WS_PREFIX: Final = DOMAIN
+
+# ====== Generated entities ======
+SIGNAL_REFRESH: Final = f"{DOMAIN}_refresh"
+HOME_DEVICE_NAME: Final = "Maison"
+
+# ====== Power ======
+# WLED's sensor of the estimated current drawn by the strip (mA).
+CURRENT_TRANSLATION_KEYS: Final = frozenset({"estimated_current"})
+DEFAULT_STRIP_VOLTAGE: Final = 5.0
+
+# ====== Memory ======
+MEMORY_DEBOUNCE_SECONDS: Final = 2.0
 
 # ====== Tree ======
 # Light platforms whose lights are LED strips rather than lamps.

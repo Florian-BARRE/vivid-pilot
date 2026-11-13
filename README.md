@@ -1,12 +1,14 @@
+<p align="center"><img src="https://raw.githubusercontent.com/Florian-BARRE/vivid-pilot/main/docs/assets/logo.png" width="120" alt="Vivid Pilot logo" /></p>
+
 # Vivid Pilot
 
 Home Assistant integration of the Vivid family (companion of [Vivid Cards](https://github.com/Florian-BARRE/vivid-cards)).
 
 Vivid Pilot reads your areas and devices, guesses what each one is (LED strip, lamp, outlet, door, window, presence, power meter…), and builds per-room groups, aggregates and LED power for you. It remembers the last light state of every room and ships the automations around it. Everything is configured from a sidebar panel: every detection is visible and can be corrected.
 
-> **Status: early development (0.1.0).** Only the skeleton is in place (config entry, storage, panel). Features arrive module by module, see [the roadmap](docs/architecture.md#phases).
+> **Status: 0.3.0, in active development.** Detection, corrections, generated entities, power, memories and presence lighting are in; see [the roadmap](docs/architecture.md#phases).
 
-## Planned modules
+## Modules
 
 - **Rooms**: auto-detected roles per area, manual corrections, light groups, door / window / presence aggregates, room power without double counting, WLED power from the estimated current and the strip voltage.
 - **Memory & scenes**: last light state per room, kept up to date continuously and persisted across restarts; turning the room on restores it.

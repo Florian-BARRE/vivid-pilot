@@ -40,7 +40,7 @@ class TreeBuilder:
         by_area: dict[str | None, list[TreeLeaf]] = defaultdict(list)
         ignored: list[TreeLeaf] = []
         for entry in entities.entities.values():
-            if not self._detector.is_candidate(entry):
+            if not self._detector.is_candidate(entry) or self._is_orphan(entry.entity_id):
                 continue
             device = devices.async_get(entry.device_id) if entry.device_id else None
             leaf = self._leaf(entry, device, overrides.get(entry.entity_id, {}))
@@ -85,7 +85,7 @@ class TreeBuilder:
         override: Mapping[str, Any],
     ) -> TreeLeaf | None:
         """Build a leaf, or None when the entity has no category."""
-        manual = Category.parse(override.get("category")) if override else None
+        manual = Category.parse(override.get("category")) if override.get("category") else None
         if manual is not None:
             detection: Detection | None = Detection(manual, "set by hand")
             source = LeafSource.MANUAL
@@ -94,6 +94,9 @@ class TreeBuilder:
             source = LeafSource.AUTO
         if detection is None:
             return None
+        options = tuple(
+            sorted((name, value) for name, value in override.items() if name != "category")
+        )
         return TreeLeaf(
             entity_id=entry.entity_id,
             name=self._name(entry, device),
@@ -101,7 +104,14 @@ class TreeBuilder:
             source=source,
             reason=detection.reason,
             device_id=entry.device_id,
+            platform=entry.platform,
+            options=options,
         )
+
+    def _is_orphan(self, entity_id: str) -> bool:
+        """True for a registry entry no integration provides any more."""
+        state = self._hass.states.get(entity_id)
+        return state is not None and bool(state.attributes.get("restored"))
 
     def _name(self, entry: er.RegistryEntry, device: dr.DeviceEntry | None) -> str:
         """Prefer the live friendly name, then the registry names."""

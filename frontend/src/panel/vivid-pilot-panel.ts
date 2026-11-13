@@ -1,44 +1,51 @@
 // ====== Code Summary ======
-// VividPilotPanel: the sidebar panel. It subscribes to the live tree, keeps
-// the current selection (home, a room, unassigned or ignored entities) and
-// lays out the tree sidebar next to the selected node's view. Module tabs
-// other than "Arbre" are placeholders until their phase lands.
+// VividPilotPanel: the sidebar panel shell. It subscribes to the payload,
+// builds the shared PanelModel on every update, and routes between the tabs
+// (Arbre — list or graph —, Mémoire, Automatisations, Utilitaires) and the
+// two sheets (entity editor, memory settings).
 
-import { LitElement, css, html, type PropertyValues } from "lit";
+import { LitElement, css, html, nothing, type PropertyValues } from "lit";
 
 import { PilotApi } from "../api/pilot-api";
 import { sharedStyles, themeTokens } from "../theme/styles";
-import { CATEGORIES } from "../tree/categories";
-import { LiveAggregator, type RoomSummary } from "../tree/live-aggregator";
-import type { CategoryNode, HomeTree, TreeLeaf } from "../tree/types";
+import { LiveAggregator } from "../tree/live-aggregator";
+import { PanelModel } from "../tree/panel-model";
+import type { PilotPayload } from "../tree/types";
 import type { HomeAssistant } from "../types/home-assistant";
 
-const TABS = ["Arbre", "Mémoire", "Automatisations", "Utilitaires"];
-
-interface NodeView {
-  eyebrow: string;
-  heading: string;
-  note: string;
-  categories: CategoryNode[];
-  summary: RoomSummary | null;
-}
+type Tab = "tree" | "memory" | "automation" | "utilities";
+const TABS: Array<[Tab, string]> = [
+  ["tree", "Arbre"],
+  ["memory", "Mémoire"],
+  ["automation", "Automatisations"],
+  ["utilities", "Utilitaires"],
+];
 
 export class VividPilotPanel extends LitElement {
   static override properties = {
     hass: { attribute: false },
     narrow: { type: Boolean },
-    tree: { state: true },
+    payload: { state: true },
+    tab: { state: true },
+    mode: { state: true },
     selected: { state: true },
+    editing: { state: true },
+    memoryNode: { state: true },
     error: { state: true },
   };
 
   hass?: HomeAssistant;
   narrow = false;
-  tree?: HomeTree;
-  selected = "home";
+  payload?: PilotPayload;
+  tab: Tab = "tree";
+  mode: "list" | "graph" = "list";
+  selected = "all";
+  editing = "";
+  memoryNode = "";
   error = "";
 
   private aggregator?: LiveAggregator;
+  private api?: PilotApi;
   private unsubscribe?: Promise<() => Promise<void>>;
 
   override connectedCallback(): void {
@@ -53,47 +60,80 @@ export class VividPilotPanel extends LitElement {
   }
 
   protected override updated(changed: PropertyValues): void {
-    // The frontend sets hass after creation: subscribe once it is there.
     if (changed.has("hass") && this.hass) {
-      if (!this.aggregator) this.aggregator = new LiveAggregator(this.hass.language || "fr");
+      this.aggregator ??= new LiveAggregator(this.hass.language || "fr");
+      this.api = new PilotApi(this.hass);
       if (!this.unsubscribe) this.subscribe(this.hass);
     }
   }
 
   private subscribe(hass: HomeAssistant): void {
-    const subscription = new PilotApi(hass).subscribeTree((tree) => {
-      this.tree = tree;
+    const subscription = new PilotApi(hass).subscribe((payload) => {
+      this.payload = payload;
       this.error = "";
     });
     this.unsubscribe = subscription;
     subscription.catch((error: unknown) => {
-      this.error = error instanceof Error ? error.message : String(error);
+      this.error = (error as { message?: string }).message ?? String(error);
       this.unsubscribe = undefined;
     });
   }
 
-  private onSelect(event: CustomEvent<string>): void {
+  private onSelect = (event: CustomEvent<string>) => {
     this.selected = event.detail;
-  }
+    this.tab = "tree";
+  };
+  private onEdit = (event: CustomEvent<string>) => {
+    this.editing = event.detail;
+  };
+  private onMemoryEdit = (event: CustomEvent<string>) => {
+    this.memoryNode = event.detail;
+  };
+  private onClose = () => {
+    this.editing = "";
+    this.memoryNode = "";
+  };
 
   protected override render() {
     return html`
       <header>
         <div class="brand">
-          <div class="logo" aria-hidden="true"></div>
+          <vivid-pilot-logo size="34"></vivid-pilot-logo>
           <span>Vivid Pilot</span>
         </div>
         <nav aria-label="Modules">
           ${TABS.map(
-            (tab, index) =>
-              html`<span
-                class="tab ${index === 0 ? "active" : ""}"
-                aria-current=${index === 0 ? "page" : "false"}
-                title=${index === 0 ? "" : "Bientôt"}
-                >${tab}</span
-              >`,
+            ([id, label]) =>
+              html`<button
+                type="button"
+                class="tab ${this.tab === id ? "active" : ""}"
+                aria-current=${this.tab === id ? "page" : "false"}
+                @click=${() => (this.tab = id)}
+              >
+                ${label}
+              </button>`,
           )}
         </nav>
+        ${
+          this.tab === "tree"
+            ? html`<div class="modes" role="group" aria-label="Affichage">
+                <button
+                  type="button"
+                  class=${this.mode === "list" ? "on" : ""}
+                  @click=${() => (this.mode = "list")}
+                >
+                  Liste
+                </button>
+                <button
+                  type="button"
+                  class=${this.mode === "graph" ? "on" : ""}
+                  @click=${() => (this.mode = "graph")}
+                >
+                  Graphe
+                </button>
+              </div>`
+            : nothing
+        }
       </header>
       ${this.renderBody()}
     `;
@@ -101,87 +141,64 @@ export class VividPilotPanel extends LitElement {
 
   private renderBody() {
     if (this.error) return html`<p class="message">Erreur : ${this.error}</p>`;
-    if (!this.hass || !this.tree || !this.aggregator) {
+    if (!this.hass || !this.payload || !this.aggregator || !this.api) {
       return html`<p class="message muted">Chargement…</p>`;
     }
-    const view = this.view(this.tree);
+    const model = new PanelModel(this.hass, this.payload, this.api, this.aggregator);
     return html`
-      <div class="layout">
-        <aside>
-          <vivid-pilot-tree
-            .hass=${this.hass}
-            .tree=${this.tree}
-            .aggregator=${this.aggregator}
-            selected=${this.selected}
-            @vp-select=${this.onSelect}
-          ></vivid-pilot-tree>
-        </aside>
-        <main>
-          <vivid-pilot-room
-            .hass=${this.hass}
-            .aggregator=${this.aggregator}
-            heading=${view.heading}
-            eyebrow=${view.eyebrow}
-            note=${view.note}
-            .categories=${view.categories}
-            .summary=${view.summary}
-          ></vivid-pilot-room>
-        </main>
+      <div
+        class="layout"
+        @vp-select=${this.onSelect}
+        @vp-edit-leaf=${this.onEdit}
+        @vp-memory-edit=${this.onMemoryEdit}
+        @vp-close=${this.onClose}
+      >
+        ${this.tab === "tree" ? this.renderTree(model) : html`<main class="full">${this.renderTab(model)}</main>`}
+        ${
+          this.editing
+            ? html`<vivid-pilot-leaf-editor
+                .model=${model}
+                entityId=${this.editing}
+              ></vivid-pilot-leaf-editor>`
+            : nothing
+        }
+        ${
+          this.memoryNode
+            ? html`<vivid-pilot-memory-editor
+                .model=${model}
+                node=${this.memoryNode}
+              ></vivid-pilot-memory-editor>`
+            : nothing
+        }
       </div>
     `;
   }
 
-  private view(tree: HomeTree): NodeView {
-    const states = this.hass!.states;
-    if (this.selected.startsWith("room:")) {
-      const room = tree.rooms.find((item) => `room:${item.area_id}` === this.selected);
-      if (room) {
-        return {
-          eyebrow: "Maison › Pièce",
-          heading: room.name,
-          note: "",
-          categories: room.categories,
-          summary: this.aggregator!.room(room, states),
-        };
-      }
-    }
-    if (this.selected === "unassigned") {
-      return {
-        eyebrow: "À ranger",
-        heading: "Sans pièce",
-        note: "Ces appareils n'ont pas de zone dans Home Assistant : donne-leur une pièce pour qu'ils entrent dans l'arbre.",
-        categories: this.byCategory(tree.unassigned),
-        summary: null,
-      };
-    }
-    if (this.selected === "ignored") {
-      return {
-        eyebrow: "Exclus",
-        heading: "Ignorés",
-        note: "Mis de côté à la main : ils n'entrent dans aucun groupe ni total.",
-        categories: [{ category: "ignored", leaves: tree.ignored }],
-        summary: null,
-      };
-    }
-    // Home: every room's leaves, one card per category.
-    const leaves = tree.rooms.flatMap((room) => room.categories.flatMap((node) => node.leaves));
-    return {
-      eyebrow: "Tout",
-      heading: "Maison",
-      note: `${tree.rooms.length} pièce(s)`,
-      categories: this.byCategory(leaves),
-      summary: this.aggregator!.home(tree, states),
-    };
+  private renderTree(model: PanelModel) {
+    return html`
+      <aside><vivid-pilot-tree .model=${model} selected=${this.selected}></vivid-pilot-tree></aside>
+      <main>
+        ${
+          this.mode === "graph"
+            ? html`<vivid-pilot-graph
+                .model=${model}
+                selected=${this.selected}
+              ></vivid-pilot-graph>`
+            : html`<vivid-pilot-node .model=${model} selected=${this.selected}></vivid-pilot-node>`
+        }
+      </main>
+    `;
   }
 
-  private byCategory(leaves: TreeLeaf[]): CategoryNode[] {
-    const order = Object.keys(CATEGORIES) as CategoryNode["category"][];
-    return order
-      .map((category) => ({
-        category,
-        leaves: leaves.filter((leaf) => leaf.category === category),
-      }))
-      .filter((node) => node.leaves.length > 0);
+  private renderTab(model: PanelModel) {
+    switch (this.tab) {
+      case "memory":
+        return html`<vivid-pilot-memory-tab .model=${model}></vivid-pilot-memory-tab>`;
+      case "automation":
+        return html`<vivid-pilot-automation-tab .model=${model}></vivid-pilot-automation-tab>`;
+      default:
+        return html`<vivid-pilot-utilities-tab .model=${model}></vivid-pilot-utilities-tab>`;
+    }
   }
 
   static override styles = [
@@ -197,11 +214,10 @@ export class VividPilotPanel extends LitElement {
         display: flex;
         flex-wrap: wrap;
         align-items: center;
-        gap: 16px;
-        padding: 12px 24px;
+        gap: 12px 16px;
+        padding: 10px 24px;
         border-bottom: 1px solid var(--vp-divider);
-        background: var(--app-header-background-color, var(--vp-card));
-        color: var(--app-header-text-color, var(--vp-text));
+        background: var(--vp-card);
       }
       .brand {
         display: flex;
@@ -210,27 +226,36 @@ export class VividPilotPanel extends LitElement {
         font-size: 18px;
         font-weight: 500;
       }
-      .logo {
-        width: 28px;
-        height: 28px;
-        border-radius: 9px;
-        background: radial-gradient(circle at 30% 30%, #ffd58a, #f5b042 45%, #b07cff);
-        box-shadow: 0 0 16px rgba(245, 176, 66, 0.45);
-      }
-      nav {
+      nav,
+      .modes {
         display: flex;
         flex-wrap: wrap;
         gap: 4px;
       }
-      .tab {
-        padding: 8px 14px;
+      .modes {
+        margin-left: auto;
+        padding: 4px;
         border-radius: 999px;
-        opacity: 0.7;
+        background: var(--vp-raised);
       }
-      .tab.active {
-        opacity: 1;
+      .tab,
+      .modes button {
+        min-height: 40px;
+        padding: 0 14px;
+        border: 0;
+        border-radius: 999px;
+        background: transparent;
+        cursor: pointer;
+        color: var(--vp-muted);
+      }
+      .tab.active,
+      .modes button.on {
+        color: var(--vp-text);
         font-weight: 700;
         background: var(--vp-selected);
+      }
+      .modes button.on {
+        background: var(--vp-card);
       }
       .layout {
         display: flex;
@@ -244,10 +269,14 @@ export class VividPilotPanel extends LitElement {
       aside {
         flex: 1 1 280px;
         max-width: 360px;
+        min-width: 0;
       }
       main {
         flex: 999 1 560px;
         min-width: 0;
+      }
+      main.full {
+        flex: 1 1 100%;
       }
       .message {
         padding: 24px;
