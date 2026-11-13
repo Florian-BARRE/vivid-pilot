@@ -1,14 +1,15 @@
 // ====== Code Summary ======
 // VividPilotLeafEditor: the sheet of one entity — category (with what was
-// detected), room (moves the device or just the entity), power (counted,
-// upstream meter, strip voltage, nominal power) and membership of the
-// parent nodes' groups and memories. Every change is sent right away;
+// detected), room (moves the device or just the entity), power
+// (VividPilotLeafPower) and membership of the parent nodes' groups and
+// memories. Every change is sent right away;
 // the integration answers with a new payload.
 
 import { LitElement, html, nothing } from "lit";
 
 import { renderIcon } from "../theme/icon";
 import { sharedStyles, themeTokens } from "../theme/styles";
+import { UI_ICONS } from "../theme/ui-icons";
 import { leafEditorStyles } from "./leaf-editor.styles";
 import { CATEGORIES, reasonLabel } from "../tree/categories";
 import type { PanelModel } from "../tree/panel-model";
@@ -30,7 +31,7 @@ const EDITABLE: CategoryId[] = [
   "power",
 ];
 const SWITCHABLE = new Set<CategoryId>(["light", "led", "switch"]);
-const VOLTAGES = [5, 12, 24];
+const ROOM_ICON = "M4 21V9l8-6 8 6v12M9 21v-6h6v6";
 
 export class VividPilotLeafEditor extends LitElement {
   static override properties = {
@@ -77,16 +78,36 @@ export class VividPilotLeafEditor extends LitElement {
             <h1>${leaf.name}</h1>
             <div class="mono">${leaf.entity_id}${leaf.platform ? ` · ${leaf.platform}` : ""}</div>
           </div>
-          <div class="live">${live.text}</div>
-          <button type="button" class="icon" aria-label="Fermer" @click=${this.close}>✕</button>
+          <div
+            class="live ${live.glow ? "lit" : ""}"
+            style=${live.glow ? `--glow: ${live.glow}` : ""}
+          >
+            ${live.text}
+          </div>
+          <button type="button" class="icon" aria-label="Fermer" @click=${this.close}>
+            ${renderIcon(UI_ICONS.close, "currentColor", 18)}
+          </button>
         </header>
         ${this.error ? html`<p class="error" role="alert">${this.error}</p>` : nothing}
         ${this.renderCategory(model, leaf)} ${this.renderRoom(model, leaf, room?.area_id ?? null)}
-        ${SWITCHABLE.has(leaf.category) || leaf.category === "power" ? this.renderPower(model, leaf, room?.area_id ?? null) : nothing}
+        ${
+          SWITCHABLE.has(leaf.category) || leaf.category === "power"
+            ? html`<vivid-pilot-leaf-power
+                .model=${model}
+                .leaf=${leaf}
+                .areaId=${room?.area_id ?? null}
+              ></vivid-pilot-leaf-power>`
+            : nothing
+        }
         ${SWITCHABLE.has(leaf.category) && room ? this.renderMembership(model, leaf, room.area_id) : nothing}
         <footer>
-          <button type="button" @click=${() => this.run(() => model.api.resetLeaf(leaf.entity_id))}>
-            Remettre en auto
+          <button
+            type="button"
+            class="ghost"
+            title="Oublie toutes les corrections de cette entité"
+            @click=${() => this.run(() => model.api.resetLeaf(leaf.entity_id))}
+          >
+            ${renderIcon(UI_ICONS.refresh, "currentColor", 16)} Tout remettre en auto
           </button>
           <button type="button" class="primary" @click=${this.close}>Terminé</button>
         </footer>
@@ -97,16 +118,18 @@ export class VividPilotLeafEditor extends LitElement {
   private renderCategory(model: PanelModel, leaf: TreeLeaf) {
     const pick = (category: CategoryId | null) =>
       this.run(() => model.api.setCategory(leaf.entity_id, category));
+    const manual = leaf.source === "manual";
     return html`
-      <fieldset>
-        <legend>Catégorie</legend>
+      <section class="block">
+        <h2>${renderIcon(UI_ICONS.layers, "currentColor", 16)} Catégorie</h2>
         <div class="choices">
           ${EDITABLE.map(
             (category) =>
               html`<button
                 type="button"
                 aria-pressed=${leaf.category === category ? "true" : "false"}
-                class=${leaf.category === category ? "on" : ""}
+                class="chip ${leaf.category === category ? "on" : ""}"
+                style="--accent: ${CATEGORIES[category].color}"
                 @click=${() => pick(category)}
               >
                 ${renderIcon(CATEGORIES[category].icon, CATEGORIES[category].color, 15)}
@@ -116,26 +139,25 @@ export class VividPilotLeafEditor extends LitElement {
           <button
             type="button"
             aria-pressed=${leaf.category === "ignored" ? "true" : "false"}
-            class=${leaf.category === "ignored" ? "on" : ""}
+            class="chip ${leaf.category === "ignored" ? "on" : ""}"
+            style="--accent: var(--vp-muted)"
             @click=${() => pick("ignored")}
           >
-            Ignorer
+            ${renderIcon(UI_ICONS.hidden, "currentColor", 15)} Ignorer
           </button>
         </div>
-        <div class="hint">
-          <span class="pill ${leaf.source === "manual" ? "manual" : ""}"
-            >${leaf.source === "manual" ? "corrigé" : "auto"}</span
-          >
-          ${leaf.source === "manual" ? "Choisi à la main." : `Détecté : ${reasonLabel(leaf.reason)}.`}
+        <div class="note ${manual ? "manual" : ""}">
+          ${renderIcon(manual ? UI_ICONS.pencil : UI_ICONS.sparkle, "currentColor", 14)}
+          ${manual ? "Choisi à la main" : `Détecté : ${reasonLabel(leaf.reason)}`}
           ${
-            leaf.source === "manual"
+            manual
               ? html`<button type="button" class="link" @click=${() => pick(null)}>
                   Revenir à la détection
                 </button>`
               : nothing
           }
         </div>
-      </fieldset>
+      </section>
     `;
   }
 
@@ -144,9 +166,13 @@ export class VividPilotLeafEditor extends LitElement {
       const value = (event.target as HTMLSelectElement).value || null;
       void this.run(() => model.api.moveLeaf(leaf.entity_id, value, this.scope));
     };
+    const scopes: Array<["device" | "entity", string, string]> = [
+      ["device", "Tout l'appareil", UI_ICONS.device],
+      ["entity", "Cette entité", UI_ICONS.entity],
+    ];
     return html`
-      <fieldset>
-        <legend>Pièce</legend>
+      <section class="block">
+        <h2>${renderIcon(ROOM_ICON, "currentColor", 16)} Pièce</h2>
         <div class="row">
           <select aria-label="Pièce" @change=${move}>
             <option value="" ?selected=${areaId === null}>Sans pièce</option>
@@ -161,164 +187,31 @@ export class VividPilotLeafEditor extends LitElement {
           </select>
           ${
             leaf.device_id
-              ? html`<label class="radio"
-                    ><input
-                      type="radio"
-                      name="scope"
-                      .checked=${this.scope === "device"}
-                      @change=${() => (this.scope = "device")}
-                    />
-                    Tout l'appareil</label
-                  >
-                  <label class="radio"
-                    ><input
-                      type="radio"
-                      name="scope"
-                      .checked=${this.scope === "entity"}
-                      @change=${() => (this.scope = "entity")}
-                    />
-                    Cette entité seulement</label
-                  >`
+              ? html`<div class="segmented" role="group" aria-label="Ce qui change de pièce">
+                  ${scopes.map(
+                    ([scope, label, icon]) =>
+                      html`<button
+                        type="button"
+                        class=${this.scope === scope ? "on" : ""}
+                        aria-pressed=${this.scope === scope ? "true" : "false"}
+                        @click=${() => (this.scope = scope)}
+                      >
+                        ${renderIcon(icon, "currentColor", 15)} ${label}
+                      </button>`,
+                  )}
+                </div>`
               : nothing
           }
         </div>
-        <div class="hint">
-          La pièce est la zone de l'appareil dans Home Assistant : la changer ici la change dans HA.
+        <div class="note">
+          ${renderIcon(UI_ICONS.info, "currentColor", 14)}
+          ${
+            leaf.device_id && this.scope === "entity"
+              ? "Seule cette entité change de zone dans Home Assistant ; le reste de l'appareil reste où il est."
+              : "Change la zone de l'appareil dans Home Assistant, avec toutes ses entités."
+          }
         </div>
-      </fieldset>
-    `;
-  }
-
-  private renderPower(model: PanelModel, leaf: TreeLeaf, areaId: string | null) {
-    const options = leaf.options ?? {};
-    const sources = model.sourcesFor(leaf);
-    const set = (
-      name: "nominal_power" | "voltage" | "upstream" | "counted" | "power_source",
-      value: unknown,
-    ) => this.run(() => model.api.setOptions(leaf.entity_id, { [name]: value as never }));
-    const choice = model.payload.power_choices?.[leaf.entity_id];
-    const effective = choice?.effective;
-    const labels: Record<string, string> = {
-      measured: "Mesure existante",
-      wled: "Calcul WLED",
-      nominal: "Nominale",
-      none: "Aucune",
-    };
-    const meters = areaId
-      ? model.meters(areaId).filter((meter) => meter.entity_id !== leaf.entity_id)
-      : [];
-    const fmt = (value: number | null) =>
-      value === null ? "—" : `${model.aggregator.formatNumber(value)} W`;
-    return html`
-      <fieldset>
-        <legend>Puissance</legend>
-        ${
-          sources.length
-            ? html`<ul class="sources">
-                ${sources.map(
-                  (source) =>
-                    html`<li>
-                      <span
-                        >${source.kind === "measured" ? "Mesurée" : source.kind === "wled" ? `Calculée WLED (${source.factor} V)` : "Nominale"}</span
-                      >
-                      <span class="mono">${source.entity_id}</span>
-                      <strong>${fmt(source.value)}</strong>
-                      ${source.counted ? nothing : html`<span class="pill">hors total</span>`}
-                    </li>`,
-                )}
-              </ul>`
-            : html`<div class="hint">Aucune puissance connue pour l'instant.</div>`
-        }
-        ${
-          choice
-            ? html`<div class="row">
-                  <span class="label">Source de la puissance</span>
-                  ${(["auto", ...choice.available] as const).map(
-                    (kind) =>
-                      html`<button
-                        type="button"
-                        class=${choice.chosen === kind ? "on" : ""}
-                        aria-pressed=${choice.chosen === kind ? "true" : "false"}
-                        @click=${() => set("power_source", kind === "auto" ? null : kind)}
-                      >
-                        ${kind === "auto" ? `Auto (${labels[choice.effective]})` : labels[kind]}
-                      </button>`,
-                  )}
-                </div>
-                <div class="hint">
-                  Auto : la mesure d'un capteur de l'appareil si elle existe, sinon le calcul WLED,
-                  sinon la puissance nominale. Choisir une autre source que la mesure retire ce
-                  capteur des totaux.
-                </div>`
-            : nothing
-        }
-        ${
-          effective === "wled"
-            ? html`<div class="row">
-                <span class="label">Tension du bandeau</span>
-                ${VOLTAGES.map(
-                  (volts) =>
-                    html`<button
-                      type="button"
-                      class=${(options.voltage ?? 5) === volts ? "on" : ""}
-                      aria-pressed=${(options.voltage ?? 5) === volts ? "true" : "false"}
-                      @click=${() => set("voltage", volts === 5 ? null : volts)}
-                    >
-                      ${volts} V
-                    </button>`,
-                )}
-              </div>`
-            : nothing
-        }
-        ${
-          effective === "nominal" || choice?.chosen === "nominal"
-            ? html`<label class="row"
-                ><span class="label">Puissance nominale</span>
-                <input
-                  type="number"
-                  min="0"
-                  step="0.5"
-                  .value=${options.nominal_power?.toString() ?? ""}
-                  placeholder="W"
-                  @change=${(event: Event) => {
-                    const raw = (event.target as HTMLInputElement).value;
-                    void set("nominal_power", raw === "" ? null : Number(raw));
-                  }}
-                />
-                <span class="muted">W quand c'est allumé</span></label
-              >`
-            : nothing
-        }
-        <label class="row check"
-          ><input
-            type="checkbox"
-            .checked=${options.counted !== false}
-            @change=${(event: Event) => set("counted", (event.target as HTMLInputElement).checked ? null : false)}
-          />
-          Compté dans les totaux</label
-        >
-        <label class="row"
-          ><span class="label">Déjà mesuré par</span>
-          <select
-            @change=${(event: Event) => set("upstream", (event.target as HTMLSelectElement).value || null)}
-          >
-            <option value="" ?selected=${!options.upstream}>Rien (branché directement)</option>
-            ${meters.map(
-              (meter) =>
-                html`<option
-                  value=${meter.entity_id}
-                  ?selected=${options.upstream === meter.entity_id}
-                >
-                  ${meter.name}
-                </option>`,
-            )}
-          </select></label
-        >
-        <div class="hint">
-          Si une prise mesure déjà cet appareil, choisis-la : il sort des totaux pour ne pas compter
-          deux fois.
-        </div>
-      </fieldset>
+      </section>
     `;
   }
 
@@ -343,35 +236,36 @@ export class VividPilotLeafEditor extends LitElement {
       else current.add(leaf.entity_id);
       void this.run(() => model.api.updateNode(key, { [list]: [...current] }));
     };
+    const shown = parents.filter(([key]) => model.node(key));
     return html`
-      <fieldset>
-        <legend>Groupes et mémoires</legend>
-        <div class="hint">
-          « Groupe » : ce que le nœud allume et éteint. « Mémoire » : ce qu'il rétablit.
-        </div>
-        ${parents
-          .filter(([key]) => model.node(key))
-          .map(([key, label]) => {
+      <section class="block">
+        <h2>${renderIcon(UI_ICONS.memory, "currentColor", 16)} Groupes et mémoires</h2>
+        <div class="members">
+          <span></span>
+          <span class="col" title="Le nœud allume et éteint cette entité">Groupe</span>
+          <span class="col" title="Le nœud rétablit l'état de cette entité">Mémoire</span>
+          ${shown.map(([key, label]) => {
             const settings = model.node(key)!.settings;
-            return html`<div class="member">
-              <span class="name">${label}</span>
-              <label class="check"
-                ><input
-                  type="checkbox"
-                  .checked=${!settings.group_excluded.includes(leaf.entity_id)}
-                  @change=${(e: Event) => toggle(key, "group_excluded", (e.target as HTMLInputElement).checked)}
-                />Groupe</label
-              >
-              <label class="check"
-                ><input
-                  type="checkbox"
-                  .checked=${!settings.memory_excluded.includes(leaf.entity_id)}
-                  @change=${(e: Event) => toggle(key, "memory_excluded", (e.target as HTMLInputElement).checked)}
-                />Mémoire</label
-              >
-            </div>`;
+            return html`<span class="name">${label}</span>
+              <input
+                type="checkbox"
+                role="switch"
+                class="switch"
+                aria-label=${`${label} : groupe`}
+                .checked=${!settings.group_excluded.includes(leaf.entity_id)}
+                @change=${(e: Event) => toggle(key, "group_excluded", (e.target as HTMLInputElement).checked)}
+              />
+              <input
+                type="checkbox"
+                role="switch"
+                class="switch"
+                aria-label=${`${label} : mémoire`}
+                .checked=${!settings.memory_excluded.includes(leaf.entity_id)}
+                @change=${(e: Event) => toggle(key, "memory_excluded", (e.target as HTMLInputElement).checked)}
+              />`;
           })}
-      </fieldset>
+        </div>
+      </section>
     `;
   }
 

@@ -1,0 +1,63 @@
+<!doctype html>
+<!--
+  Panel preview: mounts the built panel on the demo snapshot, with a stand-in
+  for the Home Assistant object (states, areas, a websocket that answers with
+  the snapshot). render.mjs drives it; the snapshot is injected as
+  window.VP_SNAPSHOT before the page loads.
+-->
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      html,
+      body {
+        margin: 0;
+        font-family: Roboto, "Segoe UI", sans-serif;
+      }
+      body.light {
+        --primary-background-color: #f5f6f8;
+        --card-background-color: #ffffff;
+        --secondary-background-color: #eef0f3;
+        --primary-text-color: #1c1d21;
+        --secondary-text-color: #6b6f7a;
+        --divider-color: rgba(0, 0, 0, 0.09);
+        --primary-color: #03a9f4;
+        background: var(--primary-background-color);
+      }
+      body.dark {
+        --primary-background-color: #111216;
+        --card-background-color: #1c1d22;
+        --secondary-background-color: #26272e;
+        --primary-text-color: #eceef2;
+        --secondary-text-color: #9a9ea9;
+        --divider-color: rgba(255, 255, 255, 0.09);
+        --primary-color: #03a9f4;
+        background: var(--primary-background-color);
+      }
+    </style>
+  </head>
+  <body class="light">
+    <script>
+      const snapshot = window.VP_SNAPSHOT;
+      window.vpHass = {
+        language: snapshot.language,
+        states: snapshot.states,
+        areas: snapshot.areas,
+        connection: {
+          subscribeMessage: async (callback) => {
+            setTimeout(() => callback(snapshot.payload), 0);
+            return async () => {};
+          },
+        },
+        callWS: async () => ({ saved: true, reason: "saved" }),
+      };
+    </script>
+    <script type="module">
+      await import(window.VP_BUNDLE);
+      const panel = document.createElement("vivid-pilot-panel");
+      panel.hass = window.vpHass;
+      document.body.append(panel);
+      window.vpPanel = panel;
+    </script>
+  </body>
+</html>

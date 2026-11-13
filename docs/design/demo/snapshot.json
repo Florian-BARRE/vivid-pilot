@@ -1,0 +1,3678 @@
+{
+ "payload": {
+  "version": "0.5.2",
+  "tree": {
+   "rooms": [
+    {
+     "area_id": "bureau",
+     "name": "Bureau",
+     "icon": null,
+     "floor_id": null,
+     "categories": [
+      {
+       "category": "light",
+       "leaves": [
+        {
+         "entity_id": "switch.bureau_lampe_de_bureau",
+         "name": "Lampe de bureau",
+         "category": "light",
+         "source": "manual",
+         "reason": "set by hand",
+         "device_id": "8b5c178d5df72f7232831e438874424e",
+         "platform": "zigbee",
+         "options": {}
+        }
+       ]
+      },
+      {
+       "category": "door",
+       "leaves": [
+        {
+         "entity_id": "binary_sensor.bureau_porte_bureau",
+         "name": "Porte bureau",
+         "category": "door",
+         "source": "auto",
+         "reason": "device class door",
+         "device_id": "c4d7af98c5632f8c564dd1e29b51ac5c",
+         "platform": "zigbee",
+         "options": {}
+        }
+       ]
+      },
+      {
+       "category": "temperature",
+       "leaves": [
+        {
+         "entity_id": "sensor.bureau_thermometre_bureau",
+         "name": "Thermomètre bureau Température",
+         "category": "temperature",
+         "source": "auto",
+         "reason": "device class temperature",
+         "device_id": "4ab19ae45546321ed7e5bbe9eb489ae4",
+         "platform": "zigbee",
+         "options": {}
+        }
+       ]
+      },
+      {
+       "category": "power",
+       "leaves": [
+        {
+         "entity_id": "sensor.bureau_lampe_de_bureau",
+         "name": "Lampe de bureau Puissance",
+         "category": "power",
+         "source": "auto",
+         "reason": "device class power",
+         "device_id": "8b5c178d5df72f7232831e438874424e",
+         "platform": "zigbee",
+         "options": {}
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "area_id": "chambre",
+     "name": "Chambre",
+     "icon": null,
+     "floor_id": null,
+     "categories": [
+      {
+       "category": "light",
+       "leaves": [
+        {
+         "entity_id": "light.chambre_lampe_de_chevet",
+         "name": "Lampe de chevet",
+         "category": "light",
+         "source": "auto",
+         "reason": "light",
+         "device_id": "f43e18b759a6501e582a7d69e38b2613",
+         "platform": "hue",
+         "options": {}
+        }
+       ]
+      },
+      {
+       "category": "led",
+       "leaves": [
+        {
+         "entity_id": "light.chambre_miroir_leds",
+         "name": "Miroir LEDs",
+         "category": "led",
+         "source": "auto",
+         "reason": "light from the wled platform",
+         "device_id": "78899073882baf479f59df871ff04567",
+         "platform": "wled",
+         "options": {}
+        }
+       ]
+      },
+      {
+       "category": "window",
+       "leaves": [
+        {
+         "entity_id": "binary_sensor.chambre_fenetre_chambre",
+         "name": "Fenêtre chambre",
+         "category": "window",
+         "source": "auto",
+         "reason": "device class window",
+         "device_id": "ca76c17a04a9475e3e478dc51d9fe148",
+         "platform": "zigbee",
+         "options": {}
+        }
+       ]
+      },
+      {
+       "category": "temperature",
+       "leaves": [
+        {
+         "entity_id": "sensor.chambre_thermometre",
+         "name": "Thermomètre Température",
+         "category": "temperature",
+         "source": "auto",
+         "reason": "device class temperature",
+         "device_id": "1d95422401a97a8a9b3bedd2b0d6d0b8",
+         "platform": "zigbee",
+         "options": {}
+        }
+       ]
+      },
+      {
+       "category": "humidity",
+       "leaves": [
+        {
+         "entity_id": "sensor.chambre_thermometre_2",
+         "name": "Thermomètre Humidité",
+         "category": "humidity",
+         "source": "auto",
+         "reason": "device class humidity",
+         "device_id": "1d95422401a97a8a9b3bedd2b0d6d0b8",
+         "platform": "zigbee",
+         "options": {}
+        }
+       ]
+      },
+      {
+       "category": "battery",
+       "leaves": [
+        {
+         "entity_id": "sensor.chambre_thermometre_3",
+         "name": "Thermomètre Batterie",
+         "category": "battery",
+         "source": "auto",
+         "reason": "device class battery",
+         "device_id": "1d95422401a97a8a9b3bedd2b0d6d0b8",
+         "platform": "zigbee",
+         "options": {}
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "area_id": "cuisine",
+     "name": "Cuisine",
+     "icon": null,
+     "floor_id": null,
+     "categories": [
+      {
+       "category": "light",
+       "leaves": [
+        {
+         "entity_id": "light.cuisine_plafonnier",
+         "name": "Plafonnier",
+         "category": "light",
+         "source": "auto",
+         "reason": "light",
+         "device_id": "a149f53d1470db6e237360a877844b3d",
+         "platform": "hue",
+         "options": {}
+        }
+       ]
+      },
+      {
+       "category": "switch",
+       "leaves": [
+        {
+         "entity_id": "switch.cuisine_bouilloire",
+         "name": "Bouilloire",
+         "category": "switch",
+         "source": "auto",
+         "reason": "switch",
+         "device_id": "03a5193a2b9ba7b2132601a6c8e2abcc",
+         "platform": "zigbee",
+         "options": {}
+        }
+       ]
+      },
+      {
+       "category": "temperature",
+       "leaves": [
+        {
+         "entity_id": "sensor.cuisine_thermometre_cuisine",
+         "name": "Thermomètre cuisine Température",
+         "category": "temperature",
+         "source": "auto",
+         "reason": "device class temperature",
+         "device_id": "51e1957ad130e0222be8d7c95aad1f3a",
+         "platform": "zigbee",
+         "options": {}
+        }
+       ]
+      },
+      {
+       "category": "power",
+       "leaves": [
+        {
+         "entity_id": "sensor.cuisine_bouilloire",
+         "name": "Bouilloire Puissance",
+         "category": "power",
+         "source": "auto",
+         "reason": "device class power",
+         "device_id": "03a5193a2b9ba7b2132601a6c8e2abcc",
+         "platform": "zigbee",
+         "options": {}
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "area_id": "salle_de_bain",
+     "name": "Salle de bain",
+     "icon": null,
+     "floor_id": null,
+     "categories": [
+      {
+       "category": "led",
+       "leaves": [
+        {
+         "entity_id": "light.salle_de_bain_miroir_salle_de_bain",
+         "name": "Miroir salle de bain",
+         "category": "led",
+         "source": "auto",
+         "reason": "light from the wled platform",
+         "device_id": "3bf903b747f2028a42b32f480f1eb012",
+         "platform": "wled",
+         "options": {}
+        }
+       ]
+      },
+      {
+       "category": "humidity",
+       "leaves": [
+        {
+         "entity_id": "sensor.salle_de_bain_hygrometre",
+         "name": "Hygromètre Humidité",
+         "category": "humidity",
+         "source": "auto",
+         "reason": "device class humidity",
+         "device_id": "4bab769d26400641209d5c47fe403488",
+         "platform": "zigbee",
+         "options": {}
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "area_id": "salon",
+     "name": "Salon",
+     "icon": null,
+     "floor_id": null,
+     "categories": [
+      {
+       "category": "light",
+       "leaves": [
+        {
+         "entity_id": "light.salon_lampadaire",
+         "name": "Lampadaire",
+         "category": "light",
+         "source": "auto",
+         "reason": "light",
+         "device_id": "e70e77b9fde9ee5128093aba6d07fe9e",
+         "platform": "hue",
+         "options": {}
+        }
+       ]
+      },
+      {
+       "category": "led",
+       "leaves": [
+        {
+         "entity_id": "light.salon_buffet_leds",
+         "name": "Buffet LEDs",
+         "category": "led",
+         "source": "auto",
+         "reason": "light from the wled platform",
+         "device_id": "bcebf9ee5ec862256b360d7f6bd1623d",
+         "platform": "wled",
+         "options": {}
+        },
+        {
+         "entity_id": "light.salon_canape_leds",
+         "name": "Canapé LEDs",
+         "category": "led",
+         "source": "auto",
+         "reason": "light from the wled platform",
+         "device_id": "ff44281675da8478f578dbe103ca2cc9",
+         "platform": "wled",
+         "options": {
+          "voltage": 12.0
+         }
+        },
+        {
+         "entity_id": "light.salon_tv_leds",
+         "name": "TV LEDs",
+         "category": "led",
+         "source": "auto",
+         "reason": "light from the wled platform",
+         "device_id": "ed4d148ba4396c89b9d5a4303f485de8",
+         "platform": "wled",
+         "options": {}
+        }
+       ]
+      },
+      {
+       "category": "switch",
+       "leaves": [
+        {
+         "entity_id": "switch.salon_prise_tv",
+         "name": "Prise TV",
+         "category": "switch",
+         "source": "auto",
+         "reason": "switch",
+         "device_id": "b4ecbc64e6715f787aa2afd1b657bd1f",
+         "platform": "zigbee",
+         "options": {}
+        },
+        {
+         "entity_id": "switch.salon_suspension",
+         "name": "Suspension",
+         "category": "switch",
+         "source": "auto",
+         "reason": "switch",
+         "device_id": "4b972efb4cd81e35b2e611515ace611a",
+         "platform": "zigbee",
+         "options": {}
+        }
+       ]
+      },
+      {
+       "category": "door",
+       "leaves": [
+        {
+         "entity_id": "binary_sensor.salon_porte_d_entree",
+         "name": "Porte d'entrée",
+         "category": "door",
+         "source": "auto",
+         "reason": "device class door",
+         "device_id": "ce94f4241c8baf94959855480d30ba5a",
+         "platform": "zigbee",
+         "options": {}
+        }
+       ]
+      },
+      {
+       "category": "window",
+       "leaves": [
+        {
+         "entity_id": "binary_sensor.salon_fenetre",
+         "name": "Fenêtre",
+         "category": "window",
+         "source": "auto",
+         "reason": "device class window",
+         "device_id": "77141969c011d3bf9f0097ba06d5cd64",
+         "platform": "zigbee",
+         "options": {}
+        }
+       ]
+      },
+      {
+       "category": "presence",
+       "leaves": [
+        {
+         "entity_id": "binary_sensor.salon_presence",
+         "name": "Présence",
+         "category": "presence",
+         "source": "auto",
+         "reason": "device class occupancy",
+         "device_id": "c65bcdf36004130644f75caab641ab57",
+         "platform": "zigbee",
+         "options": {}
+        }
+       ]
+      },
+      {
+       "category": "temperature",
+       "leaves": [
+        {
+         "entity_id": "sensor.salon_station_d_air",
+         "name": "Station d'air Température",
+         "category": "temperature",
+         "source": "auto",
+         "reason": "device class temperature",
+         "device_id": "43b1b1640caf16321d0fc0acdc226182",
+         "platform": "esphome",
+         "options": {}
+        }
+       ]
+      },
+      {
+       "category": "humidity",
+       "leaves": [
+        {
+         "entity_id": "sensor.salon_station_d_air_2",
+         "name": "Station d'air Humidité",
+         "category": "humidity",
+         "source": "auto",
+         "reason": "device class humidity",
+         "device_id": "43b1b1640caf16321d0fc0acdc226182",
+         "platform": "esphome",
+         "options": {}
+        }
+       ]
+      },
+      {
+       "category": "pressure",
+       "leaves": [
+        {
+         "entity_id": "sensor.salon_station_d_air_4",
+         "name": "Station d'air Pression",
+         "category": "pressure",
+         "source": "auto",
+         "reason": "device class atmospheric_pressure",
+         "device_id": "43b1b1640caf16321d0fc0acdc226182",
+         "platform": "esphome",
+         "options": {}
+        }
+       ]
+      },
+      {
+       "category": "co2",
+       "leaves": [
+        {
+         "entity_id": "sensor.salon_station_d_air_3",
+         "name": "Station d'air CO2",
+         "category": "co2",
+         "source": "auto",
+         "reason": "device class carbon_dioxide",
+         "device_id": "43b1b1640caf16321d0fc0acdc226182",
+         "platform": "esphome",
+         "options": {}
+        }
+       ]
+      },
+      {
+       "category": "illuminance",
+       "leaves": [
+        {
+         "entity_id": "sensor.salon_presence",
+         "name": "Présence Éclairement",
+         "category": "illuminance",
+         "source": "auto",
+         "reason": "device class illuminance",
+         "device_id": "c65bcdf36004130644f75caab641ab57",
+         "platform": "zigbee",
+         "options": {}
+        }
+       ]
+      },
+      {
+       "category": "battery",
+       "leaves": [
+        {
+         "entity_id": "sensor.salon_fenetre",
+         "name": "Fenêtre Batterie",
+         "category": "battery",
+         "source": "auto",
+         "reason": "device class battery",
+         "device_id": "77141969c011d3bf9f0097ba06d5cd64",
+         "platform": "zigbee",
+         "options": {}
+        },
+        {
+         "entity_id": "sensor.salon_porte_d_entree",
+         "name": "Porte d'entrée Batterie",
+         "category": "battery",
+         "source": "auto",
+         "reason": "device class battery",
+         "device_id": "ce94f4241c8baf94959855480d30ba5a",
+         "platform": "zigbee",
+         "options": {}
+        }
+       ]
+      },
+      {
+       "category": "power",
+       "leaves": [
+        {
+         "entity_id": "sensor.salon_prise_tv",
+         "name": "Prise TV Puissance",
+         "category": "power",
+         "source": "auto",
+         "reason": "device class power",
+         "device_id": "b4ecbc64e6715f787aa2afd1b657bd1f",
+         "platform": "zigbee",
+         "options": {}
+        },
+        {
+         "entity_id": "sensor.salon_suspension",
+         "name": "Suspension Puissance",
+         "category": "power",
+         "source": "auto",
+         "reason": "device class power",
+         "device_id": "4b972efb4cd81e35b2e611515ace611a",
+         "platform": "zigbee",
+         "options": {}
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "unassigned": [
+    {
+     "entity_id": "switch.prise_garage",
+     "name": "Prise garage",
+     "category": "switch",
+     "source": "auto",
+     "reason": "switch",
+     "device_id": "52982b52930e05347fd3df46dc07ce12",
+     "platform": "zigbee",
+     "options": {}
+    },
+    {
+     "entity_id": "sensor.prise_garage",
+     "name": "Prise garage Puissance",
+     "category": "power",
+     "source": "auto",
+     "reason": "device class power",
+     "device_id": "52982b52930e05347fd3df46dc07ce12",
+     "platform": "zigbee",
+     "options": {}
+    }
+   ],
+   "ignored": []
+  },
+  "nodes": {
+   "all": {
+    "settings": {
+     "memory_enabled": true,
+     "memory_categories": [
+      "light",
+      "led"
+     ],
+     "memory_excluded": [],
+     "group_excluded": []
+    },
+    "memory": {
+     "active": true,
+     "saved_at": "2026-11-13T17:12:32.274006+00:00",
+     "count": 9,
+     "on": 5,
+     "colors": [
+      [
+       138,
+       63,
+       252
+      ],
+      [
+       255,
+       95,
+       109
+      ]
+     ],
+     "members": [
+      "switch.bureau_lampe_de_bureau",
+      "light.chambre_lampe_de_chevet",
+      "light.chambre_miroir_leds",
+      "light.cuisine_plafonnier",
+      "light.salle_de_bain_miroir_salle_de_bain",
+      "light.salon_lampadaire",
+      "light.salon_buffet_leds",
+      "light.salon_canape_leds",
+      "light.salon_tv_leds"
+     ]
+    },
+    "group": [
+     "switch.bureau_lampe_de_bureau",
+     "light.chambre_lampe_de_chevet",
+     "light.chambre_miroir_leds",
+     "light.cuisine_plafonnier",
+     "light.salle_de_bain_miroir_salle_de_bain",
+     "light.salon_lampadaire",
+     "light.salon_buffet_leds",
+     "light.salon_canape_leds",
+     "light.salon_tv_leds"
+    ]
+   },
+   "bureau": {
+    "settings": {
+     "memory_enabled": true,
+     "memory_categories": [
+      "light",
+      "led"
+     ],
+     "memory_excluded": [],
+     "group_excluded": []
+    },
+    "memory": {
+     "active": true,
+     "saved_at": null,
+     "count": 0,
+     "on": 0,
+     "colors": [],
+     "members": [
+      "switch.bureau_lampe_de_bureau"
+     ]
+    },
+    "group": [
+     "switch.bureau_lampe_de_bureau"
+    ]
+   },
+   "bureau__light": {
+    "settings": {
+     "memory_enabled": true,
+     "memory_categories": [
+      "light",
+      "led"
+     ],
+     "memory_excluded": [],
+     "group_excluded": []
+    },
+    "memory": {
+     "active": true,
+     "saved_at": null,
+     "count": 0,
+     "on": 0,
+     "colors": [],
+     "members": [
+      "switch.bureau_lampe_de_bureau"
+     ]
+    },
+    "group": [
+     "switch.bureau_lampe_de_bureau"
+    ]
+   },
+   "chambre": {
+    "settings": {
+     "memory_enabled": true,
+     "memory_categories": [
+      "light",
+      "led"
+     ],
+     "memory_excluded": [],
+     "group_excluded": []
+    },
+    "memory": {
+     "active": true,
+     "saved_at": null,
+     "count": 0,
+     "on": 0,
+     "colors": [],
+     "members": [
+      "light.chambre_lampe_de_chevet",
+      "light.chambre_miroir_leds"
+     ]
+    },
+    "group": [
+     "light.chambre_lampe_de_chevet",
+     "light.chambre_miroir_leds"
+    ]
+   },
+   "chambre__light": {
+    "settings": {
+     "memory_enabled": true,
+     "memory_categories": [
+      "light",
+      "led"
+     ],
+     "memory_excluded": [],
+     "group_excluded": []
+    },
+    "memory": {
+     "active": true,
+     "saved_at": null,
+     "count": 0,
+     "on": 0,
+     "colors": [],
+     "members": [
+      "light.chambre_lampe_de_chevet"
+     ]
+    },
+    "group": [
+     "light.chambre_lampe_de_chevet"
+    ]
+   },
+   "chambre__led": {
+    "settings": {
+     "memory_enabled": true,
+     "memory_categories": [
+      "light",
+      "led"
+     ],
+     "memory_excluded": [],
+     "group_excluded": []
+    },
+    "memory": {
+     "active": true,
+     "saved_at": null,
+     "count": 0,
+     "on": 0,
+     "colors": [],
+     "members": [
+      "light.chambre_miroir_leds"
+     ]
+    },
+    "group": [
+     "light.chambre_miroir_leds"
+    ]
+   },
+   "cuisine": {
+    "settings": {
+     "memory_enabled": true,
+     "memory_categories": [
+      "light",
+      "led"
+     ],
+     "memory_excluded": [],
+     "group_excluded": []
+    },
+    "memory": {
+     "active": true,
+     "saved_at": "2026-11-13T17:12:32.274518+00:00",
+     "count": 1,
+     "on": 1,
+     "colors": [],
+     "members": [
+      "light.cuisine_plafonnier"
+     ]
+    },
+    "group": [
+     "light.cuisine_plafonnier"
+    ]
+   },
+   "cuisine__light": {
+    "settings": {
+     "memory_enabled": true,
+     "memory_categories": [
+      "light",
+      "led"
+     ],
+     "memory_excluded": [],
+     "group_excluded": []
+    },
+    "memory": {
+     "active": true,
+     "saved_at": "2026-11-13T17:12:32.272448+00:00",
+     "count": 1,
+     "on": 1,
+     "colors": [],
+     "members": [
+      "light.cuisine_plafonnier"
+     ]
+    },
+    "group": [
+     "light.cuisine_plafonnier"
+    ]
+   },
+   "cuisine__switch": {
+    "settings": {
+     "memory_enabled": true,
+     "memory_categories": [
+      "light",
+      "led"
+     ],
+     "memory_excluded": [],
+     "group_excluded": []
+    },
+    "memory": {
+     "active": false,
+     "saved_at": null,
+     "count": 0,
+     "on": 0,
+     "colors": [],
+     "members": []
+    },
+    "group": [
+     "switch.cuisine_bouilloire"
+    ]
+   },
+   "salle_de_bain": {
+    "settings": {
+     "memory_enabled": true,
+     "memory_categories": [
+      "light",
+      "led"
+     ],
+     "memory_excluded": [],
+     "group_excluded": []
+    },
+    "memory": {
+     "active": true,
+     "saved_at": null,
+     "count": 0,
+     "on": 0,
+     "colors": [],
+     "members": [
+      "light.salle_de_bain_miroir_salle_de_bain"
+     ]
+    },
+    "group": [
+     "light.salle_de_bain_miroir_salle_de_bain"
+    ]
+   },
+   "salle_de_bain__led": {
+    "settings": {
+     "memory_enabled": true,
+     "memory_categories": [
+      "light",
+      "led"
+     ],
+     "memory_excluded": [],
+     "group_excluded": []
+    },
+    "memory": {
+     "active": true,
+     "saved_at": null,
+     "count": 0,
+     "on": 0,
+     "colors": [],
+     "members": [
+      "light.salle_de_bain_miroir_salle_de_bain"
+     ]
+    },
+    "group": [
+     "light.salle_de_bain_miroir_salle_de_bain"
+    ]
+   },
+   "salon": {
+    "settings": {
+     "memory_enabled": true,
+     "memory_categories": [
+      "light",
+      "led"
+     ],
+     "memory_excluded": [],
+     "group_excluded": []
+    },
+    "memory": {
+     "active": true,
+     "saved_at": "2026-11-13T17:12:32.273275+00:00",
+     "count": 4,
+     "on": 3,
+     "colors": [
+      [
+       138,
+       63,
+       252
+      ],
+      [
+       255,
+       95,
+       109
+      ]
+     ],
+     "members": [
+      "light.salon_lampadaire",
+      "light.salon_buffet_leds",
+      "light.salon_canape_leds",
+      "light.salon_tv_leds"
+     ]
+    },
+    "group": [
+     "light.salon_lampadaire",
+     "light.salon_buffet_leds",
+     "light.salon_canape_leds",
+     "light.salon_tv_leds"
+    ]
+   },
+   "salon__light": {
+    "settings": {
+     "memory_enabled": true,
+     "memory_categories": [
+      "light",
+      "led"
+     ],
+     "memory_excluded": [],
+     "group_excluded": []
+    },
+    "memory": {
+     "active": true,
+     "saved_at": "2026-11-13T17:12:32.273510+00:00",
+     "count": 1,
+     "on": 1,
+     "colors": [],
+     "members": [
+      "light.salon_lampadaire"
+     ]
+    },
+    "group": [
+     "light.salon_lampadaire"
+    ]
+   },
+   "salon__led": {
+    "settings": {
+     "memory_enabled": true,
+     "memory_categories": [
+      "light",
+      "led"
+     ],
+     "memory_excluded": [],
+     "group_excluded": []
+    },
+    "memory": {
+     "active": true,
+     "saved_at": "2026-11-13T17:12:32.273714+00:00",
+     "count": 3,
+     "on": 2,
+     "colors": [
+      [
+       138,
+       63,
+       252
+      ],
+      [
+       255,
+       95,
+       109
+      ]
+     ],
+     "members": [
+      "light.salon_buffet_leds",
+      "light.salon_canape_leds",
+      "light.salon_tv_leds"
+     ]
+    },
+    "group": [
+     "light.salon_buffet_leds",
+     "light.salon_canape_leds",
+     "light.salon_tv_leds"
+    ]
+   },
+   "salon__switch": {
+    "settings": {
+     "memory_enabled": true,
+     "memory_categories": [
+      "light",
+      "led"
+     ],
+     "memory_excluded": [],
+     "group_excluded": []
+    },
+    "memory": {
+     "active": false,
+     "saved_at": null,
+     "count": 0,
+     "on": 0,
+     "colors": [],
+     "members": []
+    },
+    "group": [
+     "switch.salon_prise_tv",
+     "switch.salon_suspension"
+    ]
+   }
+  },
+  "entities": {
+   "bureau__light": {
+    "light:group": "light.vivid_pilot_bureau_light",
+    "sensor:power": "sensor.vivid_pilot_bureau_light_power",
+    "sensor:energy": "sensor.vivid_pilot_bureau_light_energy",
+    "scene:state": "scene.vivid_pilot_bureau_light_state"
+   },
+   "bureau__door": {
+    "binary_sensor:any": "binary_sensor.vivid_pilot_bureau_door"
+   },
+   "bureau__temperature": {
+    "sensor:mean": "sensor.vivid_pilot_bureau_temperature",
+    "sensor:min": "sensor.vivid_pilot_bureau_temperature_min",
+    "sensor:max": "sensor.vivid_pilot_bureau_temperature_max"
+   },
+   "bureau": {
+    "sensor:power": "sensor.vivid_pilot_bureau_power",
+    "sensor:energy": "sensor.vivid_pilot_bureau_energy",
+    "scene:state": "scene.vivid_pilot_bureau_state"
+   },
+   "chambre__light": {
+    "light:group": "light.vivid_pilot_chambre_light",
+    "scene:state": "scene.vivid_pilot_chambre_light_state"
+   },
+   "chambre__led": {
+    "light:group": "light.vivid_pilot_chambre_led",
+    "sensor:power": "sensor.vivid_pilot_chambre_led_power",
+    "sensor:energy": "sensor.vivid_pilot_chambre_led_energy",
+    "scene:state": "scene.vivid_pilot_chambre_led_state"
+   },
+   "chambre__window": {
+    "binary_sensor:any": "binary_sensor.vivid_pilot_chambre_window"
+   },
+   "chambre__temperature": {
+    "sensor:mean": "sensor.vivid_pilot_chambre_temperature",
+    "sensor:min": "sensor.vivid_pilot_chambre_temperature_min",
+    "sensor:max": "sensor.vivid_pilot_chambre_temperature_max"
+   },
+   "chambre__humidity": {
+    "sensor:mean": "sensor.vivid_pilot_chambre_humidity",
+    "sensor:min": "sensor.vivid_pilot_chambre_humidity_min",
+    "sensor:max": "sensor.vivid_pilot_chambre_humidity_max"
+   },
+   "chambre__battery": {
+    "sensor:battery": "sensor.vivid_pilot_chambre_battery"
+   },
+   "chambre": {
+    "sensor:power": "sensor.vivid_pilot_chambre_power",
+    "sensor:energy": "sensor.vivid_pilot_chambre_energy",
+    "scene:state": "scene.vivid_pilot_chambre_state"
+   },
+   "cuisine__light": {
+    "light:group": "light.vivid_pilot_cuisine_light",
+    "scene:state": "scene.vivid_pilot_cuisine_light_state"
+   },
+   "cuisine__switch": {
+    "switch:group": "switch.vivid_pilot_cuisine_switch",
+    "sensor:power": "sensor.vivid_pilot_cuisine_switch_power",
+    "sensor:energy": "sensor.vivid_pilot_cuisine_switch_energy",
+    "scene:state": "scene.vivid_pilot_cuisine_switch_state"
+   },
+   "cuisine__temperature": {
+    "sensor:mean": "sensor.vivid_pilot_cuisine_temperature",
+    "sensor:min": "sensor.vivid_pilot_cuisine_temperature_min",
+    "sensor:max": "sensor.vivid_pilot_cuisine_temperature_max"
+   },
+   "cuisine": {
+    "sensor:power": "sensor.vivid_pilot_cuisine_power",
+    "sensor:energy": "sensor.vivid_pilot_cuisine_energy",
+    "scene:state": "scene.vivid_pilot_cuisine_state"
+   },
+   "salle_de_bain__led": {
+    "light:group": "light.vivid_pilot_salle_de_bain_led",
+    "sensor:power": "sensor.vivid_pilot_salle_de_bain_led_power",
+    "sensor:energy": "sensor.vivid_pilot_salle_de_bain_led_energy",
+    "scene:state": "scene.vivid_pilot_salle_de_bain_led_state"
+   },
+   "salle_de_bain__humidity": {
+    "sensor:mean": "sensor.vivid_pilot_salle_de_bain_humidity",
+    "sensor:min": "sensor.vivid_pilot_salle_de_bain_humidity_min",
+    "sensor:max": "sensor.vivid_pilot_salle_de_bain_humidity_max"
+   },
+   "salle_de_bain": {
+    "sensor:power": "sensor.vivid_pilot_salle_de_bain_power",
+    "sensor:energy": "sensor.vivid_pilot_salle_de_bain_energy",
+    "scene:state": "scene.vivid_pilot_salle_de_bain_state"
+   },
+   "salon__light": {
+    "light:group": "light.vivid_pilot_salon_light",
+    "scene:state": "scene.vivid_pilot_salon_light_state"
+   },
+   "salon__led": {
+    "light:group": "light.vivid_pilot_salon_led",
+    "sensor:power": "sensor.vivid_pilot_salon_led_power",
+    "sensor:energy": "sensor.vivid_pilot_salon_led_energy",
+    "scene:state": "scene.vivid_pilot_salon_led_state"
+   },
+   "salon__switch": {
+    "switch:group": "switch.vivid_pilot_salon_switch",
+    "sensor:power": "sensor.vivid_pilot_salon_switch_power",
+    "sensor:energy": "sensor.vivid_pilot_salon_switch_energy",
+    "scene:state": "scene.vivid_pilot_salon_switch_state"
+   },
+   "salon__door": {
+    "binary_sensor:any": "binary_sensor.vivid_pilot_salon_door"
+   },
+   "salon__window": {
+    "binary_sensor:any": "binary_sensor.vivid_pilot_salon_window"
+   },
+   "salon__presence": {
+    "binary_sensor:any": "binary_sensor.vivid_pilot_salon_presence"
+   },
+   "salon__temperature": {
+    "sensor:mean": "sensor.vivid_pilot_salon_temperature",
+    "sensor:min": "sensor.vivid_pilot_salon_temperature_min",
+    "sensor:max": "sensor.vivid_pilot_salon_temperature_max"
+   },
+   "salon__humidity": {
+    "sensor:mean": "sensor.vivid_pilot_salon_humidity",
+    "sensor:min": "sensor.vivid_pilot_salon_humidity_min",
+    "sensor:max": "sensor.vivid_pilot_salon_humidity_max"
+   },
+   "salon__pressure": {
+    "sensor:mean": "sensor.vivid_pilot_salon_pressure",
+    "sensor:min": "sensor.vivid_pilot_salon_pressure_min",
+    "sensor:max": "sensor.vivid_pilot_salon_pressure_max"
+   },
+   "salon__co2": {
+    "sensor:mean": "sensor.vivid_pilot_salon_co2",
+    "sensor:min": "sensor.vivid_pilot_salon_co2_min",
+    "sensor:max": "sensor.vivid_pilot_salon_co2_max"
+   },
+   "salon__illuminance": {
+    "sensor:mean": "sensor.vivid_pilot_salon_illuminance",
+    "sensor:min": "sensor.vivid_pilot_salon_illuminance_min",
+    "sensor:max": "sensor.vivid_pilot_salon_illuminance_max"
+   },
+   "salon__battery": {
+    "sensor:battery": "sensor.vivid_pilot_salon_battery"
+   },
+   "salon": {
+    "sensor:power": "sensor.vivid_pilot_salon_power",
+    "sensor:energy": "sensor.vivid_pilot_salon_energy",
+    "scene:state": "scene.vivid_pilot_salon_state"
+   },
+   "all": {
+    "scene:state": "scene.vivid_pilot_all_state",
+    "sensor:power": "sensor.vivid_pilot_all_power",
+    "sensor:energy": "sensor.vivid_pilot_all_energy"
+   },
+   "all__light": {
+    "light:group": "light.vivid_pilot_all_light"
+   },
+   "all__led": {
+    "light:group": "light.vivid_pilot_all_led"
+   },
+   "all__switch": {
+    "switch:group": "switch.vivid_pilot_all_switch"
+   },
+   "all__door": {
+    "binary_sensor:any": "binary_sensor.vivid_pilot_all_door"
+   },
+   "all__window": {
+    "binary_sensor:any": "binary_sensor.vivid_pilot_all_window"
+   },
+   "all__presence": {
+    "binary_sensor:any": "binary_sensor.vivid_pilot_all_presence"
+   },
+   "all__temperature": {
+    "sensor:mean": "sensor.vivid_pilot_all_temperature",
+    "sensor:min": "sensor.vivid_pilot_all_temperature_min",
+    "sensor:max": "sensor.vivid_pilot_all_temperature_max"
+   },
+   "all__humidity": {
+    "sensor:mean": "sensor.vivid_pilot_all_humidity",
+    "sensor:min": "sensor.vivid_pilot_all_humidity_min",
+    "sensor:max": "sensor.vivid_pilot_all_humidity_max"
+   },
+   "all__pressure": {
+    "sensor:mean": "sensor.vivid_pilot_all_pressure",
+    "sensor:min": "sensor.vivid_pilot_all_pressure_min",
+    "sensor:max": "sensor.vivid_pilot_all_pressure_max"
+   },
+   "all__co2": {
+    "sensor:mean": "sensor.vivid_pilot_all_co2",
+    "sensor:min": "sensor.vivid_pilot_all_co2_min",
+    "sensor:max": "sensor.vivid_pilot_all_co2_max"
+   },
+   "all__illuminance": {
+    "sensor:mean": "sensor.vivid_pilot_all_illuminance",
+    "sensor:min": "sensor.vivid_pilot_all_illuminance_min",
+    "sensor:max": "sensor.vivid_pilot_all_illuminance_max"
+   },
+   "all__battery": {
+    "sensor:battery": "sensor.vivid_pilot_all_battery"
+   }
+  },
+  "strips": {
+   "light.chambre_miroir_leds": "sensor.vivid_pilot_chambre_miroir_leds_power",
+   "light.salle_de_bain_miroir_salle_de_bain": "sensor.vivid_pilot_salle_de_bain_miroir_salle_de_bain_power",
+   "light.salon_buffet_leds": "sensor.vivid_pilot_salon_buffet_leds_power",
+   "light.salon_canape_leds": "sensor.vivid_pilot_salon_canape_leds_power",
+   "light.salon_tv_leds": "sensor.vivid_pilot_salon_tv_leds_power"
+  },
+  "power": [
+   {
+    "kind": "measured",
+    "area_id": "bureau",
+    "category": "light",
+    "entity_id": "sensor.bureau_lampe_de_bureau",
+    "leaf_id": "sensor.bureau_lampe_de_bureau",
+    "counted": true,
+    "factor": 1.0,
+    "value": 9.8
+   },
+   {
+    "kind": "wled",
+    "area_id": "chambre",
+    "category": "led",
+    "entity_id": "sensor.chambre_miroir_leds",
+    "leaf_id": "light.chambre_miroir_leds",
+    "counted": true,
+    "factor": 5.0,
+    "value": 0.0
+   },
+   {
+    "kind": "measured",
+    "area_id": "cuisine",
+    "category": "switch",
+    "entity_id": "sensor.cuisine_bouilloire",
+    "leaf_id": "sensor.cuisine_bouilloire",
+    "counted": true,
+    "factor": 1.0,
+    "value": 0.0
+   },
+   {
+    "kind": "wled",
+    "area_id": "salle_de_bain",
+    "category": "led",
+    "entity_id": "sensor.salle_de_bain_miroir_salle_de_bain",
+    "leaf_id": "light.salle_de_bain_miroir_salle_de_bain",
+    "counted": true,
+    "factor": 5.0,
+    "value": 0.0
+   },
+   {
+    "kind": "wled",
+    "area_id": "salon",
+    "category": "led",
+    "entity_id": "sensor.salon_buffet_leds",
+    "leaf_id": "light.salon_buffet_leds",
+    "counted": true,
+    "factor": 5.0,
+    "value": 3.1
+   },
+   {
+    "kind": "wled",
+    "area_id": "salon",
+    "category": "led",
+    "entity_id": "sensor.salon_canape_leds",
+    "leaf_id": "light.salon_canape_leds",
+    "counted": true,
+    "factor": 12.0,
+    "value": 0.0
+   },
+   {
+    "kind": "wled",
+    "area_id": "salon",
+    "category": "led",
+    "entity_id": "sensor.salon_tv_leds",
+    "leaf_id": "light.salon_tv_leds",
+    "counted": true,
+    "factor": 5.0,
+    "value": 7.0
+   },
+   {
+    "kind": "measured",
+    "area_id": "salon",
+    "category": "switch",
+    "entity_id": "sensor.salon_prise_tv",
+    "leaf_id": "sensor.salon_prise_tv",
+    "counted": true,
+    "factor": 1.0,
+    "value": 86.4
+   },
+   {
+    "kind": "measured",
+    "area_id": "salon",
+    "category": "switch",
+    "entity_id": "sensor.salon_suspension",
+    "leaf_id": "sensor.salon_suspension",
+    "counted": true,
+    "factor": 1.0,
+    "value": 0.0
+   }
+  ],
+  "power_choices": {
+   "switch.bureau_lampe_de_bureau": {
+    "available": [
+     "measured",
+     "nominal",
+     "none"
+    ],
+    "chosen": "auto",
+    "effective": "measured"
+   },
+   "light.chambre_lampe_de_chevet": {
+    "available": [
+     "nominal",
+     "none"
+    ],
+    "chosen": "auto",
+    "effective": "none"
+   },
+   "light.chambre_miroir_leds": {
+    "available": [
+     "wled",
+     "nominal",
+     "none"
+    ],
+    "chosen": "auto",
+    "effective": "wled"
+   },
+   "light.cuisine_plafonnier": {
+    "available": [
+     "nominal",
+     "none"
+    ],
+    "chosen": "auto",
+    "effective": "none"
+   },
+   "switch.cuisine_bouilloire": {
+    "available": [
+     "measured",
+     "nominal",
+     "none"
+    ],
+    "chosen": "auto",
+    "effective": "measured"
+   },
+   "light.salle_de_bain_miroir_salle_de_bain": {
+    "available": [
+     "wled",
+     "nominal",
+     "none"
+    ],
+    "chosen": "auto",
+    "effective": "wled"
+   },
+   "light.salon_lampadaire": {
+    "available": [
+     "nominal",
+     "none"
+    ],
+    "chosen": "auto",
+    "effective": "none"
+   },
+   "light.salon_buffet_leds": {
+    "available": [
+     "wled",
+     "nominal",
+     "none"
+    ],
+    "chosen": "auto",
+    "effective": "wled"
+   },
+   "light.salon_canape_leds": {
+    "available": [
+     "wled",
+     "nominal",
+     "none"
+    ],
+    "chosen": "auto",
+    "effective": "wled"
+   },
+   "light.salon_tv_leds": {
+    "available": [
+     "wled",
+     "nominal",
+     "none"
+    ],
+    "chosen": "auto",
+    "effective": "wled"
+   },
+   "switch.salon_prise_tv": {
+    "available": [
+     "measured",
+     "nominal",
+     "none"
+    ],
+    "chosen": "auto",
+    "effective": "measured"
+   },
+   "switch.salon_suspension": {
+    "available": [
+     "measured",
+     "nominal",
+     "none"
+    ],
+    "chosen": "auto",
+    "effective": "measured"
+   }
+  },
+  "settings": {
+   "memory_master": true,
+   "memory_debounce": 2.0,
+   "battery_low": 20
+  }
+ },
+ "states": {
+  "light.salon_lampadaire": {
+   "entity_id": "light.salon_lampadaire",
+   "state": "on",
+   "last_changed": "2026-11-13T17:12:32.245968+00:00",
+   "attributes": {
+    "friendly_name": "Lampadaire",
+    "supported_color_modes": [
+     "color_temp"
+    ],
+    "color_mode": "color_temp",
+    "brightness": 180
+   }
+  },
+  "switch.salon_suspension": {
+   "entity_id": "switch.salon_suspension",
+   "state": "off",
+   "last_changed": "2026-11-13T17:12:32.009948+00:00",
+   "attributes": {
+    "friendly_name": "Suspension"
+   }
+  },
+  "sensor.salon_suspension": {
+   "entity_id": "sensor.salon_suspension",
+   "state": "0",
+   "last_changed": "2026-11-13T17:12:32.010041+00:00",
+   "attributes": {
+    "friendly_name": "Suspension Puissance",
+    "unit_of_measurement": "W"
+   }
+  },
+  "light.salon_tv_leds": {
+   "entity_id": "light.salon_tv_leds",
+   "state": "on",
+   "last_changed": "2026-11-13T17:12:32.251710+00:00",
+   "attributes": {
+    "friendly_name": "TV LEDs",
+    "supported_color_modes": [
+     "rgb"
+    ],
+    "color_mode": "rgb",
+    "brightness": 200,
+    "rgb_color": [
+     255,
+     95,
+     109
+    ]
+   }
+  },
+  "sensor.salon_tv_leds": {
+   "entity_id": "sensor.salon_tv_leds",
+   "state": "1400",
+   "last_changed": "2026-11-13T17:12:32.010283+00:00",
+   "attributes": {
+    "friendly_name": "TV LEDs Courant estimé",
+    "unit_of_measurement": "mA"
+   }
+  },
+  "light.salon_buffet_leds": {
+   "entity_id": "light.salon_buffet_leds",
+   "state": "on",
+   "last_changed": "2026-11-13T17:12:32.258205+00:00",
+   "attributes": {
+    "friendly_name": "Buffet LEDs",
+    "supported_color_modes": [
+     "rgb"
+    ],
+    "color_mode": "rgb",
+    "brightness": 140,
+    "rgb_color": [
+     138,
+     63,
+     252
+    ]
+   }
+  },
+  "sensor.salon_buffet_leds": {
+   "entity_id": "sensor.salon_buffet_leds",
+   "state": "620",
+   "last_changed": "2026-11-13T17:12:32.010497+00:00",
+   "attributes": {
+    "friendly_name": "Buffet LEDs Courant estimé",
+    "unit_of_measurement": "mA"
+   }
+  },
+  "light.salon_canape_leds": {
+   "entity_id": "light.salon_canape_leds",
+   "state": "off",
+   "last_changed": "2026-11-13T17:12:32.014734+00:00",
+   "attributes": {
+    "friendly_name": "Canapé LEDs",
+    "supported_color_modes": [
+     "rgb"
+    ],
+    "color_mode": "rgb"
+   }
+  },
+  "sensor.salon_canape_leds": {
+   "entity_id": "sensor.salon_canape_leds",
+   "state": "0",
+   "last_changed": "2026-11-13T17:12:32.015078+00:00",
+   "attributes": {
+    "friendly_name": "Canapé LEDs Courant estimé",
+    "unit_of_measurement": "mA"
+   }
+  },
+  "switch.salon_prise_tv": {
+   "entity_id": "switch.salon_prise_tv",
+   "state": "on",
+   "last_changed": "2026-11-13T17:12:32.015322+00:00",
+   "attributes": {
+    "friendly_name": "Prise TV"
+   }
+  },
+  "sensor.salon_prise_tv": {
+   "entity_id": "sensor.salon_prise_tv",
+   "state": "86.4",
+   "last_changed": "2026-11-13T17:12:32.015401+00:00",
+   "attributes": {
+    "friendly_name": "Prise TV Puissance",
+    "unit_of_measurement": "W"
+   }
+  },
+  "binary_sensor.salon_porte_d_entree": {
+   "entity_id": "binary_sensor.salon_porte_d_entree",
+   "state": "off",
+   "last_changed": "2026-11-13T17:12:32.015638+00:00",
+   "attributes": {
+    "friendly_name": "Porte d'entrée"
+   }
+  },
+  "sensor.salon_porte_d_entree": {
+   "entity_id": "sensor.salon_porte_d_entree",
+   "state": "86",
+   "last_changed": "2026-11-13T17:12:32.015844+00:00",
+   "attributes": {
+    "friendly_name": "Porte d'entrée Batterie",
+    "unit_of_measurement": "%"
+   }
+  },
+  "binary_sensor.salon_fenetre": {
+   "entity_id": "binary_sensor.salon_fenetre",
+   "state": "on",
+   "last_changed": "2026-11-13T17:12:32.016143+00:00",
+   "attributes": {
+    "friendly_name": "Fenêtre"
+   }
+  },
+  "sensor.salon_fenetre": {
+   "entity_id": "sensor.salon_fenetre",
+   "state": "64",
+   "last_changed": "2026-11-13T17:12:32.016290+00:00",
+   "attributes": {
+    "friendly_name": "Fenêtre Batterie",
+    "unit_of_measurement": "%"
+   }
+  },
+  "sensor.salon_station_d_air": {
+   "entity_id": "sensor.salon_station_d_air",
+   "state": "21.4",
+   "last_changed": "2026-11-13T17:12:32.016450+00:00",
+   "attributes": {
+    "friendly_name": "Station d'air Température",
+    "unit_of_measurement": "°C"
+   }
+  },
+  "sensor.salon_station_d_air_2": {
+   "entity_id": "sensor.salon_station_d_air_2",
+   "state": "46",
+   "last_changed": "2026-11-13T17:12:32.016524+00:00",
+   "attributes": {
+    "friendly_name": "Station d'air Humidité",
+    "unit_of_measurement": "%"
+   }
+  },
+  "sensor.salon_station_d_air_3": {
+   "entity_id": "sensor.salon_station_d_air_3",
+   "state": "712",
+   "last_changed": "2026-11-13T17:12:32.016592+00:00",
+   "attributes": {
+    "friendly_name": "Station d'air CO2",
+    "unit_of_measurement": "ppm"
+   }
+  },
+  "sensor.salon_station_d_air_4": {
+   "entity_id": "sensor.salon_station_d_air_4",
+   "state": "1014",
+   "last_changed": "2026-11-13T17:12:32.016656+00:00",
+   "attributes": {
+    "friendly_name": "Station d'air Pression",
+    "unit_of_measurement": "hPa"
+   }
+  },
+  "binary_sensor.salon_presence": {
+   "entity_id": "binary_sensor.salon_presence",
+   "state": "on",
+   "last_changed": "2026-11-13T17:12:32.016943+00:00",
+   "attributes": {
+    "friendly_name": "Présence"
+   }
+  },
+  "sensor.salon_presence": {
+   "entity_id": "sensor.salon_presence",
+   "state": "180",
+   "last_changed": "2026-11-13T17:12:32.017081+00:00",
+   "attributes": {
+    "friendly_name": "Présence Éclairement",
+    "unit_of_measurement": "lx"
+   }
+  },
+  "light.chambre_lampe_de_chevet": {
+   "entity_id": "light.chambre_lampe_de_chevet",
+   "state": "off",
+   "last_changed": "2026-11-13T17:12:32.017234+00:00",
+   "attributes": {
+    "friendly_name": "Lampe de chevet",
+    "supported_color_modes": [
+     "color_temp"
+    ],
+    "color_mode": "color_temp"
+   }
+  },
+  "light.chambre_miroir_leds": {
+   "entity_id": "light.chambre_miroir_leds",
+   "state": "off",
+   "last_changed": "2026-11-13T17:12:32.017375+00:00",
+   "attributes": {
+    "friendly_name": "Miroir LEDs",
+    "supported_color_modes": [
+     "rgb"
+    ],
+    "color_mode": "rgb"
+   }
+  },
+  "sensor.chambre_miroir_leds": {
+   "entity_id": "sensor.chambre_miroir_leds",
+   "state": "0",
+   "last_changed": "2026-11-13T17:12:32.017440+00:00",
+   "attributes": {
+    "friendly_name": "Miroir LEDs Courant estimé",
+    "unit_of_measurement": "mA"
+   }
+  },
+  "sensor.chambre_thermometre": {
+   "entity_id": "sensor.chambre_thermometre",
+   "state": "19.2",
+   "last_changed": "2026-11-13T17:12:32.017644+00:00",
+   "attributes": {
+    "friendly_name": "Thermomètre Température",
+    "unit_of_measurement": "°C"
+   }
+  },
+  "sensor.chambre_thermometre_2": {
+   "entity_id": "sensor.chambre_thermometre_2",
+   "state": "52",
+   "last_changed": "2026-11-13T17:12:32.017808+00:00",
+   "attributes": {
+    "friendly_name": "Thermomètre Humidité",
+    "unit_of_measurement": "%"
+   }
+  },
+  "sensor.chambre_thermometre_3": {
+   "entity_id": "sensor.chambre_thermometre_3",
+   "state": "14",
+   "last_changed": "2026-11-13T17:12:32.017952+00:00",
+   "attributes": {
+    "friendly_name": "Thermomètre Batterie",
+    "unit_of_measurement": "%"
+   }
+  },
+  "binary_sensor.chambre_fenetre_chambre": {
+   "entity_id": "binary_sensor.chambre_fenetre_chambre",
+   "state": "off",
+   "last_changed": "2026-11-13T17:12:32.018159+00:00",
+   "attributes": {
+    "friendly_name": "Fenêtre chambre"
+   }
+  },
+  "light.cuisine_plafonnier": {
+   "entity_id": "light.cuisine_plafonnier",
+   "state": "on",
+   "last_changed": "2026-11-13T17:12:32.263940+00:00",
+   "attributes": {
+    "friendly_name": "Plafonnier",
+    "supported_color_modes": [
+     "color_temp"
+    ],
+    "color_mode": "color_temp",
+    "brightness": 255
+   }
+  },
+  "switch.cuisine_bouilloire": {
+   "entity_id": "switch.cuisine_bouilloire",
+   "state": "off",
+   "last_changed": "2026-11-13T17:12:32.018421+00:00",
+   "attributes": {
+    "friendly_name": "Bouilloire"
+   }
+  },
+  "sensor.cuisine_bouilloire": {
+   "entity_id": "sensor.cuisine_bouilloire",
+   "state": "0",
+   "last_changed": "2026-11-13T17:12:32.018480+00:00",
+   "attributes": {
+    "friendly_name": "Bouilloire Puissance",
+    "unit_of_measurement": "W"
+   }
+  },
+  "sensor.cuisine_thermometre_cuisine": {
+   "entity_id": "sensor.cuisine_thermometre_cuisine",
+   "state": "22.1",
+   "last_changed": "2026-11-13T17:12:32.018682+00:00",
+   "attributes": {
+    "friendly_name": "Thermomètre cuisine Température",
+    "unit_of_measurement": "°C"
+   }
+  },
+  "switch.bureau_lampe_de_bureau": {
+   "entity_id": "switch.bureau_lampe_de_bureau",
+   "state": "on",
+   "last_changed": "2026-11-13T17:12:32.018843+00:00",
+   "attributes": {
+    "friendly_name": "Lampe de bureau"
+   }
+  },
+  "sensor.bureau_lampe_de_bureau": {
+   "entity_id": "sensor.bureau_lampe_de_bureau",
+   "state": "9.8",
+   "last_changed": "2026-11-13T17:12:32.018905+00:00",
+   "attributes": {
+    "friendly_name": "Lampe de bureau Puissance",
+    "unit_of_measurement": "W"
+   }
+  },
+  "binary_sensor.bureau_porte_bureau": {
+   "entity_id": "binary_sensor.bureau_porte_bureau",
+   "state": "on",
+   "last_changed": "2026-11-13T17:12:32.020802+00:00",
+   "attributes": {
+    "friendly_name": "Porte bureau"
+   }
+  },
+  "sensor.bureau_thermometre_bureau": {
+   "entity_id": "sensor.bureau_thermometre_bureau",
+   "state": "20.6",
+   "last_changed": "2026-11-13T17:12:32.021205+00:00",
+   "attributes": {
+    "friendly_name": "Thermomètre bureau Température",
+    "unit_of_measurement": "°C"
+   }
+  },
+  "light.salle_de_bain_miroir_salle_de_bain": {
+   "entity_id": "light.salle_de_bain_miroir_salle_de_bain",
+   "state": "off",
+   "last_changed": "2026-11-13T17:12:32.021369+00:00",
+   "attributes": {
+    "friendly_name": "Miroir salle de bain",
+    "supported_color_modes": [
+     "rgb"
+    ],
+    "color_mode": "rgb"
+   }
+  },
+  "sensor.salle_de_bain_miroir_salle_de_bain": {
+   "entity_id": "sensor.salle_de_bain_miroir_salle_de_bain",
+   "state": "0",
+   "last_changed": "2026-11-13T17:12:32.021458+00:00",
+   "attributes": {
+    "friendly_name": "Miroir salle de bain Courant estimé",
+    "unit_of_measurement": "mA"
+   }
+  },
+  "sensor.salle_de_bain_hygrometre": {
+   "entity_id": "sensor.salle_de_bain_hygrometre",
+   "state": "68",
+   "last_changed": "2026-11-13T17:12:32.021680+00:00",
+   "attributes": {
+    "friendly_name": "Hygromètre Humidité",
+    "unit_of_measurement": "%"
+   }
+  },
+  "switch.prise_garage": {
+   "entity_id": "switch.prise_garage",
+   "state": "off",
+   "last_changed": "2026-11-13T17:12:32.021843+00:00",
+   "attributes": {
+    "friendly_name": "Prise garage"
+   }
+  },
+  "sensor.prise_garage": {
+   "entity_id": "sensor.prise_garage",
+   "state": "0",
+   "last_changed": "2026-11-13T17:12:32.021911+00:00",
+   "attributes": {
+    "friendly_name": "Prise garage Puissance",
+    "unit_of_measurement": "W"
+   }
+  },
+  "switch.vivid_pilot_cuisine_switch": {
+   "entity_id": "switch.vivid_pilot_cuisine_switch",
+   "state": "off",
+   "last_changed": "2026-11-13T17:12:32.107878+00:00",
+   "attributes": {
+    "vivid_pilot_node": "cuisine__switch",
+    "vivid_pilot_kind": "group",
+    "entity_id": [
+     "switch.cuisine_bouilloire"
+    ],
+    "friendly_name": "Cuisine Switches"
+   }
+  },
+  "switch.vivid_pilot_salon_switch": {
+   "entity_id": "switch.vivid_pilot_salon_switch",
+   "state": "on",
+   "last_changed": "2026-11-13T17:12:32.109959+00:00",
+   "attributes": {
+    "vivid_pilot_node": "salon__switch",
+    "vivid_pilot_kind": "group",
+    "entity_id": [
+     "switch.salon_prise_tv",
+     "switch.salon_suspension"
+    ],
+    "friendly_name": "Salon Switches"
+   }
+  },
+  "switch.vivid_pilot_all_switch": {
+   "entity_id": "switch.vivid_pilot_all_switch",
+   "state": "on",
+   "last_changed": "2026-11-13T17:12:32.110890+00:00",
+   "attributes": {
+    "vivid_pilot_node": "all__switch",
+    "vivid_pilot_kind": "group",
+    "entity_id": [
+     "switch.cuisine_bouilloire",
+     "switch.salon_prise_tv",
+     "switch.salon_suspension"
+    ],
+    "friendly_name": "Maison Switches"
+   }
+  },
+  "scene.vivid_pilot_salon_led_state": {
+   "entity_id": "scene.vivid_pilot_salon_led_state",
+   "state": "unknown",
+   "last_changed": "2026-11-13T17:12:32.116247+00:00",
+   "attributes": {
+    "vivid_pilot_node": "salon__led",
+    "vivid_pilot_kind": "state",
+    "entity_id": [
+     "light.salon_buffet_leds",
+     "light.salon_canape_leds",
+     "light.salon_tv_leds"
+    ],
+    "saved_at": null,
+    "stored_entities": 0,
+    "friendly_name": "Salon LEDs state"
+   }
+  },
+  "scene.vivid_pilot_all_state": {
+   "entity_id": "scene.vivid_pilot_all_state",
+   "state": "unknown",
+   "last_changed": "2026-11-13T17:12:32.116816+00:00",
+   "attributes": {
+    "vivid_pilot_node": "all",
+    "vivid_pilot_kind": "state",
+    "entity_id": [
+     "switch.bureau_lampe_de_bureau",
+     "light.chambre_lampe_de_chevet",
+     "light.chambre_miroir_leds",
+     "light.cuisine_plafonnier",
+     "light.salle_de_bain_miroir_salle_de_bain",
+     "light.salon_lampadaire",
+     "light.salon_buffet_leds",
+     "light.salon_canape_leds",
+     "light.salon_tv_leds"
+    ],
+    "saved_at": null,
+    "stored_entities": 0,
+    "friendly_name": "Maison State"
+   }
+  },
+  "scene.vivid_pilot_salon_light_state": {
+   "entity_id": "scene.vivid_pilot_salon_light_state",
+   "state": "unknown",
+   "last_changed": "2026-11-13T17:12:32.117321+00:00",
+   "attributes": {
+    "vivid_pilot_node": "salon__light",
+    "vivid_pilot_kind": "state",
+    "entity_id": [
+     "light.salon_lampadaire"
+    ],
+    "saved_at": null,
+    "stored_entities": 0,
+    "friendly_name": "Salon Lamps state"
+   }
+  },
+  "scene.vivid_pilot_salle_de_bain_state": {
+   "entity_id": "scene.vivid_pilot_salle_de_bain_state",
+   "state": "unknown",
+   "last_changed": "2026-11-13T17:12:32.118074+00:00",
+   "attributes": {
+    "vivid_pilot_node": "salle_de_bain",
+    "vivid_pilot_kind": "state",
+    "entity_id": [
+     "light.salle_de_bain_miroir_salle_de_bain"
+    ],
+    "saved_at": null,
+    "stored_entities": 0,
+    "friendly_name": "Salle de bain State"
+   }
+  },
+  "scene.vivid_pilot_cuisine_light_state": {
+   "entity_id": "scene.vivid_pilot_cuisine_light_state",
+   "state": "unknown",
+   "last_changed": "2026-11-13T17:12:32.119331+00:00",
+   "attributes": {
+    "vivid_pilot_node": "cuisine__light",
+    "vivid_pilot_kind": "state",
+    "entity_id": [
+     "light.cuisine_plafonnier"
+    ],
+    "saved_at": null,
+    "stored_entities": 0,
+    "friendly_name": "Cuisine Lamps state"
+   }
+  },
+  "scene.vivid_pilot_cuisine_switch_state": {
+   "entity_id": "scene.vivid_pilot_cuisine_switch_state",
+   "state": "unavailable",
+   "last_changed": "2026-11-13T17:12:32.119646+00:00",
+   "attributes": {
+    "friendly_name": "Cuisine Switches state"
+   }
+  },
+  "scene.vivid_pilot_salle_de_bain_led_state": {
+   "entity_id": "scene.vivid_pilot_salle_de_bain_led_state",
+   "state": "unknown",
+   "last_changed": "2026-11-13T17:12:32.120026+00:00",
+   "attributes": {
+    "vivid_pilot_node": "salle_de_bain__led",
+    "vivid_pilot_kind": "state",
+    "entity_id": [
+     "light.salle_de_bain_miroir_salle_de_bain"
+    ],
+    "saved_at": null,
+    "stored_entities": 0,
+    "friendly_name": "Salle de bain LEDs state"
+   }
+  },
+  "scene.vivid_pilot_salon_state": {
+   "entity_id": "scene.vivid_pilot_salon_state",
+   "state": "unknown",
+   "last_changed": "2026-11-13T17:12:32.120341+00:00",
+   "attributes": {
+    "vivid_pilot_node": "salon",
+    "vivid_pilot_kind": "state",
+    "entity_id": [
+     "light.salon_lampadaire",
+     "light.salon_buffet_leds",
+     "light.salon_canape_leds",
+     "light.salon_tv_leds"
+    ],
+    "saved_at": null,
+    "stored_entities": 0,
+    "friendly_name": "Salon State"
+   }
+  },
+  "scene.vivid_pilot_chambre_led_state": {
+   "entity_id": "scene.vivid_pilot_chambre_led_state",
+   "state": "unknown",
+   "last_changed": "2026-11-13T17:12:32.120900+00:00",
+   "attributes": {
+    "vivid_pilot_node": "chambre__led",
+    "vivid_pilot_kind": "state",
+    "entity_id": [
+     "light.chambre_miroir_leds"
+    ],
+    "saved_at": null,
+    "stored_entities": 0,
+    "friendly_name": "Chambre LEDs state"
+   }
+  },
+  "scene.vivid_pilot_cuisine_state": {
+   "entity_id": "scene.vivid_pilot_cuisine_state",
+   "state": "unknown",
+   "last_changed": "2026-11-13T17:12:32.121263+00:00",
+   "attributes": {
+    "vivid_pilot_node": "cuisine",
+    "vivid_pilot_kind": "state",
+    "entity_id": [
+     "light.cuisine_plafonnier"
+    ],
+    "saved_at": null,
+    "stored_entities": 0,
+    "friendly_name": "Cuisine State"
+   }
+  },
+  "scene.vivid_pilot_chambre_state": {
+   "entity_id": "scene.vivid_pilot_chambre_state",
+   "state": "unknown",
+   "last_changed": "2026-11-13T17:12:32.121574+00:00",
+   "attributes": {
+    "vivid_pilot_node": "chambre",
+    "vivid_pilot_kind": "state",
+    "entity_id": [
+     "light.chambre_lampe_de_chevet",
+     "light.chambre_miroir_leds"
+    ],
+    "saved_at": null,
+    "stored_entities": 0,
+    "friendly_name": "Chambre State"
+   }
+  },
+  "scene.vivid_pilot_chambre_light_state": {
+   "entity_id": "scene.vivid_pilot_chambre_light_state",
+   "state": "unknown",
+   "last_changed": "2026-11-13T17:12:32.121911+00:00",
+   "attributes": {
+    "vivid_pilot_node": "chambre__light",
+    "vivid_pilot_kind": "state",
+    "entity_id": [
+     "light.chambre_lampe_de_chevet"
+    ],
+    "saved_at": null,
+    "stored_entities": 0,
+    "friendly_name": "Chambre Lamps state"
+   }
+  },
+  "scene.vivid_pilot_salon_switch_state": {
+   "entity_id": "scene.vivid_pilot_salon_switch_state",
+   "state": "unavailable",
+   "last_changed": "2026-11-13T17:12:32.122205+00:00",
+   "attributes": {
+    "friendly_name": "Salon Switches state"
+   }
+  },
+  "scene.vivid_pilot_bureau_state": {
+   "entity_id": "scene.vivid_pilot_bureau_state",
+   "state": "unknown",
+   "last_changed": "2026-11-13T17:12:32.228172+00:00",
+   "attributes": {
+    "vivid_pilot_node": "bureau",
+    "vivid_pilot_kind": "state",
+    "entity_id": [
+     "switch.bureau_lampe_de_bureau"
+    ],
+    "saved_at": null,
+    "stored_entities": 0,
+    "friendly_name": "Bureau State"
+   }
+  },
+  "sensor.vivid_pilot_chambre_humidity_min": {
+   "entity_id": "sensor.vivid_pilot_chambre_humidity_min",
+   "state": "52.0",
+   "last_changed": "2026-11-13T17:12:32.127039+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "chambre__humidity",
+    "vivid_pilot_kind": "min",
+    "entity_id": [
+     "sensor.chambre_thermometre_2"
+    ],
+    "source": "sensor.chambre_thermometre_2",
+    "unit_of_measurement": "%",
+    "device_class": "humidity",
+    "friendly_name": "Chambre Humidity min"
+   }
+  },
+  "sensor.vivid_pilot_salon_humidity": {
+   "entity_id": "sensor.vivid_pilot_salon_humidity",
+   "state": "46.0",
+   "last_changed": "2026-11-13T17:12:32.127437+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "salon__humidity",
+    "vivid_pilot_kind": "mean",
+    "entity_id": [
+     "sensor.salon_station_d_air_2"
+    ],
+    "unit_of_measurement": "%",
+    "device_class": "humidity",
+    "friendly_name": "Salon Humidity"
+   }
+  },
+  "sensor.vivid_pilot_chambre_humidity_max": {
+   "entity_id": "sensor.vivid_pilot_chambre_humidity_max",
+   "state": "52.0",
+   "last_changed": "2026-11-13T17:12:32.127876+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "chambre__humidity",
+    "vivid_pilot_kind": "max",
+    "entity_id": [
+     "sensor.chambre_thermometre_2"
+    ],
+    "source": "sensor.chambre_thermometre_2",
+    "unit_of_measurement": "%",
+    "device_class": "humidity",
+    "friendly_name": "Chambre Humidity max"
+   }
+  },
+  "sensor.vivid_pilot_cuisine_temperature_min": {
+   "entity_id": "sensor.vivid_pilot_cuisine_temperature_min",
+   "state": "22.1",
+   "last_changed": "2026-11-13T17:12:32.129077+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "cuisine__temperature",
+    "vivid_pilot_kind": "min",
+    "entity_id": [
+     "sensor.cuisine_thermometre_cuisine"
+    ],
+    "source": "sensor.cuisine_thermometre_cuisine",
+    "unit_of_measurement": "°C",
+    "device_class": "temperature",
+    "friendly_name": "Cuisine Temperature min"
+   }
+  },
+  "sensor.vivid_pilot_all_humidity_max": {
+   "entity_id": "sensor.vivid_pilot_all_humidity_max",
+   "state": "68.0",
+   "last_changed": "2026-11-13T17:12:32.129530+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "all__humidity",
+    "vivid_pilot_kind": "max",
+    "entity_id": [
+     "sensor.chambre_thermometre_2",
+     "sensor.salle_de_bain_hygrometre",
+     "sensor.salon_station_d_air_2"
+    ],
+    "source": "sensor.salle_de_bain_hygrometre",
+    "unit_of_measurement": "%",
+    "device_class": "humidity",
+    "friendly_name": "Maison Humidity max"
+   }
+  },
+  "sensor.vivid_pilot_salle_de_bain_led_power": {
+   "entity_id": "sensor.vivid_pilot_salle_de_bain_led_power",
+   "state": "0.0",
+   "last_changed": "2026-11-13T17:12:32.130321+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "salle_de_bain__led",
+    "vivid_pilot_kind": "power",
+    "unit_of_measurement": "W",
+    "device_class": "power",
+    "friendly_name": "Salle de bain LEDs power"
+   }
+  },
+  "sensor.vivid_pilot_all_co2_max": {
+   "entity_id": "sensor.vivid_pilot_all_co2_max",
+   "state": "712.0",
+   "last_changed": "2026-11-13T17:12:32.130703+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "all__co2",
+    "vivid_pilot_kind": "max",
+    "entity_id": [
+     "sensor.salon_station_d_air_3"
+    ],
+    "source": "sensor.salon_station_d_air_3",
+    "unit_of_measurement": "ppm",
+    "device_class": "carbon_dioxide",
+    "friendly_name": "Maison CO2 max"
+   }
+  },
+  "sensor.vivid_pilot_salon_humidity_max": {
+   "entity_id": "sensor.vivid_pilot_salon_humidity_max",
+   "state": "46.0",
+   "last_changed": "2026-11-13T17:12:32.131098+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "salon__humidity",
+    "vivid_pilot_kind": "max",
+    "entity_id": [
+     "sensor.salon_station_d_air_2"
+    ],
+    "source": "sensor.salon_station_d_air_2",
+    "unit_of_measurement": "%",
+    "device_class": "humidity",
+    "friendly_name": "Salon Humidity max"
+   }
+  },
+  "sensor.vivid_pilot_salon_buffet_leds_power": {
+   "entity_id": "sensor.vivid_pilot_salon_buffet_leds_power",
+   "state": "3.1",
+   "last_changed": "2026-11-13T17:12:32.131829+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "salon",
+    "vivid_pilot_kind": "strip_power",
+    "light": "light.salon_buffet_leds",
+    "current_sensor": "sensor.salon_buffet_leds",
+    "voltage": 5.0,
+    "unit_of_measurement": "W",
+    "device_class": "power",
+    "friendly_name": "Salon Puissance Buffet LEDs"
+   }
+  },
+  "sensor.vivid_pilot_salon_co2": {
+   "entity_id": "sensor.vivid_pilot_salon_co2",
+   "state": "712.0",
+   "last_changed": "2026-11-13T17:12:32.132235+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "salon__co2",
+    "vivid_pilot_kind": "mean",
+    "entity_id": [
+     "sensor.salon_station_d_air_3"
+    ],
+    "unit_of_measurement": "ppm",
+    "device_class": "carbon_dioxide",
+    "friendly_name": "Salon CO2"
+   }
+  },
+  "sensor.vivid_pilot_chambre_miroir_leds_power": {
+   "entity_id": "sensor.vivid_pilot_chambre_miroir_leds_power",
+   "state": "0.0",
+   "last_changed": "2026-11-13T17:12:32.132924+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "chambre",
+    "vivid_pilot_kind": "strip_power",
+    "light": "light.chambre_miroir_leds",
+    "current_sensor": "sensor.chambre_miroir_leds",
+    "voltage": 5.0,
+    "unit_of_measurement": "W",
+    "device_class": "power",
+    "friendly_name": "Chambre Puissance Miroir LEDs"
+   }
+  },
+  "sensor.vivid_pilot_cuisine_energy": {
+   "entity_id": "sensor.vivid_pilot_cuisine_energy",
+   "state": "0.0",
+   "last_changed": "2026-11-13T17:12:32.134385+00:00",
+   "attributes": {
+    "state_class": "total_increasing",
+    "vivid_pilot_node": "cuisine",
+    "vivid_pilot_kind": "energy",
+    "unit_of_measurement": "kWh",
+    "device_class": "energy",
+    "friendly_name": "Cuisine Energy"
+   }
+  },
+  "sensor.vivid_pilot_all_humidity_min": {
+   "entity_id": "sensor.vivid_pilot_all_humidity_min",
+   "state": "46.0",
+   "last_changed": "2026-11-13T17:12:32.134794+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "all__humidity",
+    "vivid_pilot_kind": "min",
+    "entity_id": [
+     "sensor.chambre_thermometre_2",
+     "sensor.salle_de_bain_hygrometre",
+     "sensor.salon_station_d_air_2"
+    ],
+    "source": "sensor.salon_station_d_air_2",
+    "unit_of_measurement": "%",
+    "device_class": "humidity",
+    "friendly_name": "Maison Humidity min"
+   }
+  },
+  "sensor.vivid_pilot_chambre_temperature_min": {
+   "entity_id": "sensor.vivid_pilot_chambre_temperature_min",
+   "state": "19.2",
+   "last_changed": "2026-11-13T17:12:32.135472+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "chambre__temperature",
+    "vivid_pilot_kind": "min",
+    "entity_id": [
+     "sensor.chambre_thermometre"
+    ],
+    "source": "sensor.chambre_thermometre",
+    "unit_of_measurement": "°C",
+    "device_class": "temperature",
+    "friendly_name": "Chambre Temperature min"
+   }
+  },
+  "sensor.vivid_pilot_salon_co2_min": {
+   "entity_id": "sensor.vivid_pilot_salon_co2_min",
+   "state": "712.0",
+   "last_changed": "2026-11-13T17:12:32.135887+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "salon__co2",
+    "vivid_pilot_kind": "min",
+    "entity_id": [
+     "sensor.salon_station_d_air_3"
+    ],
+    "source": "sensor.salon_station_d_air_3",
+    "unit_of_measurement": "ppm",
+    "device_class": "carbon_dioxide",
+    "friendly_name": "Salon CO2 min"
+   }
+  },
+  "sensor.vivid_pilot_salon_battery": {
+   "entity_id": "sensor.vivid_pilot_salon_battery",
+   "state": "64.0",
+   "last_changed": "2026-11-13T17:12:32.136271+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "salon__battery",
+    "vivid_pilot_kind": "battery",
+    "entity_id": [
+     "sensor.salon_fenetre",
+     "sensor.salon_porte_d_entree"
+    ],
+    "source": "sensor.salon_fenetre",
+    "low": [],
+    "low_count": 0,
+    "low_threshold": 20.0,
+    "unit_of_measurement": "%",
+    "device_class": "battery",
+    "friendly_name": "Salon Lowest battery"
+   }
+  },
+  "sensor.vivid_pilot_bureau_temperature_min": {
+   "entity_id": "sensor.vivid_pilot_bureau_temperature_min",
+   "state": "20.6",
+   "last_changed": "2026-11-13T17:12:32.137252+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "bureau__temperature",
+    "vivid_pilot_kind": "min",
+    "entity_id": [
+     "sensor.bureau_thermometre_bureau"
+    ],
+    "source": "sensor.bureau_thermometre_bureau",
+    "unit_of_measurement": "°C",
+    "device_class": "temperature",
+    "friendly_name": "Bureau Temperature min"
+   }
+  },
+  "sensor.vivid_pilot_salle_de_bain_energy": {
+   "entity_id": "sensor.vivid_pilot_salle_de_bain_energy",
+   "state": "0.0",
+   "last_changed": "2026-11-13T17:12:32.138860+00:00",
+   "attributes": {
+    "state_class": "total_increasing",
+    "vivid_pilot_node": "salle_de_bain",
+    "vivid_pilot_kind": "energy",
+    "unit_of_measurement": "kWh",
+    "device_class": "energy",
+    "friendly_name": "Salle de bain Energy"
+   }
+  },
+  "sensor.vivid_pilot_bureau_power": {
+   "entity_id": "sensor.vivid_pilot_bureau_power",
+   "state": "9.8",
+   "last_changed": "2026-11-13T17:12:32.139873+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "bureau",
+    "vivid_pilot_kind": "power",
+    "unit_of_measurement": "W",
+    "device_class": "power",
+    "friendly_name": "Bureau Power"
+   }
+  },
+  "sensor.vivid_pilot_salon_pressure": {
+   "entity_id": "sensor.vivid_pilot_salon_pressure",
+   "state": "1014.0",
+   "last_changed": "2026-11-13T17:12:32.140938+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "salon__pressure",
+    "vivid_pilot_kind": "mean",
+    "entity_id": [
+     "sensor.salon_station_d_air_4"
+    ],
+    "unit_of_measurement": "hPa",
+    "device_class": "atmospheric_pressure",
+    "friendly_name": "Salon Pressure"
+   }
+  },
+  "sensor.vivid_pilot_chambre_energy": {
+   "entity_id": "sensor.vivid_pilot_chambre_energy",
+   "state": "0.0",
+   "last_changed": "2026-11-13T17:12:32.141953+00:00",
+   "attributes": {
+    "state_class": "total_increasing",
+    "vivid_pilot_node": "chambre",
+    "vivid_pilot_kind": "energy",
+    "unit_of_measurement": "kWh",
+    "device_class": "energy",
+    "friendly_name": "Chambre Energy"
+   }
+  },
+  "sensor.vivid_pilot_all_temperature_min": {
+   "entity_id": "sensor.vivid_pilot_all_temperature_min",
+   "state": "19.2",
+   "last_changed": "2026-11-13T17:12:32.142959+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "all__temperature",
+    "vivid_pilot_kind": "min",
+    "entity_id": [
+     "sensor.bureau_thermometre_bureau",
+     "sensor.chambre_thermometre",
+     "sensor.cuisine_thermometre_cuisine",
+     "sensor.salon_station_d_air"
+    ],
+    "source": "sensor.chambre_thermometre",
+    "unit_of_measurement": "°C",
+    "device_class": "temperature",
+    "friendly_name": "Maison Temperature min"
+   }
+  },
+  "sensor.vivid_pilot_salon_canape_leds_power": {
+   "entity_id": "sensor.vivid_pilot_salon_canape_leds_power",
+   "state": "0.0",
+   "last_changed": "2026-11-13T17:12:32.143965+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "salon",
+    "vivid_pilot_kind": "strip_power",
+    "light": "light.salon_canape_leds",
+    "current_sensor": "sensor.salon_canape_leds",
+    "voltage": 12.0,
+    "unit_of_measurement": "W",
+    "device_class": "power",
+    "friendly_name": "Salon Puissance Canapé LEDs"
+   }
+  },
+  "sensor.vivid_pilot_chambre_led_energy": {
+   "entity_id": "sensor.vivid_pilot_chambre_led_energy",
+   "state": "0.0",
+   "last_changed": "2026-11-13T17:12:32.144992+00:00",
+   "attributes": {
+    "state_class": "total_increasing",
+    "vivid_pilot_node": "chambre__led",
+    "vivid_pilot_kind": "energy",
+    "unit_of_measurement": "kWh",
+    "device_class": "energy",
+    "friendly_name": "Chambre LEDs energy"
+   }
+  },
+  "sensor.vivid_pilot_cuisine_switch_power": {
+   "entity_id": "sensor.vivid_pilot_cuisine_switch_power",
+   "state": "0.0",
+   "last_changed": "2026-11-13T17:12:32.146034+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "cuisine__switch",
+    "vivid_pilot_kind": "power",
+    "unit_of_measurement": "W",
+    "device_class": "power",
+    "friendly_name": "Cuisine Switches power"
+   }
+  },
+  "sensor.vivid_pilot_salle_de_bain_power": {
+   "entity_id": "sensor.vivid_pilot_salle_de_bain_power",
+   "state": "0.0",
+   "last_changed": "2026-11-13T17:12:32.147055+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "salle_de_bain",
+    "vivid_pilot_kind": "power",
+    "unit_of_measurement": "W",
+    "device_class": "power",
+    "friendly_name": "Salle de bain Power"
+   }
+  },
+  "sensor.vivid_pilot_chambre_temperature": {
+   "entity_id": "sensor.vivid_pilot_chambre_temperature",
+   "state": "19.2",
+   "last_changed": "2026-11-13T17:12:32.148292+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "chambre__temperature",
+    "vivid_pilot_kind": "mean",
+    "entity_id": [
+     "sensor.chambre_thermometre"
+    ],
+    "unit_of_measurement": "°C",
+    "device_class": "temperature",
+    "friendly_name": "Chambre Temperature"
+   }
+  },
+  "sensor.vivid_pilot_cuisine_power": {
+   "entity_id": "sensor.vivid_pilot_cuisine_power",
+   "state": "0.0",
+   "last_changed": "2026-11-13T17:12:32.149451+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "cuisine",
+    "vivid_pilot_kind": "power",
+    "unit_of_measurement": "W",
+    "device_class": "power",
+    "friendly_name": "Cuisine Power"
+   }
+  },
+  "sensor.vivid_pilot_cuisine_switch_energy": {
+   "entity_id": "sensor.vivid_pilot_cuisine_switch_energy",
+   "state": "0.0",
+   "last_changed": "2026-11-13T17:12:32.150581+00:00",
+   "attributes": {
+    "state_class": "total_increasing",
+    "vivid_pilot_node": "cuisine__switch",
+    "vivid_pilot_kind": "energy",
+    "unit_of_measurement": "kWh",
+    "device_class": "energy",
+    "friendly_name": "Cuisine Switches energy"
+   }
+  },
+  "sensor.vivid_pilot_salon_tv_leds_power": {
+   "entity_id": "sensor.vivid_pilot_salon_tv_leds_power",
+   "state": "7.0",
+   "last_changed": "2026-11-13T17:12:32.151587+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "salon",
+    "vivid_pilot_kind": "strip_power",
+    "light": "light.salon_tv_leds",
+    "current_sensor": "sensor.salon_tv_leds",
+    "voltage": 5.0,
+    "unit_of_measurement": "W",
+    "device_class": "power",
+    "friendly_name": "Salon Puissance TV LEDs"
+   }
+  },
+  "sensor.vivid_pilot_salle_de_bain_humidity_min": {
+   "entity_id": "sensor.vivid_pilot_salle_de_bain_humidity_min",
+   "state": "68.0",
+   "last_changed": "2026-11-13T17:12:32.152225+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "salle_de_bain__humidity",
+    "vivid_pilot_kind": "min",
+    "entity_id": [
+     "sensor.salle_de_bain_hygrometre"
+    ],
+    "source": "sensor.salle_de_bain_hygrometre",
+    "unit_of_measurement": "%",
+    "device_class": "humidity",
+    "friendly_name": "Salle de bain Humidity min"
+   }
+  },
+  "sensor.vivid_pilot_all_pressure_max": {
+   "entity_id": "sensor.vivid_pilot_all_pressure_max",
+   "state": "1014.0",
+   "last_changed": "2026-11-13T17:12:32.153301+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "all__pressure",
+    "vivid_pilot_kind": "max",
+    "entity_id": [
+     "sensor.salon_station_d_air_4"
+    ],
+    "source": "sensor.salon_station_d_air_4",
+    "unit_of_measurement": "hPa",
+    "device_class": "atmospheric_pressure",
+    "friendly_name": "Maison Pressure max"
+   }
+  },
+  "sensor.vivid_pilot_all_humidity": {
+   "entity_id": "sensor.vivid_pilot_all_humidity",
+   "state": "55.33",
+   "last_changed": "2026-11-13T17:12:32.153903+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "all__humidity",
+    "vivid_pilot_kind": "mean",
+    "entity_id": [
+     "sensor.chambre_thermometre_2",
+     "sensor.salle_de_bain_hygrometre",
+     "sensor.salon_station_d_air_2"
+    ],
+    "unit_of_measurement": "%",
+    "device_class": "humidity",
+    "friendly_name": "Maison Humidity"
+   }
+  },
+  "sensor.vivid_pilot_salon_illuminance": {
+   "entity_id": "sensor.vivid_pilot_salon_illuminance",
+   "state": "180.0",
+   "last_changed": "2026-11-13T17:12:32.154457+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "salon__illuminance",
+    "vivid_pilot_kind": "mean",
+    "entity_id": [
+     "sensor.salon_presence"
+    ],
+    "unit_of_measurement": "lx",
+    "device_class": "illuminance",
+    "friendly_name": "Salon Illuminance"
+   }
+  },
+  "sensor.vivid_pilot_salon_illuminance_min": {
+   "entity_id": "sensor.vivid_pilot_salon_illuminance_min",
+   "state": "180.0",
+   "last_changed": "2026-11-13T17:12:32.155041+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "salon__illuminance",
+    "vivid_pilot_kind": "min",
+    "entity_id": [
+     "sensor.salon_presence"
+    ],
+    "source": "sensor.salon_presence",
+    "unit_of_measurement": "lx",
+    "device_class": "illuminance",
+    "friendly_name": "Salon Illuminance min"
+   }
+  },
+  "sensor.vivid_pilot_all_illuminance": {
+   "entity_id": "sensor.vivid_pilot_all_illuminance",
+   "state": "180.0",
+   "last_changed": "2026-11-13T17:12:32.155576+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "all__illuminance",
+    "vivid_pilot_kind": "mean",
+    "entity_id": [
+     "sensor.salon_presence"
+    ],
+    "unit_of_measurement": "lx",
+    "device_class": "illuminance",
+    "friendly_name": "Maison Illuminance"
+   }
+  },
+  "sensor.vivid_pilot_salon_humidity_min": {
+   "entity_id": "sensor.vivid_pilot_salon_humidity_min",
+   "state": "46.0",
+   "last_changed": "2026-11-13T17:12:32.156167+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "salon__humidity",
+    "vivid_pilot_kind": "min",
+    "entity_id": [
+     "sensor.salon_station_d_air_2"
+    ],
+    "source": "sensor.salon_station_d_air_2",
+    "unit_of_measurement": "%",
+    "device_class": "humidity",
+    "friendly_name": "Salon Humidity min"
+   }
+  },
+  "sensor.vivid_pilot_all_pressure": {
+   "entity_id": "sensor.vivid_pilot_all_pressure",
+   "state": "1014.0",
+   "last_changed": "2026-11-13T17:12:32.157222+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "all__pressure",
+    "vivid_pilot_kind": "mean",
+    "entity_id": [
+     "sensor.salon_station_d_air_4"
+    ],
+    "unit_of_measurement": "hPa",
+    "device_class": "atmospheric_pressure",
+    "friendly_name": "Maison Pressure"
+   }
+  },
+  "sensor.vivid_pilot_salle_de_bain_led_energy": {
+   "entity_id": "sensor.vivid_pilot_salle_de_bain_led_energy",
+   "state": "0.0",
+   "last_changed": "2026-11-13T17:12:32.158327+00:00",
+   "attributes": {
+    "state_class": "total_increasing",
+    "vivid_pilot_node": "salle_de_bain__led",
+    "vivid_pilot_kind": "energy",
+    "unit_of_measurement": "kWh",
+    "device_class": "energy",
+    "friendly_name": "Salle de bain LEDs energy"
+   }
+  },
+  "sensor.vivid_pilot_salon_pressure_max": {
+   "entity_id": "sensor.vivid_pilot_salon_pressure_max",
+   "state": "1014.0",
+   "last_changed": "2026-11-13T17:12:32.159462+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "salon__pressure",
+    "vivid_pilot_kind": "max",
+    "entity_id": [
+     "sensor.salon_station_d_air_4"
+    ],
+    "source": "sensor.salon_station_d_air_4",
+    "unit_of_measurement": "hPa",
+    "device_class": "atmospheric_pressure",
+    "friendly_name": "Salon Pressure max"
+   }
+  },
+  "sensor.vivid_pilot_all_co2": {
+   "entity_id": "sensor.vivid_pilot_all_co2",
+   "state": "712.0",
+   "last_changed": "2026-11-13T17:12:32.160078+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "all__co2",
+    "vivid_pilot_kind": "mean",
+    "entity_id": [
+     "sensor.salon_station_d_air_3"
+    ],
+    "unit_of_measurement": "ppm",
+    "device_class": "carbon_dioxide",
+    "friendly_name": "Maison CO2"
+   }
+  },
+  "sensor.vivid_pilot_cuisine_temperature": {
+   "entity_id": "sensor.vivid_pilot_cuisine_temperature",
+   "state": "22.1",
+   "last_changed": "2026-11-13T17:12:32.161117+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "cuisine__temperature",
+    "vivid_pilot_kind": "mean",
+    "entity_id": [
+     "sensor.cuisine_thermometre_cuisine"
+    ],
+    "unit_of_measurement": "°C",
+    "device_class": "temperature",
+    "friendly_name": "Cuisine Temperature"
+   }
+  },
+  "sensor.vivid_pilot_chambre_humidity": {
+   "entity_id": "sensor.vivid_pilot_chambre_humidity",
+   "state": "52.0",
+   "last_changed": "2026-11-13T17:12:32.162643+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "chambre__humidity",
+    "vivid_pilot_kind": "mean",
+    "entity_id": [
+     "sensor.chambre_thermometre_2"
+    ],
+    "unit_of_measurement": "%",
+    "device_class": "humidity",
+    "friendly_name": "Chambre Humidity"
+   }
+  },
+  "sensor.vivid_pilot_all_energy": {
+   "entity_id": "sensor.vivid_pilot_all_energy",
+   "state": "0.0",
+   "last_changed": "2026-11-13T17:12:32.163642+00:00",
+   "attributes": {
+    "state_class": "total_increasing",
+    "vivid_pilot_node": "all",
+    "vivid_pilot_kind": "energy",
+    "unit_of_measurement": "kWh",
+    "device_class": "energy",
+    "friendly_name": "Maison Energy"
+   }
+  },
+  "sensor.vivid_pilot_salon_power": {
+   "entity_id": "sensor.vivid_pilot_salon_power",
+   "state": "96.5",
+   "last_changed": "2026-11-13T17:12:32.164460+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "salon",
+    "vivid_pilot_kind": "power",
+    "unit_of_measurement": "W",
+    "device_class": "power",
+    "friendly_name": "Salon Power"
+   }
+  },
+  "sensor.vivid_pilot_chambre_battery": {
+   "entity_id": "sensor.vivid_pilot_chambre_battery",
+   "state": "14.0",
+   "last_changed": "2026-11-13T17:12:32.164847+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "chambre__battery",
+    "vivid_pilot_kind": "battery",
+    "entity_id": [
+     "sensor.chambre_thermometre_3"
+    ],
+    "source": "sensor.chambre_thermometre_3",
+    "low": [
+     "sensor.chambre_thermometre_3"
+    ],
+    "low_count": 1,
+    "low_threshold": 20.0,
+    "unit_of_measurement": "%",
+    "device_class": "battery",
+    "friendly_name": "Chambre Lowest battery"
+   }
+  },
+  "sensor.vivid_pilot_all_illuminance_min": {
+   "entity_id": "sensor.vivid_pilot_all_illuminance_min",
+   "state": "180.0",
+   "last_changed": "2026-11-13T17:12:32.165254+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "all__illuminance",
+    "vivid_pilot_kind": "min",
+    "entity_id": [
+     "sensor.salon_presence"
+    ],
+    "source": "sensor.salon_presence",
+    "unit_of_measurement": "lx",
+    "device_class": "illuminance",
+    "friendly_name": "Maison Illuminance min"
+   }
+  },
+  "sensor.vivid_pilot_salle_de_bain_miroir_salle_de_bain_power": {
+   "entity_id": "sensor.vivid_pilot_salle_de_bain_miroir_salle_de_bain_power",
+   "state": "0.0",
+   "last_changed": "2026-11-13T17:12:32.165951+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "salle_de_bain",
+    "vivid_pilot_kind": "strip_power",
+    "light": "light.salle_de_bain_miroir_salle_de_bain",
+    "current_sensor": "sensor.salle_de_bain_miroir_salle_de_bain",
+    "voltage": 5.0,
+    "unit_of_measurement": "W",
+    "device_class": "power",
+    "friendly_name": "Salle de bain Puissance Miroir salle de bain"
+   }
+  },
+  "sensor.vivid_pilot_salon_switch_power": {
+   "entity_id": "sensor.vivid_pilot_salon_switch_power",
+   "state": "86.4",
+   "last_changed": "2026-11-13T17:12:32.166739+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "salon__switch",
+    "vivid_pilot_kind": "power",
+    "unit_of_measurement": "W",
+    "device_class": "power",
+    "friendly_name": "Salon Switches power"
+   }
+  },
+  "sensor.vivid_pilot_bureau_temperature_max": {
+   "entity_id": "sensor.vivid_pilot_bureau_temperature_max",
+   "state": "20.6",
+   "last_changed": "2026-11-13T17:12:32.167715+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "bureau__temperature",
+    "vivid_pilot_kind": "max",
+    "entity_id": [
+     "sensor.bureau_thermometre_bureau"
+    ],
+    "source": "sensor.bureau_thermometre_bureau",
+    "unit_of_measurement": "°C",
+    "device_class": "temperature",
+    "friendly_name": "Bureau Temperature max"
+   }
+  },
+  "sensor.vivid_pilot_salle_de_bain_humidity_max": {
+   "entity_id": "sensor.vivid_pilot_salle_de_bain_humidity_max",
+   "state": "68.0",
+   "last_changed": "2026-11-13T17:12:32.168528+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "salle_de_bain__humidity",
+    "vivid_pilot_kind": "max",
+    "entity_id": [
+     "sensor.salle_de_bain_hygrometre"
+    ],
+    "source": "sensor.salle_de_bain_hygrometre",
+    "unit_of_measurement": "%",
+    "device_class": "humidity",
+    "friendly_name": "Salle de bain Humidity max"
+   }
+  },
+  "sensor.vivid_pilot_salon_temperature_min": {
+   "entity_id": "sensor.vivid_pilot_salon_temperature_min",
+   "state": "21.4",
+   "last_changed": "2026-11-13T17:12:32.169533+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "salon__temperature",
+    "vivid_pilot_kind": "min",
+    "entity_id": [
+     "sensor.salon_station_d_air"
+    ],
+    "source": "sensor.salon_station_d_air",
+    "unit_of_measurement": "°C",
+    "device_class": "temperature",
+    "friendly_name": "Salon Temperature min"
+   }
+  },
+  "sensor.vivid_pilot_salon_co2_max": {
+   "entity_id": "sensor.vivid_pilot_salon_co2_max",
+   "state": "712.0",
+   "last_changed": "2026-11-13T17:12:32.170078+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "salon__co2",
+    "vivid_pilot_kind": "max",
+    "entity_id": [
+     "sensor.salon_station_d_air_3"
+    ],
+    "source": "sensor.salon_station_d_air_3",
+    "unit_of_measurement": "ppm",
+    "device_class": "carbon_dioxide",
+    "friendly_name": "Salon CO2 max"
+   }
+  },
+  "sensor.vivid_pilot_salon_switch_energy": {
+   "entity_id": "sensor.vivid_pilot_salon_switch_energy",
+   "state": "0.0",
+   "last_changed": "2026-11-13T17:12:32.171116+00:00",
+   "attributes": {
+    "state_class": "total_increasing",
+    "vivid_pilot_node": "salon__switch",
+    "vivid_pilot_kind": "energy",
+    "unit_of_measurement": "kWh",
+    "device_class": "energy",
+    "friendly_name": "Salon Switches energy"
+   }
+  },
+  "sensor.vivid_pilot_chambre_power": {
+   "entity_id": "sensor.vivid_pilot_chambre_power",
+   "state": "0.0",
+   "last_changed": "2026-11-13T17:12:32.172129+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "chambre",
+    "vivid_pilot_kind": "power",
+    "unit_of_measurement": "W",
+    "device_class": "power",
+    "friendly_name": "Chambre Power"
+   }
+  },
+  "sensor.vivid_pilot_salon_pressure_min": {
+   "entity_id": "sensor.vivid_pilot_salon_pressure_min",
+   "state": "1014.0",
+   "last_changed": "2026-11-13T17:12:32.173158+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "salon__pressure",
+    "vivid_pilot_kind": "min",
+    "entity_id": [
+     "sensor.salon_station_d_air_4"
+    ],
+    "source": "sensor.salon_station_d_air_4",
+    "unit_of_measurement": "hPa",
+    "device_class": "atmospheric_pressure",
+    "friendly_name": "Salon Pressure min"
+   }
+  },
+  "sensor.vivid_pilot_salon_illuminance_max": {
+   "entity_id": "sensor.vivid_pilot_salon_illuminance_max",
+   "state": "180.0",
+   "last_changed": "2026-11-13T17:12:32.173661+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "salon__illuminance",
+    "vivid_pilot_kind": "max",
+    "entity_id": [
+     "sensor.salon_presence"
+    ],
+    "source": "sensor.salon_presence",
+    "unit_of_measurement": "lx",
+    "device_class": "illuminance",
+    "friendly_name": "Salon Illuminance max"
+   }
+  },
+  "sensor.vivid_pilot_salon_energy": {
+   "entity_id": "sensor.vivid_pilot_salon_energy",
+   "state": "0.0",
+   "last_changed": "2026-11-13T17:12:32.174697+00:00",
+   "attributes": {
+    "state_class": "total_increasing",
+    "vivid_pilot_node": "salon",
+    "vivid_pilot_kind": "energy",
+    "unit_of_measurement": "kWh",
+    "device_class": "energy",
+    "friendly_name": "Salon Energy"
+   }
+  },
+  "sensor.vivid_pilot_all_temperature_max": {
+   "entity_id": "sensor.vivid_pilot_all_temperature_max",
+   "state": "22.1",
+   "last_changed": "2026-11-13T17:12:32.175749+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "all__temperature",
+    "vivid_pilot_kind": "max",
+    "entity_id": [
+     "sensor.bureau_thermometre_bureau",
+     "sensor.chambre_thermometre",
+     "sensor.cuisine_thermometre_cuisine",
+     "sensor.salon_station_d_air"
+    ],
+    "source": "sensor.cuisine_thermometre_cuisine",
+    "unit_of_measurement": "°C",
+    "device_class": "temperature",
+    "friendly_name": "Maison Temperature max"
+   }
+  },
+  "sensor.vivid_pilot_salon_temperature_max": {
+   "entity_id": "sensor.vivid_pilot_salon_temperature_max",
+   "state": "21.4",
+   "last_changed": "2026-11-13T17:12:32.176857+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "salon__temperature",
+    "vivid_pilot_kind": "max",
+    "entity_id": [
+     "sensor.salon_station_d_air"
+    ],
+    "source": "sensor.salon_station_d_air",
+    "unit_of_measurement": "°C",
+    "device_class": "temperature",
+    "friendly_name": "Salon Temperature max"
+   }
+  },
+  "sensor.vivid_pilot_all_co2_min": {
+   "entity_id": "sensor.vivid_pilot_all_co2_min",
+   "state": "712.0",
+   "last_changed": "2026-11-13T17:12:32.177390+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "all__co2",
+    "vivid_pilot_kind": "min",
+    "entity_id": [
+     "sensor.salon_station_d_air_3"
+    ],
+    "source": "sensor.salon_station_d_air_3",
+    "unit_of_measurement": "ppm",
+    "device_class": "carbon_dioxide",
+    "friendly_name": "Maison CO2 min"
+   }
+  },
+  "sensor.vivid_pilot_salon_led_power": {
+   "entity_id": "sensor.vivid_pilot_salon_led_power",
+   "state": "10.1",
+   "last_changed": "2026-11-13T17:12:32.178355+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "salon__led",
+    "vivid_pilot_kind": "power",
+    "unit_of_measurement": "W",
+    "device_class": "power",
+    "friendly_name": "Salon LEDs power"
+   }
+  },
+  "sensor.vivid_pilot_salon_temperature": {
+   "entity_id": "sensor.vivid_pilot_salon_temperature",
+   "state": "21.4",
+   "last_changed": "2026-11-13T17:12:32.179356+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "salon__temperature",
+    "vivid_pilot_kind": "mean",
+    "entity_id": [
+     "sensor.salon_station_d_air"
+    ],
+    "unit_of_measurement": "°C",
+    "device_class": "temperature",
+    "friendly_name": "Salon Temperature"
+   }
+  },
+  "sensor.vivid_pilot_all_power": {
+   "entity_id": "sensor.vivid_pilot_all_power",
+   "state": "106.3",
+   "last_changed": "2026-11-13T17:12:32.180373+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "all",
+    "vivid_pilot_kind": "power",
+    "unit_of_measurement": "W",
+    "device_class": "power",
+    "friendly_name": "Maison Power"
+   }
+  },
+  "sensor.vivid_pilot_all_battery": {
+   "entity_id": "sensor.vivid_pilot_all_battery",
+   "state": "14.0",
+   "last_changed": "2026-11-13T17:12:32.180955+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "all__battery",
+    "vivid_pilot_kind": "battery",
+    "entity_id": [
+     "sensor.chambre_thermometre_3",
+     "sensor.salon_fenetre",
+     "sensor.salon_porte_d_entree"
+    ],
+    "source": "sensor.chambre_thermometre_3",
+    "low": [
+     "sensor.chambre_thermometre_3"
+    ],
+    "low_count": 1,
+    "low_threshold": 20.0,
+    "unit_of_measurement": "%",
+    "device_class": "battery",
+    "friendly_name": "Maison Lowest battery"
+   }
+  },
+  "sensor.vivid_pilot_chambre_led_power": {
+   "entity_id": "sensor.vivid_pilot_chambre_led_power",
+   "state": "0.0",
+   "last_changed": "2026-11-13T17:12:32.181981+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "chambre__led",
+    "vivid_pilot_kind": "power",
+    "unit_of_measurement": "W",
+    "device_class": "power",
+    "friendly_name": "Chambre LEDs power"
+   }
+  },
+  "sensor.vivid_pilot_all_illuminance_max": {
+   "entity_id": "sensor.vivid_pilot_all_illuminance_max",
+   "state": "180.0",
+   "last_changed": "2026-11-13T17:12:32.182544+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "all__illuminance",
+    "vivid_pilot_kind": "max",
+    "entity_id": [
+     "sensor.salon_presence"
+    ],
+    "source": "sensor.salon_presence",
+    "unit_of_measurement": "lx",
+    "device_class": "illuminance",
+    "friendly_name": "Maison Illuminance max"
+   }
+  },
+  "sensor.vivid_pilot_all_pressure_min": {
+   "entity_id": "sensor.vivid_pilot_all_pressure_min",
+   "state": "1014.0",
+   "last_changed": "2026-11-13T17:12:32.183593+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "all__pressure",
+    "vivid_pilot_kind": "min",
+    "entity_id": [
+     "sensor.salon_station_d_air_4"
+    ],
+    "source": "sensor.salon_station_d_air_4",
+    "unit_of_measurement": "hPa",
+    "device_class": "atmospheric_pressure",
+    "friendly_name": "Maison Pressure min"
+   }
+  },
+  "sensor.vivid_pilot_bureau_temperature": {
+   "entity_id": "sensor.vivid_pilot_bureau_temperature",
+   "state": "20.6",
+   "last_changed": "2026-11-13T17:12:32.184637+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "bureau__temperature",
+    "vivid_pilot_kind": "mean",
+    "entity_id": [
+     "sensor.bureau_thermometre_bureau"
+    ],
+    "unit_of_measurement": "°C",
+    "device_class": "temperature",
+    "friendly_name": "Bureau Temperature"
+   }
+  },
+  "sensor.vivid_pilot_salle_de_bain_humidity": {
+   "entity_id": "sensor.vivid_pilot_salle_de_bain_humidity",
+   "state": "68.0",
+   "last_changed": "2026-11-13T17:12:32.185202+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "salle_de_bain__humidity",
+    "vivid_pilot_kind": "mean",
+    "entity_id": [
+     "sensor.salle_de_bain_hygrometre"
+    ],
+    "unit_of_measurement": "%",
+    "device_class": "humidity",
+    "friendly_name": "Salle de bain Humidity"
+   }
+  },
+  "sensor.vivid_pilot_cuisine_temperature_max": {
+   "entity_id": "sensor.vivid_pilot_cuisine_temperature_max",
+   "state": "22.1",
+   "last_changed": "2026-11-13T17:12:32.186206+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "cuisine__temperature",
+    "vivid_pilot_kind": "max",
+    "entity_id": [
+     "sensor.cuisine_thermometre_cuisine"
+    ],
+    "source": "sensor.cuisine_thermometre_cuisine",
+    "unit_of_measurement": "°C",
+    "device_class": "temperature",
+    "friendly_name": "Cuisine Temperature max"
+   }
+  },
+  "sensor.vivid_pilot_salon_led_energy": {
+   "entity_id": "sensor.vivid_pilot_salon_led_energy",
+   "state": "0.0",
+   "last_changed": "2026-11-13T17:12:32.187183+00:00",
+   "attributes": {
+    "state_class": "total_increasing",
+    "vivid_pilot_node": "salon__led",
+    "vivid_pilot_kind": "energy",
+    "unit_of_measurement": "kWh",
+    "device_class": "energy",
+    "friendly_name": "Salon LEDs energy"
+   }
+  },
+  "sensor.vivid_pilot_all_temperature": {
+   "entity_id": "sensor.vivid_pilot_all_temperature",
+   "state": "20.82",
+   "last_changed": "2026-11-13T17:12:32.188017+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "all__temperature",
+    "vivid_pilot_kind": "mean",
+    "entity_id": [
+     "sensor.bureau_thermometre_bureau",
+     "sensor.chambre_thermometre",
+     "sensor.cuisine_thermometre_cuisine",
+     "sensor.salon_station_d_air"
+    ],
+    "unit_of_measurement": "°C",
+    "device_class": "temperature",
+    "friendly_name": "Maison Temperature"
+   }
+  },
+  "sensor.vivid_pilot_bureau_energy": {
+   "entity_id": "sensor.vivid_pilot_bureau_energy",
+   "state": "0.0",
+   "last_changed": "2026-11-13T17:12:32.188753+00:00",
+   "attributes": {
+    "state_class": "total_increasing",
+    "vivid_pilot_node": "bureau",
+    "vivid_pilot_kind": "energy",
+    "unit_of_measurement": "kWh",
+    "device_class": "energy",
+    "friendly_name": "Bureau Energy"
+   }
+  },
+  "sensor.vivid_pilot_chambre_temperature_max": {
+   "entity_id": "sensor.vivid_pilot_chambre_temperature_max",
+   "state": "19.2",
+   "last_changed": "2026-11-13T17:12:32.189548+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "chambre__temperature",
+    "vivid_pilot_kind": "max",
+    "entity_id": [
+     "sensor.chambre_thermometre"
+    ],
+    "source": "sensor.chambre_thermometre",
+    "unit_of_measurement": "°C",
+    "device_class": "temperature",
+    "friendly_name": "Chambre Temperature max"
+   }
+  },
+  "light.vivid_pilot_all_light": {
+   "entity_id": "light.vivid_pilot_all_light",
+   "state": "on",
+   "last_changed": "2026-11-13T17:12:32.266804+00:00",
+   "attributes": {
+    "min_color_temp_kelvin": 2000,
+    "max_color_temp_kelvin": 6500,
+    "supported_color_modes": [
+     "color_temp"
+    ],
+    "color_mode": "color_temp",
+    "brightness": 230,
+    "color_temp_kelvin": null,
+    "hs_color": null,
+    "rgb_color": null,
+    "xy_color": null,
+    "vivid_pilot_node": "all__light",
+    "vivid_pilot_kind": "group",
+    "entity_id": [
+     "switch.bureau_lampe_de_bureau",
+     "light.chambre_lampe_de_chevet",
+     "light.cuisine_plafonnier",
+     "light.salon_lampadaire"
+    ],
+    "friendly_name": "Maison Lamps",
+    "supported_features": 32
+   }
+  },
+  "light.vivid_pilot_salle_de_bain_led": {
+   "entity_id": "light.vivid_pilot_salle_de_bain_led",
+   "state": "off",
+   "last_changed": "2026-11-13T17:12:32.202520+00:00",
+   "attributes": {
+    "supported_color_modes": [
+     "rgb"
+    ],
+    "color_mode": null,
+    "brightness": null,
+    "hs_color": null,
+    "rgb_color": null,
+    "xy_color": null,
+    "vivid_pilot_node": "salle_de_bain__led",
+    "vivid_pilot_kind": "group",
+    "entity_id": [
+     "light.salle_de_bain_miroir_salle_de_bain"
+    ],
+    "friendly_name": "Salle de bain LEDs",
+    "supported_features": 32
+   }
+  },
+  "light.vivid_pilot_chambre_light": {
+   "entity_id": "light.vivid_pilot_chambre_light",
+   "state": "off",
+   "last_changed": "2026-11-13T17:12:32.203133+00:00",
+   "attributes": {
+    "min_color_temp_kelvin": 2000,
+    "max_color_temp_kelvin": 6500,
+    "supported_color_modes": [
+     "color_temp"
+    ],
+    "color_mode": null,
+    "brightness": null,
+    "color_temp_kelvin": null,
+    "hs_color": null,
+    "rgb_color": null,
+    "xy_color": null,
+    "vivid_pilot_node": "chambre__light",
+    "vivid_pilot_kind": "group",
+    "entity_id": [
+     "light.chambre_lampe_de_chevet"
+    ],
+    "friendly_name": "Chambre Lamps",
+    "supported_features": 32
+   }
+  },
+  "light.vivid_pilot_cuisine_light": {
+   "entity_id": "light.vivid_pilot_cuisine_light",
+   "state": "on",
+   "last_changed": "2026-11-13T17:12:32.266811+00:00",
+   "attributes": {
+    "min_color_temp_kelvin": 2000,
+    "max_color_temp_kelvin": 6500,
+    "supported_color_modes": [
+     "color_temp"
+    ],
+    "color_mode": "color_temp",
+    "brightness": 255,
+    "color_temp_kelvin": null,
+    "hs_color": null,
+    "rgb_color": null,
+    "xy_color": null,
+    "vivid_pilot_node": "cuisine__light",
+    "vivid_pilot_kind": "group",
+    "entity_id": [
+     "light.cuisine_plafonnier"
+    ],
+    "friendly_name": "Cuisine Lamps",
+    "supported_features": 32
+   }
+  },
+  "light.vivid_pilot_salon_light": {
+   "entity_id": "light.vivid_pilot_salon_light",
+   "state": "on",
+   "last_changed": "2026-11-13T17:12:32.266817+00:00",
+   "attributes": {
+    "min_color_temp_kelvin": 2000,
+    "max_color_temp_kelvin": 6500,
+    "supported_color_modes": [
+     "color_temp"
+    ],
+    "color_mode": "color_temp",
+    "brightness": 180,
+    "color_temp_kelvin": null,
+    "hs_color": null,
+    "rgb_color": null,
+    "xy_color": null,
+    "vivid_pilot_node": "salon__light",
+    "vivid_pilot_kind": "group",
+    "entity_id": [
+     "light.salon_lampadaire"
+    ],
+    "friendly_name": "Salon Lamps",
+    "supported_features": 32
+   }
+  },
+  "light.vivid_pilot_chambre_led": {
+   "entity_id": "light.vivid_pilot_chambre_led",
+   "state": "off",
+   "last_changed": "2026-11-13T17:12:32.205017+00:00",
+   "attributes": {
+    "supported_color_modes": [
+     "rgb"
+    ],
+    "color_mode": null,
+    "brightness": null,
+    "hs_color": null,
+    "rgb_color": null,
+    "xy_color": null,
+    "vivid_pilot_node": "chambre__led",
+    "vivid_pilot_kind": "group",
+    "entity_id": [
+     "light.chambre_miroir_leds"
+    ],
+    "friendly_name": "Chambre LEDs",
+    "supported_features": 32
+   }
+  },
+  "light.vivid_pilot_all_led": {
+   "entity_id": "light.vivid_pilot_all_led",
+   "state": "on",
+   "last_changed": "2026-11-13T17:12:32.266822+00:00",
+   "attributes": {
+    "supported_color_modes": [
+     "rgb"
+    ],
+    "color_mode": "rgb",
+    "brightness": 170,
+    "hs_color": [
+     308.205,
+     59.694
+    ],
+    "rgb_color": [
+     196,
+     79,
+     180
+    ],
+    "xy_color": [
+     0.397,
+     0.203
+    ],
+    "vivid_pilot_node": "all__led",
+    "vivid_pilot_kind": "group",
+    "entity_id": [
+     "light.chambre_miroir_leds",
+     "light.salle_de_bain_miroir_salle_de_bain",
+     "light.salon_buffet_leds",
+     "light.salon_canape_leds",
+     "light.salon_tv_leds"
+    ],
+    "friendly_name": "Maison LEDs",
+    "supported_features": 32
+   }
+  },
+  "light.vivid_pilot_salon_led": {
+   "entity_id": "light.vivid_pilot_salon_led",
+   "state": "on",
+   "last_changed": "2026-11-13T17:12:32.266829+00:00",
+   "attributes": {
+    "supported_color_modes": [
+     "rgb"
+    ],
+    "color_mode": "rgb",
+    "brightness": 170,
+    "hs_color": [
+     308.205,
+     59.694
+    ],
+    "rgb_color": [
+     196,
+     79,
+     180
+    ],
+    "xy_color": [
+     0.397,
+     0.203
+    ],
+    "vivid_pilot_node": "salon__led",
+    "vivid_pilot_kind": "group",
+    "entity_id": [
+     "light.salon_buffet_leds",
+     "light.salon_canape_leds",
+     "light.salon_tv_leds"
+    ],
+    "friendly_name": "Salon LEDs",
+    "supported_features": 32
+   }
+  },
+  "binary_sensor.vivid_pilot_all_presence": {
+   "entity_id": "binary_sensor.vivid_pilot_all_presence",
+   "state": "on",
+   "last_changed": "2026-11-13T17:12:32.209442+00:00",
+   "attributes": {
+    "vivid_pilot_node": "all__presence",
+    "vivid_pilot_kind": "any",
+    "count_on": 1,
+    "members_on": [
+     "binary_sensor.salon_presence"
+    ],
+    "entity_id": [
+     "binary_sensor.salon_presence"
+    ],
+    "device_class": "occupancy",
+    "friendly_name": "Maison Presence"
+   }
+  },
+  "binary_sensor.vivid_pilot_chambre_window": {
+   "entity_id": "binary_sensor.vivid_pilot_chambre_window",
+   "state": "off",
+   "last_changed": "2026-11-13T17:12:32.210022+00:00",
+   "attributes": {
+    "vivid_pilot_node": "chambre__window",
+    "vivid_pilot_kind": "any",
+    "count_on": 0,
+    "members_on": [],
+    "entity_id": [
+     "binary_sensor.chambre_fenetre_chambre"
+    ],
+    "device_class": "window",
+    "friendly_name": "Chambre Windows"
+   }
+  },
+  "binary_sensor.vivid_pilot_bureau_door": {
+   "entity_id": "binary_sensor.vivid_pilot_bureau_door",
+   "state": "on",
+   "last_changed": "2026-11-13T17:12:32.210512+00:00",
+   "attributes": {
+    "vivid_pilot_node": "bureau__door",
+    "vivid_pilot_kind": "any",
+    "count_on": 1,
+    "members_on": [
+     "binary_sensor.bureau_porte_bureau"
+    ],
+    "entity_id": [
+     "binary_sensor.bureau_porte_bureau"
+    ],
+    "device_class": "door",
+    "friendly_name": "Bureau Doors"
+   }
+  },
+  "binary_sensor.vivid_pilot_all_door": {
+   "entity_id": "binary_sensor.vivid_pilot_all_door",
+   "state": "on",
+   "last_changed": "2026-11-13T17:12:32.211035+00:00",
+   "attributes": {
+    "vivid_pilot_node": "all__door",
+    "vivid_pilot_kind": "any",
+    "count_on": 1,
+    "members_on": [
+     "binary_sensor.bureau_porte_bureau"
+    ],
+    "entity_id": [
+     "binary_sensor.bureau_porte_bureau",
+     "binary_sensor.salon_porte_d_entree"
+    ],
+    "device_class": "door",
+    "friendly_name": "Maison Doors"
+   }
+  },
+  "binary_sensor.vivid_pilot_all_window": {
+   "entity_id": "binary_sensor.vivid_pilot_all_window",
+   "state": "on",
+   "last_changed": "2026-11-13T17:12:32.211523+00:00",
+   "attributes": {
+    "vivid_pilot_node": "all__window",
+    "vivid_pilot_kind": "any",
+    "count_on": 1,
+    "members_on": [
+     "binary_sensor.salon_fenetre"
+    ],
+    "entity_id": [
+     "binary_sensor.chambre_fenetre_chambre",
+     "binary_sensor.salon_fenetre"
+    ],
+    "device_class": "window",
+    "friendly_name": "Maison Windows"
+   }
+  },
+  "binary_sensor.vivid_pilot_salon_window": {
+   "entity_id": "binary_sensor.vivid_pilot_salon_window",
+   "state": "on",
+   "last_changed": "2026-11-13T17:12:32.212088+00:00",
+   "attributes": {
+    "vivid_pilot_node": "salon__window",
+    "vivid_pilot_kind": "any",
+    "count_on": 1,
+    "members_on": [
+     "binary_sensor.salon_fenetre"
+    ],
+    "entity_id": [
+     "binary_sensor.salon_fenetre"
+    ],
+    "device_class": "window",
+    "friendly_name": "Salon Windows"
+   }
+  },
+  "binary_sensor.vivid_pilot_salon_presence": {
+   "entity_id": "binary_sensor.vivid_pilot_salon_presence",
+   "state": "on",
+   "last_changed": "2026-11-13T17:12:32.212572+00:00",
+   "attributes": {
+    "vivid_pilot_node": "salon__presence",
+    "vivid_pilot_kind": "any",
+    "count_on": 1,
+    "members_on": [
+     "binary_sensor.salon_presence"
+    ],
+    "entity_id": [
+     "binary_sensor.salon_presence"
+    ],
+    "device_class": "occupancy",
+    "friendly_name": "Salon Presence"
+   }
+  },
+  "binary_sensor.vivid_pilot_salon_door": {
+   "entity_id": "binary_sensor.vivid_pilot_salon_door",
+   "state": "off",
+   "last_changed": "2026-11-13T17:12:32.213098+00:00",
+   "attributes": {
+    "vivid_pilot_node": "salon__door",
+    "vivid_pilot_kind": "any",
+    "count_on": 0,
+    "members_on": [],
+    "entity_id": [
+     "binary_sensor.salon_porte_d_entree"
+    ],
+    "device_class": "door",
+    "friendly_name": "Salon Doors"
+   }
+  },
+  "scene.vivid_pilot_bureau_light_state": {
+   "entity_id": "scene.vivid_pilot_bureau_light_state",
+   "state": "unknown",
+   "last_changed": "2026-11-13T17:12:32.229034+00:00",
+   "attributes": {
+    "vivid_pilot_node": "bureau__light",
+    "vivid_pilot_kind": "state",
+    "entity_id": [
+     "switch.bureau_lampe_de_bureau"
+    ],
+    "saved_at": null,
+    "stored_entities": 0,
+    "friendly_name": "Bureau Lamps state"
+   }
+  },
+  "sensor.vivid_pilot_bureau_light_power": {
+   "entity_id": "sensor.vivid_pilot_bureau_light_power",
+   "state": "9.8",
+   "last_changed": "2026-11-13T17:12:32.234029+00:00",
+   "attributes": {
+    "state_class": "measurement",
+    "vivid_pilot_node": "bureau__light",
+    "vivid_pilot_kind": "power",
+    "unit_of_measurement": "W",
+    "device_class": "power",
+    "friendly_name": "Bureau Lamps power"
+   }
+  },
+  "sensor.vivid_pilot_bureau_light_energy": {
+   "entity_id": "sensor.vivid_pilot_bureau_light_energy",
+   "state": "0.0",
+   "last_changed": "2026-11-13T17:12:32.234975+00:00",
+   "attributes": {
+    "state_class": "total_increasing",
+    "vivid_pilot_node": "bureau__light",
+    "vivid_pilot_kind": "energy",
+    "unit_of_measurement": "kWh",
+    "device_class": "energy",
+    "friendly_name": "Bureau Lamps energy"
+   }
+  },
+  "light.vivid_pilot_bureau_light": {
+   "entity_id": "light.vivid_pilot_bureau_light",
+   "state": "on",
+   "last_changed": "2026-11-13T17:12:32.266834+00:00",
+   "attributes": {
+    "supported_color_modes": [
+     "brightness"
+    ],
+    "color_mode": "brightness",
+    "brightness": 255,
+    "vivid_pilot_node": "bureau__light",
+    "vivid_pilot_kind": "group",
+    "entity_id": [
+     "switch.bureau_lampe_de_bureau"
+    ],
+    "friendly_name": "Bureau Lamps",
+    "supported_features": 32
+   }
+  }
+ },
+ "areas": {
+  "salle_de_bain": {
+   "area_id": "salle_de_bain",
+   "name": "Salle de bain"
+  },
+  "bureau": {
+   "area_id": "bureau",
+   "name": "Bureau"
+  },
+  "salon": {
+   "area_id": "salon",
+   "name": "Salon"
+  },
+  "cuisine": {
+   "area_id": "cuisine",
+   "name": "Cuisine"
+  },
+  "chambre": {
+   "area_id": "chambre",
+   "name": "Chambre"
+  }
+ },
+ "language": "fr"
+}
