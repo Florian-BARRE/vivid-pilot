@@ -76,9 +76,7 @@ class EntityCatalog:
             room_key = NodeKey(area_id=room.area_id)
             present = {node.category for node in room.categories}
             home_categories |= present
-            # Light groups and memories.
-            if present & {Category.LIGHT, Category.LED}:
-                specs.append(self._spec("light", "group", room_key, "room_lights", device))
+            # Groups, one per category: lights and LEDs stay distinct.
             for category, (platform, translation) in GROUPS.items():
                 if category in present:
                     key = NodeKey(area_id=room.area_id, category=category)
@@ -108,8 +106,10 @@ class EntityCatalog:
 
         # Home level.
         home_key = NodeKey()
-        if home_categories & {Category.LIGHT, Category.LED}:
-            specs.append(self._spec("light", "group", home_key, "home_lights", home))
+        for category, (platform, translation) in GROUPS.items():
+            if category in home_categories:
+                key = NodeKey(category=category)
+                specs.append(self._spec(platform, "group", key, translation, home))
         for category, translation in OPENINGS.items():
             if category in home_categories:
                 specs.append(

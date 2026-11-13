@@ -1,7 +1,7 @@
 {
   "name": "vivid-pilot-panel",
   "private": true,
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Sidebar panel of the Vivid Pilot Home Assistant integration",
   "license": "MIT",
   "type": "module",

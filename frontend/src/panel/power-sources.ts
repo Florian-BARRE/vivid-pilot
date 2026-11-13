@@ -1,8 +1,8 @@
 // ====== Code Summary ======
-// VividPilotPowerSources: the "Sources de puissance" card of a node view. It
-// lists every power source feeding the node's total — measured meters, WLED
+// VividPilotPowerSources: the "Puissance calculée" card of a node view. It
+// lists the power Vivid Pilot computes itself, with no meter behind it — WLED
 // estimates (current × voltage) and nominal powers — with its live value and
-// whether it is counted, so computed values are visible next to the meters.
+// whether it is counted. Measured meters already have their own card.
 
 import { LitElement, css, html, nothing } from "lit";
 
@@ -12,9 +12,10 @@ import { CATEGORIES } from "../tree/categories";
 import type { PanelModel } from "../tree/panel-model";
 import type { CategoryId, PowerSourceInfo } from "../tree/types";
 
-const KIND_LABELS: Record<PowerSourceInfo["kind"], string> = {
-  measured: "Mesurée",
-  wled: "WLED calculée",
+type ComputedKind = Exclude<PowerSourceInfo["kind"], "measured">;
+
+const KIND_LABELS: Record<ComputedKind, string> = {
+  wled: "WLED",
   nominal: "Nominale",
 };
 
@@ -29,23 +30,32 @@ export class VividPilotPowerSources extends LitElement {
   areaId: string | null = null;
   category: CategoryId | null = null;
 
-  /** Sources of the node: all of the area, or of one consumer category. */
+  /** Computed sources of the node: all of the area, or of one consumer category. */
   private sources(model: PanelModel): PowerSourceInfo[] {
     return model.payload.power.filter(
       (source) =>
+        source.kind !== "measured" &&
         (this.areaId === null || source.area_id === this.areaId) &&
         (this.category === null || this.category === "power" || source.category === this.category),
     );
   }
 
-  /** Live value: meters and strips are read from their states, nominal is fixed. */
+  /** Live value: a strip reads its computed sensor, a nominal power follows its light. */
   private value(model: PanelModel, source: PowerSourceInfo): number | null {
-    if (source.kind === "measured") {
-      const raw = model.number(source.entity_id);
-      return raw === null ? null : raw * source.factor;
-    }
     if (source.kind === "wled") return model.stripPower(source.leaf_id) ?? source.value;
-    return source.value;
+    // Same rule as PowerModel.value: nominal watts scaled by brightness while on.
+    const state = model.hass.states[source.entity_id];
+    if (!state || state.state === "unavailable" || state.state === "unknown") return null;
+    if (state.state !== "on") return 0;
+    const brightness = Number(state.attributes.brightness);
+    return source.factor * (Number.isFinite(brightness) ? brightness / 255 : 1);
+  }
+
+  /** Entity shown under the name: the generated strip sensor, else the consumer. */
+  private shownEntity(model: PanelModel, source: PowerSourceInfo): string {
+    return (
+      (source.kind === "wled" ? model.payload.strips[source.leaf_id] : undefined) ?? source.leaf_id
+    );
   }
 
   protected override render() {
@@ -61,7 +71,7 @@ export class VividPilotPowerSources extends LitElement {
       <section class="card">
         <div class="head">
           ${renderIcon(CATEGORIES.power.icon, CATEGORIES.power.color)}
-          <h2>Sources de puissance</h2>
+          <h2>Puissance calculée</h2>
           <span class="total">${fmt(counted)} W comptés</span>
         </div>
         <ul>
@@ -84,10 +94,12 @@ export class VividPilotPowerSources extends LitElement {
                 <span class="text">
                   <span class="name">${place?.leaf.name ?? source.leaf_id}</span>
                   <span class="mono"
-                    >${this.areaId === null ? `${place?.room?.name ?? ""} · ` : ""}${source.entity_id}</span
+                    >${this.areaId === null ? `${place?.room?.name ?? ""} · ` : ""}${this.shownEntity(model, source)}</span
                   >
                 </span>
-                <span class="pill kind-${source.kind}">${KIND_LABELS[source.kind]}</span>
+                <span class="pill kind-${source.kind}"
+                  >${KIND_LABELS[source.kind as ComputedKind]}</span
+                >
                 ${source.counted ? nothing : html`<span class="pill">hors total</span>`}
                 <span class="value">${value === null ? "—" : `${fmt(value)} W`}</span>
               </button>
