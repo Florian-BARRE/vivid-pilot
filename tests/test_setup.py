@@ -4,12 +4,20 @@
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
 from homeassistant import config_entries
 from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResultType
 from homeassistant.setup import async_setup_component
 
 from custom_components.vivid_pilot.const import DOMAIN, PANEL_URL_PATH
+
+# The version the panel reports is the manifest's, the single source of truth.
+MANIFEST_VERSION = json.loads(
+    (Path(__file__).parents[1] / "custom_components/vivid_pilot/manifest.json").read_text()
+)["version"]
 
 
 async def _create_entry(hass: HomeAssistant) -> config_entries.ConfigEntry:
@@ -35,7 +43,7 @@ async def test_setup_registers_panel_and_api(hass: HomeAssistant, hass_ws_client
     await client.send_json_auto_id({"type": "vivid_pilot/info"})
     msg = await client.receive_json()
     assert msg["success"]
-    assert msg["result"] == {"version": "0.5.1", "overrides": 0, "memories": 0}
+    assert msg["result"] == {"version": MANIFEST_VERSION, "overrides": 0, "memories": 0}
 
     await client.send_json_auto_id({"type": "vivid_pilot/subscribe"})
     msg = await client.receive_json()
