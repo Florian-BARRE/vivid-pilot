@@ -1,0 +1,31 @@
+# ====== Code Summary ======
+# Home Assistant and HACS validation of the integration (manifest, structure,
+# HACS metadata), on pushes, pull requests and once a day.
+
+name: validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "17 4 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  hassfest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: home-assistant/actions/hassfest@master
+
+  hacs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: hacs/action@main
+        with:
+          category: integration
+          # Brand icons are submitted to home-assistant/brands separately.
+          ignore: brands

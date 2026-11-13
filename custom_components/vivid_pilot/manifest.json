@@ -1,0 +1,14 @@
+{
+  "domain": "vivid_pilot",
+  "name": "Vivid Pilot",
+  "codeowners": ["@Florian-BARRE"],
+  "config_flow": true,
+  "dependencies": ["frontend", "http", "panel_custom", "websocket_api"],
+  "documentation": "https://github.com/Florian-BARRE/vivid-pilot",
+  "integration_type": "service",
+  "iot_class": "calculated",
+  "issue_tracker": "https://github.com/Florian-BARRE/vivid-pilot/issues",
+  "requirements": [],
+  "single_config_entry": true,
+  "version": "0.1.0"
+}

@@ -1,0 +1,7 @@
+{
+  "name": "Vivid Pilot",
+  "homeassistant": "2026.2.0",
+  "render_readme": true,
+  "zip_release": true,
+  "filename": "vivid_pilot.zip"
+}

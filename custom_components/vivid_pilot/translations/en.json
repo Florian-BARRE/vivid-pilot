@@ -1,0 +1,13 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Vivid Pilot",
+        "description": "Add Vivid Pilot? Rooms, memories and automations are then configured from the Vivid Pilot panel in the sidebar."
+      }
+    },
+    "abort": {
+      "single_instance_allowed": "Vivid Pilot is already configured."
+    }
+  }
+}

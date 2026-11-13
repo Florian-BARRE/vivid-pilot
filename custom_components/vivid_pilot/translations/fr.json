@@ -1,0 +1,13 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Vivid Pilot",
+        "description": "Ajouter Vivid Pilot ? Les pièces, les mémoires et les automatisations se règlent ensuite dans le panneau Vivid Pilot de la barre latérale."
+      }
+    },
+    "abort": {
+      "single_instance_allowed": "Vivid Pilot est déjà configuré."
+    }
+  }
+}

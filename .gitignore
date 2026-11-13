@@ -1,0 +1,17 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# Panel
+frontend/node_modules/
+# The bundle is built by CI and shipped in the release zip, never committed.
+custom_components/vivid_pilot/frontend/*
+!custom_components/vivid_pilot/frontend/.gitkeep
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store

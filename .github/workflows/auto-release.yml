@@ -1,0 +1,66 @@
+# ====== Code Summary ======
+# Automatic release: when main carries a manifest version that has no tag yet,
+# build the panel, zip the integration folder (HACS zip_release) and publish
+# the release vX.Y.Z with the matching CHANGELOG entry as notes.
+
+name: auto-release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Read version
+        id: version
+        run: echo "value=$(python3 scripts/check_versions.py)" >> "$GITHUB_OUTPUT"
+
+      - name: Skip if already released
+        id: tag
+        run: |
+          if git rev-parse "v${{ steps.version.outputs.value }}" >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-node@v4
+        if: steps.tag.outputs.exists == 'false'
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Build panel
+        if: steps.tag.outputs.exists == 'false'
+        working-directory: frontend
+        run: npm ci && npm run build
+
+      - name: Zip integration
+        if: steps.tag.outputs.exists == 'false'
+        working-directory: custom_components/vivid_pilot
+        run: zip -r "$GITHUB_WORKSPACE/vivid_pilot.zip" . -x "*/__pycache__/*" "frontend/.gitkeep"
+
+      - name: Release notes
+        if: steps.tag.outputs.exists == 'false'
+        run: |
+          awk -v v="## ${{ steps.version.outputs.value }}" \
+            '$0 ~ "^## " { if (found) exit; if (index($0, v) == 1) found=1; next } found' \
+            CHANGELOG.md > notes.md
+
+      - name: Publish
+        if: steps.tag.outputs.exists == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "v${{ steps.version.outputs.value }}" vivid_pilot.zip \
+            --title "v${{ steps.version.outputs.value }}" --notes-file notes.md
