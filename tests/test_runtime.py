@@ -103,7 +103,9 @@ async def test_generated_entities(hass: HomeAssistant, home, loaded) -> None:
     assert hass.states.get(strip_power).state == "10.0"
     assert hass.states.get("sensor.vivid_pilot_salon_power").state == "22.5"
     assert hass.states.get("sensor.vivid_pilot_salon_led_power").state == "10.0"
-    assert hass.states.get("scene.vivid_pilot_salon_state") is not None
+    assert hass.states.get("scene.vivid_pilot_salon_state") is not None, sorted(
+        s for s in hass.states.async_entity_ids() if "vivid" in s
+    )
     assert hass.states.get("scene.vivid_pilot_all_state") is not None
 
 
@@ -196,3 +198,19 @@ async def test_power_source_choice(hass: HomeAssistant, home, loaded, hass_ws_cl
     # 2000 mA x 12 V = 24 W replaces the 3 W meter.
     assert hass.states.get("sensor.vivid_pilot_salon_power").state == "36.5"
     assert loaded.runtime_data.power.choices[home["strip"]]["effective"] == "wled"
+
+
+async def test_memory_skips_unavailable_and_reports(
+    hass: HomeAssistant, home, loaded, hass_ws_client
+) -> None:
+    """An unavailable member never blocks a capture; saving with all off says why."""
+    client = await hass_ws_client(hass)
+    await client.send_json_auto_id({"type": "vivid_pilot/memory/save", "node": "salon"})
+    assert (await client.receive_json())["result"] == {"saved": False, "reason": "nothing_on"}
+
+    hass.states.async_set(home["strip"], "unavailable")
+    hass.states.async_set(home["lamp"], "on", {"brightness": 200})
+    await hass.async_block_till_done()
+    await _tick(hass)
+    stored = loaded.runtime_data.store.data.memories["salon"]["states"]
+    assert home["lamp"] in stored and home["strip"] not in stored

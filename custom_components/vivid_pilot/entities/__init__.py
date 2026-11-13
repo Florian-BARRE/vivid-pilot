@@ -4,7 +4,6 @@
 
 from .aggregates import (
     AnyOnBinarySensor,
-    AutoLightingSwitch,
     ClimateSensor,
     PowerSensor,
     StripPowerSensor,
@@ -18,7 +17,6 @@ from .sync import EntityFactory, EntitySync
 FACTORIES: dict[tuple[str, str], EntityFactory] = {
     ("light", "group"): LightGroupEntity,
     ("switch", "group"): SwitchGroupEntity,
-    ("switch", "auto_lighting"): AutoLightingSwitch,
     ("scene", "state"): MemorySceneEntity,
     ("binary_sensor", "any"): AnyOnBinarySensor,
     ("sensor", "mean"): ClimateSensor,

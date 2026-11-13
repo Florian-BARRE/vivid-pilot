@@ -1,7 +1,7 @@
 # ====== Code Summary ======
 # PayloadBuilder: everything the panel needs in one message — the tree, each
 # node's settings, memory summary and generated entity ids, the power sources,
-# the presence settings and the global settings. Live values are not in it:
+# and the global settings. Live values are not in it:
 # the panel reads them from Home Assistant's states (leaves and generated
 # entities alike).
 
@@ -53,7 +53,7 @@ class PayloadBuilder:
             for key in members.memory_nodes()
         }
 
-        # 3. Power sources, presence and global settings.
+        # 3. Power sources and global settings.
         sources = [
             {
                 "kind": source.kind,
@@ -67,7 +67,6 @@ class PayloadBuilder:
             }
             for source in runtime.power.sources
         ]
-        presence = {room.area_id: runtime.presence.settings(room.area_id) for room in tree.rooms}
         settings = runtime.store.data.settings
         return {
             "version": runtime.version,
@@ -77,7 +76,6 @@ class PayloadBuilder:
             "strips": strips,
             "power": sources,
             "power_choices": runtime.power.choices,
-            "presence": presence,
             "settings": {
                 "memory_master": runtime.memory.master,
                 "memory_debounce": runtime.memory.debounce,

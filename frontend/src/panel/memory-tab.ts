@@ -23,6 +23,12 @@ export class VividPilotMemoryTab extends LitElement {
   model?: PanelModel;
   filter: Filter = "all";
 
+  private toast(message: string): void {
+    this.dispatchEvent(
+      new CustomEvent("vp-toast", { detail: message, bubbles: true, composed: true }),
+    );
+  }
+
   private label(key: NodeKey): string {
     const { areaId, category } = parseNodeKey(key);
     const room = areaId ? (this.model!.room(areaId)?.name ?? areaId) : "Maison";
@@ -88,12 +94,30 @@ export class VividPilotMemoryTab extends LitElement {
           s</label
         >
       </section>
+      <section class="card how">
+        <h2>Comment ça marche</h2>
+        <ul>
+          <li>
+            <strong>Automatique</strong> : dès qu'un membre d'une mémoire change (allumage, couleur,
+            luminosité…) et qu'au moins un membre est allumé, l'état est enregistré
+            ${settings.memory_debounce} s après le dernier changement.
+          </li>
+          <li>
+            <strong>Jamais « tout éteint »</strong> : quand tout s'éteint, rien n'est écrit ; la
+            mémoire garde le dernier état allumé, celui que « Rétablir » ou l'allumage du groupe
+            remettra. Les appareils indisponibles sont ignorés.
+          </li>
+          <li>
+            <strong>Mémoriser</strong> force l'enregistrement tout de suite ; il ne fait rien si
+            rien n'est allumé dans le nœud.
+          </li>
+          <li>
+            <strong>Désactivée</strong> : la mémoire n'est plus mise à jour et sa scène devient
+            indisponible ; le groupe continue de marcher et le dernier état est gardé.
+          </li>
+        </ul>
+      </section>
       <section class="card list">${shown.map((key) => this.renderRow(model, key))}</section>
-      <p class="muted note">
-        Désactivée : la mémoire n'est plus mise à jour et sa scène devient indisponible ; le groupe
-        continue de marcher et le dernier état est gardé. Une mémoire n'enregistre jamais un état «
-        tout éteint ».
-      </p>
     `;
   }
 
@@ -146,7 +170,11 @@ export class VividPilotMemoryTab extends LitElement {
           >
             Rétablir
           </button>
-          <button type="button" ?disabled=${!enabled} @click=${() => model.api.memory("save", key)}>
+          <button
+            type="button"
+            ?disabled=${!enabled}
+            @click=${async () => this.toast(await model.saveMemory(key))}
+          >
             Mémoriser
           </button>
           <button type="button" ?disabled=${empty} @click=${() => model.api.memory("forget", key)}>

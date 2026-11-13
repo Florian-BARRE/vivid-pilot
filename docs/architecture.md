@@ -1,6 +1,6 @@
 # Vivid Pilot — architecture
 
-Vivid Pilot scans the Home Assistant registries, groups devices by room (HA areas), guesses their role, builds groups, aggregates and LED power, keeps the last light state of each room and runs the automations around it. Everything is configured from a sidebar panel, with no YAML and no hand-made helpers.
+Vivid Pilot scans the Home Assistant registries, groups devices by room (HA areas), guesses their role, builds groups, aggregates and LED power, and keeps the last light state of each node. Everything is configured from a sidebar panel, with no YAML and no hand-made helpers.
 
 ## Principles
 
@@ -8,7 +8,7 @@ Vivid Pilot scans the Home Assistant registries, groups devices by room (HA area
 2. **Corrections always win** over detection; they are stored and survive restarts and rescans.
 3. **Area membership, never ids or names.** A device belongs to a room because it is in that area (an entity's own area wins over its device's). Roles come from the registries: platform, device class, supported features. Generated entities are attached to the room's area too, and are found by area + role.
 4. **Live.** Entity, device and area registry updates trigger a recompute; a lamp added to the "Living room" area joins it without a restart.
-5. **Modular.** Independent modules: Rooms, Memory & scenes, Automations, then Utilities. A new module never changes the others.
+5. **Modular.** Independent modules: Rooms, Memory & scenes, then Utilities. Automations stay in Home Assistant: they use the generated groups, scenes and aggregates. A new module never changes the others.
 
 ## Building blocks
 
@@ -96,11 +96,6 @@ Entity ids use the `vivid_pilot_` prefix (HA forbids hyphens in entity ids): `vi
 - Per node: its aggregates, its memory settings (categories, exclusions), a preview of the stored state with Restore / Forget.
 - "Unassigned" section for devices without area; changing a room edits the HA area so the area stays the single source of truth.
 
-## Automations
-
-- Presence lighting per room: presence sensors (auto, editable), turn-off delay, enabled by `switch.vivid_pilot_<room>_auto_lighting`. Presence → restore the memory if the room is fully off; no presence for the delay → turn off.
-- To decide: illuminance condition, time windows, "respect manual off".
-
 ## Phases
 
 0. Skeleton: config entry, store, panel, websocket, CI, release. ✅ (0.1.0)
@@ -108,5 +103,5 @@ Entity ids use the `vivid_pilot_` prefix (HA forbids hyphens in entity ids): `vi
 2. Corrections in the panel (categories, rooms, exclusions, upstream meters, voltages). ✅ 0.3.0
 3. Virtual room devices and entities: light / led / switch groups, openings, presence, climate, power, up to `all`. ✅ 0.3.0
 4. Memory per node (scenes, settings, services). ✅ 0.3.0
-5. Presence automation. ✅ 0.3.0
+5. ~~Presence automation~~: removed in 0.4.0, automations are written in Home Assistant.
 6. Vivid Cards discovery by area + role, then migration of Flo's Home Assistant.

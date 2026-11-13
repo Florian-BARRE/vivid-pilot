@@ -1,6 +1,6 @@
 # ====== Code Summary ======
 # PilotContext: what generated entities need from the runtime (members,
-# groups, memory, power, presence, refresh signal).
+# groups, memory, power, refresh signal).
 # PilotEntity: base of every generated entity — device info of its room (or
 # home), translated name, suggested entity id, live refresh on the signal.
 
@@ -14,7 +14,6 @@ from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity import Entity
 
-from ..automation import PresenceAutomation
 from ..control import GroupController
 from ..memory import MemoryEngine
 from ..nodes import NodeMembers
@@ -33,7 +32,6 @@ class PilotContext:
     groups: GroupController
     memory: MemoryEngine
     power: PowerModel
-    presence: PresenceAutomation
 
 
 class PilotEntity(Entity):

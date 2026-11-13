@@ -150,4 +150,24 @@ export const memoryTabStyles = css`
     font-size: 13px;
     margin: 0 4px;
   }
+  .how {
+    padding: 12px 16px;
+  }
+  .how h2 {
+    margin: 0 0 6px;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .how ul {
+    margin: 0;
+    padding-left: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--vp-muted);
+  }
+  .how strong {
+    color: var(--vp-text);
+  }
 `;

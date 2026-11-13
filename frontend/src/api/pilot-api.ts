@@ -55,8 +55,13 @@ export class PilotApi {
     return this.call("node/update", { node, ...update });
   }
 
-  memory(action: "save" | "restore" | "forget", node: NodeKey): Promise<boolean | null> {
+  memory(action: "restore" | "forget", node: NodeKey): Promise<boolean | null> {
     return this.call<boolean | null>(`memory/${action}`, { node });
+  }
+
+  /** Store now; reason is "saved", "disabled" or "nothing_on". */
+  saveMemory(node: NodeKey): Promise<{ saved: boolean; reason: string }> {
+    return this.call("memory/save", { node });
   }
 
   group(action: "turn_on" | "turn_off", node: NodeKey): Promise<unknown> {
@@ -68,9 +73,5 @@ export class PilotApi {
     memory_debounce?: number;
   }): Promise<unknown> {
     return this.call("settings/update", settings);
-  }
-
-  updatePresence(areaId: string, update: { enabled?: boolean; delay?: number }): Promise<unknown> {
-    return this.call("presence/update", { area_id: areaId, ...update });
   }
 }

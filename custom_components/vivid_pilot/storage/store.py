@@ -5,7 +5,6 @@
 #   nodes      node key  -> node settings (memory categories, exclusions...)
 #   memories   node key  -> last stored light state of the node
 #   settings   global settings (memory master switch, debounce...)
-#   presence   area id   -> presence automation settings
 
 from __future__ import annotations
 
@@ -32,7 +31,6 @@ class PilotData:
     nodes: dict[str, dict[str, Any]] = field(default_factory=dict)
     memories: dict[str, dict[str, Any]] = field(default_factory=dict)
     settings: dict[str, Any] = field(default_factory=dict)
-    presence: dict[str, dict[str, Any]] = field(default_factory=dict)
 
     @classmethod
     def from_dict(cls, raw: dict[str, Any]) -> PilotData:
@@ -42,7 +40,6 @@ class PilotData:
             nodes=dict(raw.get("nodes", {})),
             memories=dict(raw.get("memories", {})),
             settings=dict(raw.get("settings", {})),
-            presence=dict(raw.get("presence", {})),
         )
 
     def to_dict(self) -> dict[str, Any]:

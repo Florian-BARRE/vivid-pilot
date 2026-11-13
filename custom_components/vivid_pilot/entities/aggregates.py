@@ -5,7 +5,6 @@
 #                       so each keeps its own long-term statistics)
 #   PowerSensor         a node's watts, without double counting
 #   StripPowerSensor    a WLED strip's watts: estimated current x voltage
-#   AutoLightingSwitch  turns a room's presence lighting on / off
 
 from __future__ import annotations
 
@@ -13,7 +12,6 @@ from typing import Any
 
 from homeassistant.components.binary_sensor import BinarySensorDeviceClass, BinarySensorEntity
 from homeassistant.components.sensor import SensorDeviceClass, SensorEntity, SensorStateClass
-from homeassistant.components.switch import SwitchEntity
 from homeassistant.const import UnitOfPower
 
 from ..tree import Category
@@ -153,17 +151,3 @@ class StripPowerSensor(PilotEntity, SensorEntity):
             "current_sensor": source.entity_id,
             "voltage": source.factor,
         }
-
-
-class AutoLightingSwitch(PilotEntity, SwitchEntity):
-    """Presence lighting of a room, on or off."""
-
-    @property
-    def is_on(self) -> bool:
-        return bool(self._ctx.presence.settings(self.spec.node.area_id or "")["enabled"])
-
-    async def async_turn_on(self, **kwargs: Any) -> None:
-        self._ctx.presence.update(self.spec.node.area_id or "", enabled=True)
-
-    async def async_turn_off(self, **kwargs: Any) -> None:
-        self._ctx.presence.update(self.spec.node.area_id or "", enabled=False)

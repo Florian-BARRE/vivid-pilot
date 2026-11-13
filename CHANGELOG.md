@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.0 — 2026-11-13
+
+- **Presence lighting removed**: automations belong in Home Assistant; the `switch.vivid_pilot_<room>_auto_lighting` entities and the Automations tab are gone, and entities Vivid Pilot no longer generates are removed from the registry.
+- **Memorise gives feedback**: the panel says when nothing was stored because nothing is on, or because the memory is disabled. Unavailable members no longer block a capture.
+- Memory tab explains when a state is stored automatically.
+- **Power sources card** in each node: measured meters, WLED estimates and nominal powers with their live value and whether they are counted.
+
 ## 0.3.2 — 2026-11-13
 
 - **Power source per light / LED / switch**, chosen in its sheet: Auto, existing meter, WLED estimate (estimated current × strip voltage), nominal power, or none. Choosing anything but the meter takes the device's meter out of totals, so an old template power sensor can be replaced without deleting it.

@@ -2,10 +2,10 @@
 # MemoryEngine: the last light state of every node, kept up to date.
 # Each memory-enabled node watches its memory members; any state or attribute
 # change restarts a per-node debounce timer, and when the node has settled
-# its state is stored — only if at least one member is on and none is
-# unavailable (never an "all off" state). Memories persist in the store and
-# are restored through Home Assistant's reproduce-state machinery (the one
-# scenes use).
+# the state of its available members is stored — only if at least one is on
+# (never an "all off" state). Unavailable members are skipped, never blocking.
+# Memories persist in the store and are restored through Home Assistant's
+# reproduce-state machinery (the one scenes use).
 
 from __future__ import annotations
 
@@ -120,22 +120,29 @@ class MemoryEngine:
         self._timers[key] = async_call_later(self._hass, self.debounce, _fire)
 
     @callback
-    def capture(self, key: NodeKey) -> bool:
-        """Store the node's current state if it is worth keeping; tell whether it did."""
+    def capture(self, key: NodeKey) -> str:
+        """Store the node's current state if it is worth keeping.
+
+        Returns "saved", "disabled" (no active memory) or "nothing_on".
+        """
         ids = self._members.get(str(key), [])
-        states = [self._hass.states.get(entity_id) for entity_id in ids]
-        if not ids or any(state is None or state.state in UNAVAILABLE for state in states):
-            return False
-        if not any(state.state in ON_STATES for state in states if state is not None):
-            return False
+        if not ids:
+            return "disabled"
+        states = [
+            state
+            for state in (self._hass.states.get(entity_id) for entity_id in ids)
+            if state is not None and state.state not in UNAVAILABLE
+        ]
+        if not any(state.state in ON_STATES for state in states):
+            return "nothing_on"
         self._store.data.memories[str(key)] = {
             "saved_at": dt_util.utcnow().isoformat(),
-            "states": {state.entity_id: _snapshot(state) for state in states if state is not None},
+            "states": {state.entity_id: _snapshot(state) for state in states},
         }
         self._store.schedule_save()
-        _LOGGER.debug("END memory capture (node=%s, members=%d)", key, len(ids))
+        _LOGGER.debug("END memory capture (node=%s, stored=%d)", key, len(states))
         self._on_change()
-        return True
+        return "saved"
 
     # ====== Restore / forget ======
 

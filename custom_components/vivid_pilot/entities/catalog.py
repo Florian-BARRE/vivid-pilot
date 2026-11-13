@@ -9,7 +9,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from ..automation import PresenceAutomation
 from ..nodes import NodeKey, NodeMembers
 from ..power import PowerModel
 from ..tree import Category, HomeTree
@@ -67,7 +66,6 @@ class EntityCatalog:
         tree: HomeTree,
         members: NodeMembers,
         power: PowerModel,
-        presence: PresenceAutomation,
     ) -> list[EntitySpec]:
         home = DeviceSpec("all", self._home_name, None)
         specs: list[EntitySpec] = []
@@ -97,18 +95,6 @@ class EntityCatalog:
                     specs.extend(self._climate(key, category, device))
             # Power: room, categories, WLED strips.
             specs.extend(self._power(room_key, power, device))
-            # Presence lighting switch.
-            if presence.settings(room.area_id)["available"]:
-                specs.append(
-                    self._spec(
-                        "switch",
-                        "auto_lighting",
-                        room_key,
-                        "auto_lighting",
-                        device,
-                        "auto_lighting",
-                    )
-                )
 
         # Memories (scenes) of every memory-capable node.
         for key in members.memory_nodes():

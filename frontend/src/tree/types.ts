@@ -95,13 +95,6 @@ export interface PowerSourceInfo {
   value: number | null;
 }
 
-export interface PresenceInfo {
-  enabled: boolean;
-  delay: number;
-  sensors: string[];
-  available: boolean;
-}
-
 export interface PilotPayload {
   version: string;
   tree: HomeTree;
@@ -113,7 +106,6 @@ export interface PilotPayload {
   power: PowerSourceInfo[];
   /** light / LED / switch leaf -> its power source choice */
   power_choices: Record<string, PowerChoice>;
-  presence: Record<string, PresenceInfo>;
   settings: { memory_master: boolean; memory_debounce: number };
 }
 

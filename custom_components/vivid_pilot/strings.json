@@ -28,9 +28,6 @@
     "switch": {
       "switch_group": {
         "name": "Switches"
-      },
-      "auto_lighting": {
-        "name": "Presence lighting"
       }
     },
     "scene": {

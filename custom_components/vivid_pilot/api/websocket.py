@@ -6,7 +6,7 @@
 #   leaf/area     move an entity (or its whole device) to another room
 #   node/update   memory on/off, memory categories, memory / group exclusions
 #   memory/save, memory/restore, memory/forget, group/turn_on, group/turn_off
-#   settings/update, presence/update
+#   settings/update
 # Every change is written to the store, then the runtime rebuilds what
 # depends on it and the panel receives the new payload.
 
@@ -21,9 +21,7 @@ from homeassistant.components import websocket_api
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers import entity_registry as er
-from homeassistant.helpers.dispatcher import async_dispatcher_send
 
-from ..const import SIGNAL_REFRESH
 from ..nodes import MEMORY_CAPABLE, NodeKey
 from ..tree import Category
 
@@ -105,15 +103,6 @@ class PilotWebsocketApi:
                     ),
                 },
                 self._settings_update,
-            ),
-            (
-                "presence/update",
-                {
-                    vol.Required("area_id"): str,
-                    vol.Optional("enabled"): bool,
-                    vol.Optional("delay"): vol.All(vol.Coerce(int), vol.Range(min=1, max=240)),
-                },
-                self._presence_update,
             ),
         ]
         for name, schema, handler in commands:
@@ -227,8 +216,10 @@ class PilotWebsocketApi:
                 node[name] = sorted(set(msg[name]))
         self._changed(rebuild=False)
 
-    async def _memory_save(self, connection: Any, msg: dict[str, Any]) -> bool:
-        return self._runtime.memory.capture(NodeKey.parse(msg["node"]))
+    async def _memory_save(self, connection: Any, msg: dict[str, Any]) -> dict[str, Any]:
+        """Store now; the reason tells the panel why nothing was stored."""
+        reason = self._runtime.memory.capture(NodeKey.parse(msg["node"]))
+        return {"saved": reason == "saved", "reason": reason}
 
     async def _memory_restore(self, connection: Any, msg: dict[str, Any]) -> bool:
         return await self._runtime.memory.async_restore(
@@ -256,13 +247,6 @@ class PilotWebsocketApi:
             if name in msg:
                 settings[name] = msg[name]
         self._changed(rebuild=False)
-
-    async def _presence_update(self, connection: Any, msg: dict[str, Any]) -> None:
-        self._runtime.presence.update(
-            msg["area_id"], enabled=msg.get("enabled"), delay=msg.get("delay")
-        )
-        # The auto-lighting switches show the new setting.
-        async_dispatcher_send(self._hass, SIGNAL_REFRESH)
 
     @callback
     def _changed(self, rebuild: bool) -> None:

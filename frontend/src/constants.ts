@@ -11,7 +11,7 @@ export const ELEMENT_NAMES = {
   leafEditor: "vivid-pilot-leaf-editor",
   memoryTab: "vivid-pilot-memory-tab",
   memoryEditor: "vivid-pilot-memory-editor",
-  automationTab: "vivid-pilot-automation-tab",
+  powerSources: "vivid-pilot-power-sources",
   utilitiesTab: "vivid-pilot-utilities-tab",
   logo: "vivid-pilot-logo",
 } as const;

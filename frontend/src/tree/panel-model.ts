@@ -108,6 +108,14 @@ export class PanelModel {
     return list.sort((a, b) => a.name.localeCompare(b.name));
   }
 
+  /** Store a node's state now and describe the outcome in French. */
+  async saveMemory(key: NodeKey): Promise<string> {
+    const { reason } = await this.api.saveMemory(key);
+    if (reason === "saved") return "État mémorisé.";
+    if (reason === "disabled") return "Cette mémoire est désactivée : active-la d'abord.";
+    return "Rien n'est allumé dans ce nœud : il n'y a rien à mémoriser. Allume au moins une lumière, son état sera mémorisé tout seul.";
+  }
+
   stateName(entityId: string): string {
     return (
       this.place(entityId)?.leaf.name ??
