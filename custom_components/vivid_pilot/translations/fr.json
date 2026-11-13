@@ -119,7 +119,7 @@
       "fields": {
         "node": {
           "name": "Nœud",
-          "description": "Clé du nœud : all, l'id d'une zone, ou <id de zone>__<catégorie>."
+          "description": "Clé du nœud : « all », l'id d'une zone (salon), ou une zone et une catégorie (salon__led)."
         }
       }
     },
@@ -129,7 +129,7 @@
       "fields": {
         "node": {
           "name": "Nœud",
-          "description": "Clé du nœud : all, l'id d'une zone, ou <id de zone>__<catégorie>."
+          "description": "Clé du nœud : « all », l'id d'une zone (salon), ou une zone et une catégorie (salon__led)."
         }
       }
     },
@@ -139,7 +139,7 @@
       "fields": {
         "node": {
           "name": "Nœud",
-          "description": "Clé du nœud : all, l'id d'une zone, ou <id de zone>__<catégorie>."
+          "description": "Clé du nœud : « all », l'id d'une zone (salon), ou une zone et une catégorie (salon__led)."
         }
       }
     }
