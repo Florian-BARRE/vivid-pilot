@@ -19,8 +19,10 @@ from homeassistant.loader import async_get_integration
 from .api import PanelHub, PayloadBuilder, PilotServices, PilotWebsocketApi
 from .const import (
     CURRENT_TRANSLATION_KEYS,
+    DEFAULT_BATTERY_LOW,
     DEFAULT_STRIP_VOLTAGE,
     DOMAIN,
+    ENERGY_INTERVAL_SECONDS,
     EXCLUDED_PLATFORMS,
     HOME_DEVICE_NAME,
     MEMORY_DEBOUNCE_SECONDS,
@@ -112,6 +114,8 @@ class PilotRuntime:
             groups=groups,
             memory=memory,
             power=power,
+            battery_low=lambda: float(store.data.settings.get("battery_low", DEFAULT_BATTERY_LOW)),
+            energy_interval=ENERGY_INTERVAL_SECONDS,
         )
         panel = PanelRegistrar(
             hass,

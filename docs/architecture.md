@@ -43,11 +43,12 @@ all                                  the whole home
   | `switch` | `switch` entities (outlets included) |
   | `door` / `window` | `binary_sensor` `door` / `garage_door` / `window`; generic `opening` contacts default to `window` |
   | `presence` | `binary_sensor` `motion` / `occupancy` / `presence` |
-  | `temperature` / `humidity` / `pressure` / `co2` | `sensor` with the matching device class |
+  | `temperature` / `humidity` / `pressure` / `co2` / `illuminance` | `sensor` with the matching device class |
+  | `battery` | `sensor` with device class `battery`, diagnostic ones included (integrations file batteries as diagnostic) |
   | `power` sources | `sensor` with device class `power`, plus computed WLED power |
   | `ignored` | manual |
 
-  Never candidates: disabled entities, entities hidden by an integration (e.g. the switch behind a `switch_as_x` light), configuration / diagnostic entities, `group` entities and Vivid Pilot's own entities.
+  Never candidates: disabled entities, entities hidden by an integration (e.g. the switch behind a `switch_as_x` light), configuration / diagnostic entities (except battery levels), `group` entities and Vivid Pilot's own entities.
 
   `light` and `led` are siblings, never nested. Typical correction: an outlet driving a lamp moves from `switch` to `light` (on/off member).
 - **Aggregates go up one level at a time**: category → room → `all`. Commands are always sent straight to the leaves and node states are computed from the leaves, so there is no group-of-groups lag.
@@ -63,11 +64,15 @@ Entity ids use the `vivid_pilot_` prefix (HA forbids hyphens in entity ids): `vi
 | `<room>/switch` | `switch.vivid_pilot_<room>_switch`, `scene…_switch_state` (memory), `sensor…_switch_power` |
 | `<room>/door`, `window`, `presence` | `binary_sensor.vivid_pilot_<room>_<cat>`: `on` if any member is on; attributes `count_on`, `members_on` |
 | `<room>/temperature` (same for humidity, pressure, co2) | three sensors: `…_temperature` (mean), `…_temperature_min`, `…_temperature_max`; attributes name the sensor holding the min / max |
-| `<room>` | `scene.vivid_pilot_<room>_state`, `sensor.vivid_pilot_<room>_power`. No combined light group: lights and LEDs stay distinct. |
-| `all` | the same aggregates over every room (`light.vivid_pilot_all_light`, `light.vivid_pilot_all_led`, `switch.vivid_pilot_all_switch`, `scene.vivid_pilot_all_state`, `sensor.vivid_pilot_all_power`, min / mean / max of each climate measure…) |
+| `<room>/illuminance` | like the climate measures: `…_illuminance` (mean), `…_illuminance_min`, `…_illuminance_max` |
+| `<room>/battery` | `sensor.vivid_pilot_<room>_battery`: lowest level; attributes `source`, `low` (at or below the threshold, lowest first), `low_count`, `low_threshold` (setting `battery_low`, default 20 %) |
+| `<room>/light`, `led`, `switch` energy | `sensor.vivid_pilot_<room>_<cat>_energy` (kWh) next to each power sensor |
+| `<room>` | `scene.vivid_pilot_<room>_state`, `sensor.vivid_pilot_<room>_power`, `sensor.vivid_pilot_<room>_energy`. No combined light group: lights and LEDs stay distinct. |
+| `all` | the same aggregates over every room (`light.vivid_pilot_all_light`, `light.vivid_pilot_all_led`, `switch.vivid_pilot_all_switch`, `scene.vivid_pilot_all_state`, `sensor.vivid_pilot_all_power`, `sensor.vivid_pilot_all_energy`, `sensor.vivid_pilot_all_battery`, min / mean / max of each measure…) |
 
 - Each room has a virtual device "Room · <name>" placed in its area; its generated entities belong to it. `all` entities belong to a "Home" device without area.
-- Stable `unique_id`s: `<area_id>__<category>__<kind>` (`all` for the top). A `translation_key` per kind, so Vivid Cards finds entities by area + platform `vivid_pilot` + `translation_key`; renaming entity ids never breaks a card.
+- Stable `unique_id`s: `<area_id>__<category>__<kind>` (`all` for the top), and a `translation_key` per kind.
+- **Card contract** (0.5.0): every generated entity's state carries `vivid_pilot_node` (`all`, `salon`, `salon__light`, `all__battery`…) and `vivid_pilot_kind` (`group`, `state`, `mean`, `min`, `max`, `any`, `power`, `energy`, `battery`, `strip_power`). Vivid Cards finds Pilot entities from these two attributes only — never from names or entity ids, so renaming never breaks a card. Groups, aggregates and scenes also list their members in `entity_id`.
 - Climate min / max / mean are three separate sensors on purpose: only an entity's state gets long-term statistics, history graphs and the 7-day / 30-day charts Vivid Cards reads; attributes would be lost after the recorder purge. Min / max over time is not a separate entity: the long-term statistics of each sensor already keep the hourly min / mean / max.
 
 ## Power
@@ -76,6 +81,7 @@ Entity ids use the `vivid_pilot_` prefix (HA forbids hyphens in entity ids): `vi
 - No double counting: each power source can declare an **upstream meter** ("already measured by…", e.g. a strip powered through a metering plug). A source with an upstream meter is left out of totals but keeps its own sensor. Each source can also be included or excluded from its totals.
 - **Source choice** (0.3.2): each light / LED / switch picks its source in its sheet — auto (meter > WLED > nominal), meter, WLED estimate, nominal or none. Any explicit choice other than the meter takes the device's meters out of totals.
 - Sums go up the tree: category → room → `all`.
+- **Energy** (0.5.0): next to each power sensor, an energy sensor (kWh, `total_increasing`) integrates it over time: power holds between changes, so each step adds the previous watts × the elapsed time, closed at least every minute. The total is restored after a restart. Usable in the Energy dashboard and by the Vivid Cards bill cards.
 - **Nominal power** (agreed 13 November 2026): a light or switch with no power information at all (e.g. a Hue bulb) can get a power set by hand in the panel, counted while it is on (optionally scaled by brightness).
 
 ## Memory (state of each node)

@@ -101,6 +101,7 @@ class PilotWebsocketApi:
                     vol.Optional("memory_debounce"): vol.All(
                         vol.Coerce(float), vol.Range(min=0.5, max=60)
                     ),
+                    vol.Optional("battery_low"): vol.All(vol.Coerce(int), vol.Range(min=1, max=90)),
                 },
                 self._settings_update,
             ),
@@ -243,7 +244,7 @@ class PilotWebsocketApi:
 
     async def _settings_update(self, connection: Any, msg: dict[str, Any]) -> None:
         settings = self._runtime.store.data.settings
-        for name in ("memory_master", "memory_debounce"):
+        for name in ("memory_master", "memory_debounce", "battery_low"):
             if name in msg:
                 settings[name] = msg[name]
         self._changed(rebuild=False)

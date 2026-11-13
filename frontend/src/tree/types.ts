@@ -13,6 +13,8 @@ export type CategoryId =
   | "humidity"
   | "pressure"
   | "co2"
+  | "illuminance"
+  | "battery"
   | "power"
   | "ignored";
 
@@ -106,7 +108,7 @@ export interface PilotPayload {
   power: PowerSourceInfo[];
   /** light / LED / switch leaf -> its power source choice */
   power_choices: Record<string, PowerChoice>;
-  settings: { memory_master: boolean; memory_debounce: number };
+  settings: { memory_master: boolean; memory_debounce: number; battery_low: number };
 }
 
 /** "all", "<area>", "all__<cat>" or "<area>__<cat>" */

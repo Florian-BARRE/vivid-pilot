@@ -56,6 +56,21 @@ export class VividPilotUtilitiesTab extends LitElement {
             >${this.scanned ? "Scan relancé." : "L'arbre se met à jour tout seul ; à utiliser après une grosse réorganisation."}</span
           >
         </div>
+        <label class="row">
+          Batterie faible à
+          <input
+            type="number"
+            min="1"
+            max="90"
+            step="1"
+            .value=${String(model.payload.settings.battery_low)}
+            @change=${(e: Event) =>
+              model.api.updateSettings({
+                battery_low: Number((e.target as HTMLInputElement).value),
+              })}
+          />
+          % ou moins
+        </label>
         <div class="muted small">Vivid Pilot ${model.payload.version}</div>
       </section>
       <section class="card">

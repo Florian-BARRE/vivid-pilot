@@ -27,18 +27,19 @@ SENSOR_CLASSES = {
     Category.HUMIDITY: SensorDeviceClass.HUMIDITY,
     Category.PRESSURE: SensorDeviceClass.ATMOSPHERIC_PRESSURE,
     Category.CO2: SensorDeviceClass.CO2,
+    Category.ILLUMINANCE: SensorDeviceClass.ILLUMINANCE,
 }
 UNAVAILABLE = {"unavailable", "unknown"}
 
 
-class _MembersMixin(PilotEntity):
+class MembersMixin(PilotEntity):
     @property
     def _member_ids(self) -> list[str]:
         node = self.spec.node
         return [leaf.entity_id for leaf in self._ctx.members().leaves(node, (node.category,))]
 
 
-class AnyOnBinarySensor(_MembersMixin, BinarySensorEntity):
+class AnyOnBinarySensor(MembersMixin, BinarySensorEntity):
     """On when at least one member is on."""
 
     @property
@@ -56,13 +57,12 @@ class AnyOnBinarySensor(_MembersMixin, BinarySensorEntity):
     def is_on(self) -> bool:
         return bool(self._on())
 
-    @property
-    def extra_state_attributes(self) -> dict[str, Any]:
+    def _attributes(self) -> dict[str, Any]:
         on = self._on()
         return {"count_on": len(on), "members_on": on, "entity_id": self._member_ids}
 
 
-class ClimateSensor(_MembersMixin, SensorEntity):
+class ClimateSensor(MembersMixin, SensorEntity):
     """Mean, min or max of a measure across the node's sensors."""
 
     _attr_state_class = SensorStateClass.MEASUREMENT
@@ -102,8 +102,7 @@ class ClimateSensor(_MembersMixin, SensorEntity):
             return max(numbers)
         return round(sum(numbers) / len(numbers), 2)
 
-    @property
-    def extra_state_attributes(self) -> dict[str, Any]:
+    def _attributes(self) -> dict[str, Any]:
         values = self._values()
         if not values or self.spec.kind == "mean":
             return {"entity_id": self._member_ids}
@@ -141,8 +140,7 @@ class StripPowerSensor(PilotEntity, SensorEntity):
         source = self._ctx.power.strip_source(self.spec.source or "")
         return self._ctx.power.value(source) if source else None
 
-    @property
-    def extra_state_attributes(self) -> dict[str, Any]:
+    def _attributes(self) -> dict[str, Any]:
         source = self._ctx.power.strip_source(self.spec.source or "")
         if source is None:
             return {}

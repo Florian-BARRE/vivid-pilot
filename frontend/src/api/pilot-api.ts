@@ -71,6 +71,7 @@ export class PilotApi {
   updateSettings(settings: {
     memory_master?: boolean;
     memory_debounce?: number;
+    battery_low?: number;
   }): Promise<unknown> {
     return this.call("settings/update", settings);
   }

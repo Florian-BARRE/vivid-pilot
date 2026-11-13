@@ -1,13 +1,17 @@
 # ====== Code Summary ======
 # PilotContext: what generated entities need from the runtime (members,
-# groups, memory, power, refresh signal).
+# groups, memory, power, settings, refresh signal).
 # PilotEntity: base of every generated entity — device info of its room (or
-# home), translated name, suggested entity id, live refresh on the signal.
+# home), translated name, suggested entity id, live refresh on the signal, and
+# the card contract: every state carries `vivid_pilot_node` (all, salon,
+# salon__light…) and `vivid_pilot_kind` (group, state, mean, power…), so
+# cards find generated entities without ever reading names.
 
 from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass
+from typing import Any
 
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.device_registry import DeviceInfo
@@ -32,6 +36,8 @@ class PilotContext:
     groups: GroupController
     memory: MemoryEngine
     power: PowerModel
+    battery_low: Callable[[], float]
+    energy_interval: float
 
 
 class PilotEntity(Entity):
@@ -59,6 +65,19 @@ class PilotEntity(Entity):
     @property
     def spec(self) -> EntitySpec:
         return self._spec
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        """The card contract, then the entity's own attributes."""
+        return {
+            "vivid_pilot_node": str(self._spec.node),
+            "vivid_pilot_kind": self._spec.kind,
+            **self._attributes(),
+        }
+
+    def _attributes(self) -> dict[str, Any]:
+        """Attributes of the entity itself; subclasses add theirs here."""
+        return {}
 
     @callback
     def update_spec(self, spec: EntitySpec) -> None:

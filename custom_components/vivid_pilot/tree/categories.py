@@ -21,6 +21,8 @@ class Category(StrEnum):
     HUMIDITY = "humidity"
     PRESSURE = "pressure"
     CO2 = "co2"
+    ILLUMINANCE = "illuminance"
+    BATTERY = "battery"  # battery levels (diagnostic entities included)
     POWER = "power"  # power meters, used by the power aggregates
     IGNORED = "ignored"  # manual only: left out of the tree
 
@@ -45,6 +47,8 @@ CATEGORY_ORDER: tuple[Category, ...] = (
     Category.HUMIDITY,
     Category.PRESSURE,
     Category.CO2,
+    Category.ILLUMINANCE,
+    Category.BATTERY,
     Category.POWER,
 )
 

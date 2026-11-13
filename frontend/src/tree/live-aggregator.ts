@@ -96,6 +96,13 @@ export class LiveAggregator {
       const sum = values.reduce((acc, value) => acc + value, 0);
       return { text: `${this.number.format(sum)} ${unit}`.trim(), active: 0, total };
     }
+    if (meta.kind === "lowest") {
+      return {
+        text: `min ${this.number.format(Math.min(...values))} ${unit}`.trim(),
+        active: 0,
+        total,
+      };
+    }
     const mean = values.reduce((acc, value) => acc + value, 0) / values.length;
     return { text: `${this.number.format(mean)} ${unit}`.trim(), active: 0, total };
   }

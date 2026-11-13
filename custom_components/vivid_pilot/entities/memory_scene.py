@@ -19,14 +19,12 @@ class MemorySceneEntity(PilotEntity, Scene):
     def available(self) -> bool:
         return self._ctx.memory.is_active(self.spec.node)
 
-    @property
-    def extra_state_attributes(self) -> dict[str, Any]:
+    def _attributes(self) -> dict[str, Any]:
         summary = self._ctx.memory.summary(self.spec.node)
         return {
             "entity_id": summary["members"],
             "saved_at": summary["saved_at"],
             "stored_entities": summary["count"],
-            "vivid_pilot_node": str(self.spec.node),
         }
 
     async def async_activate(self, **kwargs: Any) -> None:

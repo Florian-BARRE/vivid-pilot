@@ -25,6 +25,8 @@ const EDITABLE: CategoryId[] = [
   "humidity",
   "pressure",
   "co2",
+  "illuminance",
+  "battery",
   "power",
 ];
 const SWITCHABLE = new Set<CategoryId>(["light", "led", "switch"]);
