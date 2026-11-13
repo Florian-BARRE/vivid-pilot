@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.1 — 2026-11-13
+
+- "Lights" are called lamps everywhere (entity names and panel), with a lamp icon: lamps, LEDs and switches stay three distinct things, as in Vivid Cards.
+
 ## 0.5.0 — 2026-11-13
 
 - **Illuminance** category: mean, min and max per room and for the home.
