@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.0 — 2026-11-13
+
+- **Illuminance** category: mean, min and max per room and for the home.
+- **Batteries** category, diagnostic battery sensors included: lowest level per room and for the home, with the low batteries listed; the low threshold (default 20 %) is set in Utilities.
+- **Energy (kWh)** next to every power sensor (room, category, home): the power integrated over time, restored after restarts, usable in the Energy dashboard.
+- **Card contract**: every generated entity carries `vivid_pilot_node` and `vivid_pilot_kind`, so Vivid Cards finds them without reading names.
+
 ## 0.4.1 — 2026-11-13
 
 - **No combined "Éclairage" group** any more, in the rooms or at home: lights and LEDs stay distinct. The home gets its own Lumières, LEDs and Interrupteurs groups. The old `light.vivid_pilot_<room>` and `light.vivid_pilot_all` entities are removed.

@@ -31,10 +31,9 @@ class _GroupMixin(PilotEntity):
     def is_on(self) -> bool:
         return self._ctx.groups.is_on(self.spec.node)
 
-    @property
-    def extra_state_attributes(self) -> dict[str, Any]:
+    def _attributes(self) -> dict[str, Any]:
         # "entity_id" makes the frontend show the members, like core groups.
-        return {"entity_id": self._members, "vivid_pilot_node": str(self.spec.node)}
+        return {"entity_id": self._members}
 
     async def async_turn_off(self, **kwargs: Any) -> None:
         await self._ctx.groups.async_turn_off(self.spec.node, context=self._context)

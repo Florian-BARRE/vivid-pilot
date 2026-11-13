@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from homeassistant.const import EntityCategory
 from homeassistant.helpers import entity_registry as er
 
 from .categories import Category
@@ -51,6 +52,8 @@ _SENSOR_CLASSES: dict[str, Category] = {
     "atmospheric_pressure": Category.PRESSURE,
     "pressure": Category.PRESSURE,
     "carbon_dioxide": Category.CO2,
+    "illuminance": Category.ILLUMINANCE,
+    "battery": Category.BATTERY,
     "power": Category.POWER,
 }
 
@@ -75,8 +78,16 @@ class CategoryDetector:
         # Hidden by an integration = replaced by another entity (switch_as_x).
         if entry.hidden_by is er.RegistryEntryHider.INTEGRATION:
             return False
-        # Configuration and diagnostic entities are not things in a room.
-        return entry.entity_category is None
+        # Configuration and diagnostic entities are not things in a room,
+        # except battery levels, which integrations file as diagnostic.
+        if entry.entity_category is None:
+            return True
+        device_class = entry.device_class or entry.original_device_class
+        return (
+            entry.entity_category is EntityCategory.DIAGNOSTIC
+            and entry.domain == "sensor"
+            and device_class == "battery"
+        )
 
     def detect(self, entry: er.RegistryEntry) -> Detection | None:
         """Return the category of a candidate entity, or None if it has none."""

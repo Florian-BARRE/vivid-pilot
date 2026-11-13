@@ -18,6 +18,7 @@ MEASURES: tuple[Category, ...] = (
     Category.HUMIDITY,
     Category.PRESSURE,
     Category.CO2,
+    Category.ILLUMINANCE,
 )
 OPENINGS: dict[Category, str] = {
     Category.DOOR: "doors",
@@ -91,7 +92,11 @@ class EntityCatalog:
                 if category in present:
                     key = NodeKey(area_id=room.area_id, category=category)
                     specs.extend(self._climate(key, category, device))
-            # Power: room, categories, WLED strips.
+            # Batteries: the lowest level.
+            if Category.BATTERY in present:
+                key = NodeKey(area_id=room.area_id, category=Category.BATTERY)
+                specs.append(self._spec("sensor", "battery", key, "battery", device))
+            # Power and energy: room, categories, WLED strips.
             specs.extend(self._power(room_key, power, device))
 
         # Memories (scenes) of every memory-capable node.
@@ -120,8 +125,11 @@ class EntityCatalog:
         for category in MEASURES:
             if category in home_categories:
                 specs.extend(self._climate(NodeKey(category=category), category, home))
+        if Category.BATTERY in home_categories:
+            key = NodeKey(category=Category.BATTERY)
+            specs.append(self._spec("sensor", "battery", key, "battery", home))
         if power.has_sources(home_key):
-            specs.append(self._spec("sensor", "power", home_key, "power", home, "power"))
+            specs.extend(self._metered(home_key, "", home))
         return specs
 
     # ====== Helpers ======
@@ -161,13 +169,11 @@ class EntityCatalog:
     def _power(self, room_key: NodeKey, power: PowerModel, device: DeviceSpec) -> list[EntitySpec]:
         specs: list[EntitySpec] = []
         if power.has_sources(room_key):
-            specs.append(self._spec("sensor", "power", room_key, "power", device, "power"))
+            specs.extend(self._metered(room_key, "", device))
         for category in GROUPS:
             key = NodeKey(area_id=room_key.area_id, category=category)
             if power.has_sources(key):
-                specs.append(
-                    self._spec("sensor", "power", key, f"{category.value}_power", device, "power")
-                )
+                specs.extend(self._metered(key, f"{category.value}_", device))
         for source in power.sources:
             if source.kind == "wled" and source.area_id == room_key.area_id:
                 leaf_object = source.leaf_id.split(".", 1)[1]
@@ -184,6 +190,13 @@ class EntityCatalog:
                     )
                 )
         return specs
+
+    def _metered(self, key: NodeKey, prefix: str, device: DeviceSpec) -> list[EntitySpec]:
+        """A node's power sensor and the energy sensor integrating it."""
+        return [
+            self._spec("sensor", kind, key, f"{prefix}{kind}", device, kind)
+            for kind in ("power", "energy")
+        ]
 
     @staticmethod
     def _room_device(tree: HomeTree, area_id: str) -> DeviceSpec:

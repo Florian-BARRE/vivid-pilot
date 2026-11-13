@@ -1,10 +1,11 @@
 // ====== Code Summary ======
 // Display metadata of each category: French label, stroke icon path, accent
-// colour and how its leaves aggregate (switchable, binary, measure).
+// colour and how its leaves aggregate (switchable, binary, measure, sum,
+// lowest).
 
 import type { CategoryId } from "./types";
 
-export type AggregateKind = "switchable" | "binary" | "measure" | "sum";
+export type AggregateKind = "switchable" | "binary" | "measure" | "sum" | "lowest";
 
 export interface CategoryMeta {
   label: string;
@@ -78,6 +79,18 @@ export const CATEGORIES: Record<CategoryId, CategoryMeta> = {
     icon: "M7 18h10a4 4 0 0 0 0-8 6 6 0 0 0-11.5 1.5A3.5 3.5 0 0 0 7 18z",
     color: "#9ccc65",
     kind: "measure",
+  },
+  illuminance: {
+    label: "Éclairement",
+    icon: "M12 4V2M12 22v-2M4 12H2M22 12h-2M5.6 5.6 4.2 4.2M19.8 19.8l-1.4-1.4M5.6 18.4l-1.4 1.4M19.8 4.2l-1.4 1.4M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z",
+    color: "#ffca28",
+    kind: "measure",
+  },
+  battery: {
+    label: "Batteries",
+    icon: "M7 6h10v15H7zM10 3h4v3M10 14h4",
+    color: "#66bb6a",
+    kind: "lowest",
   },
   power: {
     label: "Puissance",

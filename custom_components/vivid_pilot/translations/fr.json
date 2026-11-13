@@ -100,6 +100,30 @@
       },
       "co2_max": {
         "name": "CO₂ max"
+      },
+      "illuminance_mean": {
+        "name": "Éclairement"
+      },
+      "illuminance_min": {
+        "name": "Éclairement min"
+      },
+      "illuminance_max": {
+        "name": "Éclairement max"
+      },
+      "battery": {
+        "name": "Batterie la plus faible"
+      },
+      "energy": {
+        "name": "Énergie"
+      },
+      "light_energy": {
+        "name": "Énergie lumières"
+      },
+      "led_energy": {
+        "name": "Énergie LEDs"
+      },
+      "switch_energy": {
+        "name": "Énergie interrupteurs"
       }
     }
   },

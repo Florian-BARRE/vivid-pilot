@@ -37,6 +37,14 @@ HOME_DEVICE_NAME: Final = "Maison"
 CURRENT_TRANSLATION_KEYS: Final = frozenset({"estimated_current"})
 DEFAULT_STRIP_VOLTAGE: Final = 5.0
 
+# ====== Batteries ======
+# A battery at or below this level (%) counts as low; changeable in the panel.
+DEFAULT_BATTERY_LOW: Final = 20
+
+# ====== Energy ======
+# Energy sensors integrate their power at least this often (seconds).
+ENERGY_INTERVAL_SECONDS: Final = 60
+
 # ====== Memory ======
 MEMORY_DEBOUNCE_SECONDS: Final = 2.0
 

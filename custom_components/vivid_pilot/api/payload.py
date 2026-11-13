@@ -13,6 +13,8 @@ from typing import TYPE_CHECKING, Any
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import entity_registry as er
 
+from ..const import DEFAULT_BATTERY_LOW
+
 if TYPE_CHECKING:
     from ..runtime import PilotRuntime
 
@@ -79,10 +81,11 @@ class PayloadBuilder:
             "settings": {
                 "memory_master": runtime.memory.master,
                 "memory_debounce": runtime.memory.debounce,
+                "battery_low": settings.get("battery_low", DEFAULT_BATTERY_LOW),
                 **{
                     k: v
                     for k, v in settings.items()
-                    if k not in ("memory_master", "memory_debounce")
+                    if k not in ("memory_master", "memory_debounce", "battery_low")
                 },
             },
         }

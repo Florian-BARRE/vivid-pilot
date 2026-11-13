@@ -9,7 +9,9 @@ from .aggregates import (
     StripPowerSensor,
 )
 from .base import PilotContext, PilotEntity
+from .battery import BatterySensor
 from .catalog import DeviceSpec, EntityCatalog, EntitySpec
+from .energy import EnergySensor
 from .groups import LightGroupEntity, SwitchGroupEntity
 from .memory_scene import MemorySceneEntity
 from .sync import EntityFactory, EntitySync
@@ -23,6 +25,8 @@ FACTORIES: dict[tuple[str, str], EntityFactory] = {
     ("sensor", "min"): ClimateSensor,
     ("sensor", "max"): ClimateSensor,
     ("sensor", "power"): PowerSensor,
+    ("sensor", "energy"): EnergySensor,
+    ("sensor", "battery"): BatterySensor,
     ("sensor", "strip_power"): StripPowerSensor,
 }
 PLATFORMS: tuple[str, ...] = ("light", "switch", "scene", "binary_sensor", "sensor")
