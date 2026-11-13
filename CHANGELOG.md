@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.1 — 2026-11-13
+
+- Graph view uses the whole width of the panel.
+- Detection reasons shown in French in the panel.
+
 ## 0.3.0 — 2026-11-13
 
 - **Corrections from the panel**: every entity opens a sheet to change its category (or ignore it), move it to another room (its device, or the entity alone — this edits the HA area), and set its power options.
