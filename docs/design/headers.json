@@ -1,0 +1,127 @@
+{
+ "product": "Vivid Pilot",
+ "logo": "docs/assets/logo.svg",
+ "kicker": "Documentation",
+ "pages": [
+  {
+   "name": "index",
+   "title": "Documentation",
+   "text": "How Vivid Pilot reads your home, what it builds and how to use it.",
+   "accent": "#03a9f4",
+   "images": [
+    "docs/design/crops/hero.png",
+    "docs/design/crops/tree.png",
+    "docs/design/crops/leds.png"
+   ],
+   "kicker": "Documentation"
+  },
+  {
+   "name": "panel",
+   "title": "The panel",
+   "text": "Every room, every device, every detection: visible and correctable.",
+   "accent": "#03a9f4",
+   "images": [
+    "docs/design/crops/tree.png",
+    "docs/design/crops/hero.png",
+    "docs/design/crops/sheet.png"
+   ],
+   "kicker": "Guide"
+  },
+  {
+   "name": "tree",
+   "title": "How it reads your home",
+   "text": "Rooms from areas, kinds from integrations: the tree and its corrections.",
+   "accent": "#f5b042",
+   "images": [
+    "docs/design/crops/tree.png",
+    "docs/design/crops/graph.png"
+   ],
+   "kicker": "Concept"
+  },
+  {
+   "name": "groups",
+   "title": "Groups",
+   "text": "Lamps, LEDs and switches of a room or the home, as one entity.",
+   "accent": "#8a3ffc",
+   "images": [
+    "docs/design/crops/leds.png",
+    "docs/design/crops/hero.png"
+   ],
+   "kicker": "Concept"
+  },
+  {
+   "name": "measures",
+   "title": "Measures",
+   "text": "Doors, windows, presence, climate and batteries, summed up.",
+   "accent": "#4fc3f7",
+   "images": [
+    "docs/design/crops/hero.png",
+    "docs/design/crops/tree.png"
+   ],
+   "kicker": "Concept"
+  },
+  {
+   "name": "power",
+   "title": "Power and energy",
+   "text": "Measured, WLED or nominal: every watt counted once, in kWh too.",
+   "accent": "#ff5f6d",
+   "images": [
+    "docs/design/crops/power.png",
+    "docs/design/crops/leds.png"
+   ],
+   "kicker": "Concept"
+  },
+  {
+   "name": "memory",
+   "title": "Lighting memory",
+   "text": "Each room remembers its last lighting and gives it back in one tap.",
+   "accent": "#b25cff",
+   "images": [
+    "docs/design/crops/memory.png",
+    "docs/design/crops/memory-sheet.png",
+    "docs/design/crops/hero.png"
+   ],
+   "kicker": "Concept"
+  },
+  {
+   "name": "entities",
+   "title": "Entities and services",
+   "text": "What Vivid Pilot generates, their attributes and its services.",
+   "accent": "#43b581",
+   "images": [
+    "docs/design/crops/utilities.png"
+   ],
+   "kicker": "Reference"
+  },
+  {
+   "name": "vivid-cards",
+   "title": "With Vivid Cards",
+   "text": "The cards pick a room or a group: Vivid Pilot has sorted the rest.",
+   "accent": "#ff7a45",
+   "images": [
+    "docs/assets/ecosystem.png"
+   ],
+   "kicker": "Guide"
+  },
+  {
+   "name": "troubleshooting",
+   "title": "Troubleshooting",
+   "text": "A device in the wrong room, a power counted twice, a memory that stays empty…",
+   "accent": "#ff5f6d",
+   "images": [
+    "docs/design/crops/sheet.png"
+   ],
+   "kicker": "Guide"
+  },
+  {
+   "name": "architecture",
+   "title": "Architecture",
+   "text": "How the integration is built: tree, catalog, power model, memory engine.",
+   "accent": "#7b5cff",
+   "images": [
+    "docs/design/crops/graph.png"
+   ],
+   "kicker": "Development"
+  }
+ ]
+}

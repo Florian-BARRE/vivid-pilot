@@ -1,4 +1,10 @@
-# Vivid Pilot — architecture
+<p align="center">
+  <img src="assets/headers/architecture.jpg" alt="Architecture" width="100%" />
+</p>
+
+<sub><a href="../README.md">Vivid Pilot</a> › <a href="README.md">Documentation</a> › Architecture</sub>
+
+# Architecture
 
 Vivid Pilot scans the Home Assistant registries, groups devices by room (HA areas), guesses their role, builds groups, aggregates and LED power, and keeps the last light state of each node. Everything is configured from a sidebar panel, with no YAML and no hand-made helpers.
 
@@ -16,7 +22,7 @@ Vivid Pilot scans the Home Assistant registries, groups devices by room (HA area
 - Sidebar panel (admin only): a Lit web component registered with `panel_custom`, served from `custom_components/vivid_pilot/frontend`, talking to the integration through websocket commands (`vivid_pilot/…`). One tab per module.
 - `PilotStore` (`helpers.storage.Store`, `.storage/vivid_pilot`): overrides, settings and room memories.
 - `PilotRuntime`: composition root; builds and starts every module.
-- Tree engine (to come): a `PilotTree` recomputes all → rooms → categories → entities from the registries and the overrides, then adds or removes generated entities.
+- Tree engine: a `PilotTree` recomputes all → rooms → categories → entities from the registries and the overrides, then adds or removes generated entities.
 
 ## Tree model
 
@@ -110,4 +116,4 @@ Entity ids use the `vivid_pilot_` prefix (HA forbids hyphens in entity ids): `vi
 3. Virtual room devices and entities: light / led / switch groups, openings, presence, climate, power, up to `all`. ✅ 0.3.0
 4. Memory per node (scenes, settings, services). ✅ 0.3.0
 5. ~~Presence automation~~: removed in 0.4.0, automations are written in Home Assistant.
-6. Vivid Cards discovery by area + role, then migration of Flo's Home Assistant.
+6. Vivid Cards reads the tree through the card contract. ✅ 0.5.0
