@@ -4,7 +4,7 @@
 // are all clickable and fire "vp-select" with the node key ("all",
 // "<area>", "<area>__<category>", "unassigned", "ignored").
 
-import { LitElement, css, html, nothing } from "lit";
+import { LitElement, css, html, nothing, type PropertyValues } from "lit";
 
 import { renderIcon, CHEVRON_ICON, HOME_ICON } from "../theme/icon";
 import { sharedStyles, themeTokens } from "../theme/styles";
@@ -12,6 +12,10 @@ import { UI_ICONS } from "../theme/ui-icons";
 import { CATEGORIES } from "../tree/categories";
 import type { PanelModel } from "../tree/panel-model";
 import { nodeKey, type RoomNode } from "../tree/types";
+
+/** Open every room / fold every room. */
+const UNFOLD_ICON = "M7 15l5 5 5-5M7 9l5-5 5 5";
+const FOLD_ICON = "M7 20l5-5 5 5M7 4l5 5 5-5";
 
 export class VividPilotTree extends LitElement {
   static override properties = {
@@ -37,12 +41,21 @@ export class VividPilotTree extends LitElement {
     this.expanded = next;
   }
 
-  override willUpdate(): void {
-    // Keep the branch of the selected node open.
+  override willUpdate(changed: PropertyValues<this>): void {
+    // Open the branch of a newly selected node, once: the user can fold it
+    // afterwards, even while it stays selected.
+    if (!changed.has("selected")) return;
     const area = this.selected.split("__")[0];
     if (this.model?.room(area) && !this.expanded.has(area)) {
       this.expanded = new Set([...this.expanded, area]);
     }
+  }
+
+  /** Every room open, or every room folded when they all are open. */
+  private toggleAll(): void {
+    const rooms = this.model?.rooms.map((room) => room.area_id) ?? [];
+    const allOpen = rooms.length > 0 && rooms.every((area) => this.expanded.has(area));
+    this.expanded = allOpen ? new Set() : new Set(rooms);
   }
 
   private watts(value: number | null) {
@@ -58,6 +71,8 @@ export class VividPilotTree extends LitElement {
     if (!model) return nothing;
     const home = model.aggregator.home(model.payload.tree, model.hass.states);
     const fmt = (value: number) => model.aggregator.formatNumber(value);
+    const allOpen =
+      model.rooms.length > 0 && model.rooms.every((room) => this.expanded.has(room.area_id));
     return html`
       <nav aria-label="Arbre" class="card">
         <button
@@ -82,6 +97,15 @@ export class VividPilotTree extends LitElement {
                 >`
               : nothing
           }
+          <button
+            type="button"
+            class="fold-all"
+            title=${allOpen ? "Tout replier" : "Tout déplier"}
+            aria-label=${allOpen ? "Tout replier" : "Tout déplier"}
+            @click=${this.toggleAll}
+          >
+            ${renderIcon(allOpen ? FOLD_ICON : UNFOLD_ICON, "currentColor", 15)}
+          </button>
         </div>
         <div class="rooms">${model.rooms.map((room) => this.renderRoom(room))}</div>
         ${this.renderExtra("unassigned", "Sans pièce", UI_ICONS.inbox, model.payload.tree.unassigned.length, true)}
@@ -119,27 +143,25 @@ export class VividPilotTree extends LitElement {
             ${this.watts(model.power(room.area_id))}
           </button>
         </div>
-        ${
-          open
-            ? html`<div class="categories">
-                ${room.categories.map((node) => {
-                  const meta = CATEGORIES[node.category];
-                  const key = nodeKey(room.area_id, node.category);
-                  return html`<button
-                    type="button"
-                    class="category ${this.selected === key ? "selected" : ""}"
-                    @click=${() => this.select(key)}
-                  >
-                    ${renderIcon(meta.icon, meta.color, 15)}
-                    <span class="name">${meta.label}</span>
-                    <span class="muted small"
-                      >${model.aggregator.category(node, model.hass.states).text}</span
-                    >
-                  </button>`;
-                })}
-              </div>`
-            : nothing
-        }
+        <div class="fold ${open ? "open" : ""}" ?inert=${!open}>
+          <div class="categories">
+            ${room.categories.map((node) => {
+              const meta = CATEGORIES[node.category];
+              const key = nodeKey(room.area_id, node.category);
+              return html`<button
+                type="button"
+                class="category ${this.selected === key ? "selected" : ""}"
+                @click=${() => this.select(key)}
+              >
+                ${renderIcon(meta.icon, meta.color, 15)}
+                <span class="name">${meta.label}</span>
+                <span class="muted small"
+                  >${model.aggregator.category(node, model.hass.states).text}</span
+                >
+              </button>`;
+            })}
+          </div>
+        </div>
       </div>
     `;
   }
@@ -198,12 +220,13 @@ export class VividPilotTree extends LitElement {
         flex: 1;
         font-weight: 500;
         min-width: 0;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        overflow-wrap: anywhere;
+        line-height: 1.3;
+        text-align: left;
       }
       .summary {
         display: flex;
+        align-items: center;
         gap: 12px;
         font-size: 12px;
         padding: 0 10px 8px 38px;
@@ -273,6 +296,45 @@ export class VividPilotTree extends LitElement {
       .chevron.open {
         transform: rotate(90deg);
       }
+      .fold-all {
+        margin-left: auto;
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 0;
+        border-radius: 8px;
+        background: transparent;
+        color: var(--vp-muted);
+        cursor: pointer;
+      }
+      .fold-all:hover {
+        background: var(--vp-raised);
+        color: var(--vp-text);
+      }
+      /* Rooms fold by animating their row height (0fr ↔ 1fr). */
+      .fold {
+        display: grid;
+        grid-template-rows: 0fr;
+        opacity: 0;
+        transition:
+          grid-template-rows 240ms var(--vp-ease-out),
+          opacity 180ms ease;
+      }
+      .fold.open {
+        grid-template-rows: 1fr;
+        opacity: 1;
+      }
+      .fold > .categories {
+        overflow: hidden;
+        min-height: 0;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .fold {
+          transition: opacity 150ms ease;
+        }
+      }
       .room-button {
         flex: 1;
         display: flex;
@@ -293,7 +355,7 @@ export class VividPilotTree extends LitElement {
       .categories {
         display: flex;
         flex-direction: column;
-        margin: 0 0 6px 30px;
+        padding: 0 0 6px 30px;
       }
       .category {
         min-height: 38px;

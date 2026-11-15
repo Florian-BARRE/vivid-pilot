@@ -5,6 +5,7 @@
 // per category; a card header opens that category, a leaf opens its editor.
 
 import { LitElement, html, nothing } from "lit";
+import { keyed } from "lit/directives/keyed.js";
 
 import { renderIcon } from "../theme/icon";
 import { UI_ICONS } from "../theme/ui-icons";
@@ -83,25 +84,31 @@ export class VividPilotNode extends LitElement {
     const model = this.model;
     if (!model) return nothing;
     const view = this.data(model);
-    return html`
-      ${this.renderHero(model, view)}
-      ${
-        view.cards.length === 0
-          ? html`<p class="muted empty">Rien à afficher ici.</p>`
-          : html`<div class="grid ${view.category ? "single" : ""}">
-              ${view.cards.map((node) => this.renderCard(model, view, node))}
-              ${
-                view.key
-                  ? html`<vivid-pilot-power-sources
-                      .model=${model}
-                      .areaId=${view.areaId}
-                      .category=${view.category}
-                    ></vivid-pilot-power-sources>`
-                  : nothing
-              }
-            </div>`
-      }
-    `;
+    // A new selection plays the entrance again; live updates do not.
+    return keyed(
+      this.selected,
+      html`<div class="view">
+        ${this.renderHero(model, view)}
+        ${
+          view.cards.length === 0
+            ? html`<p class="muted empty">Rien à afficher ici.</p>`
+            : html`<div
+                class="grid stagger ${view.category || view.cards.length === 1 ? "single" : ""}"
+              >
+                ${view.cards.map((node) => this.renderCard(model, view, node))}
+                ${
+                  view.key
+                    ? html`<vivid-pilot-power-sources
+                        .model=${model}
+                        .areaId=${view.areaId}
+                        .category=${view.category}
+                      ></vivid-pilot-power-sources>`
+                    : nothing
+                }
+              </div>`
+        }
+      </div>`,
+    );
   }
 
   private renderHero(model: PanelModel, view: ViewData) {

@@ -10,7 +10,7 @@ export const leafEditorStyles = css`
     background: rgba(10, 10, 16, 0.42);
     backdrop-filter: blur(3px);
     z-index: 10;
-    animation: fade 0.15s ease;
+    animation: fade 200ms ease;
   }
   .sheet {
     position: fixed;
@@ -27,7 +27,7 @@ export const leafEditorStyles = css`
     flex-direction: column;
     gap: 12px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    animation: rise 0.18s ease;
+    animation: rise 260ms var(--vp-ease-out);
   }
   @keyframes fade {
     from {
@@ -37,7 +37,7 @@ export const leafEditorStyles = css`
   @keyframes rise {
     from {
       opacity: 0;
-      transform: translate(-50%, -47%);
+      transform: translate(-50%, -48%) scale(0.97);
     }
   }
   header {
@@ -60,9 +60,7 @@ export const leafEditorStyles = css`
     min-width: 0;
   }
   .head-text .mono {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    overflow-wrap: anywhere;
   }
   h1 {
     margin: 0;
@@ -267,9 +265,7 @@ export const leafEditorStyles = css`
   .sources .mono {
     flex: 1;
     min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    overflow-wrap: anywhere;
   }
   .members {
     display: grid;

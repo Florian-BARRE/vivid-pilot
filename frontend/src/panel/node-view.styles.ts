@@ -4,10 +4,14 @@
 import { css } from "lit";
 
 export const nodeViewStyles = css`
-  :host {
+  :host,
+  .view {
     display: flex;
     flex-direction: column;
     gap: 16px;
+  }
+  .hero {
+    animation: vp-enter 280ms var(--vp-ease-out) both;
   }
   .hero {
     display: flex;
@@ -139,7 +143,7 @@ export const nodeViewStyles = css`
   }
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
     gap: 16px;
   }
   .grid.single {
@@ -252,9 +256,8 @@ export const nodeViewStyles = css`
   }
   .leaf-name {
     font-weight: 500;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    overflow-wrap: anywhere;
+    line-height: 1.3;
   }
   .fixed {
     flex: none;

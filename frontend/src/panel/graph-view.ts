@@ -191,6 +191,7 @@ export class VividPilotGraph extends LitElement {
               html`<button
                 type="button"
                 class="node ${node.selected ? "selected" : ""} ${node.glow ? "lit" : ""}"
+                title=${node.label}
                 style="left: ${COLUMNS[node.column]}px; top: ${node.row * (ROW + GAP) + GAP}px; width: ${WIDTHS[node.column]}px; --accent: ${node.color}; --glow: ${node.glow ?? "transparent"}"
                 @click=${node.onClick}
               >
@@ -343,11 +344,18 @@ export class VividPilotGraph extends LitElement {
         display: flex;
         flex-direction: column;
       }
-      .label,
+      /* Long names take two lines, never an ellipsis on one. */
+      .label {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+        overflow-wrap: anywhere;
+        line-height: 1.2;
+      }
       .sub {
         white-space: nowrap;
         overflow: hidden;
-        text-overflow: ellipsis;
       }
       .label {
         font-weight: 600;

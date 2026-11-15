@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.1 — 2026-11-15
+
+- **No more cut names**: long names wrap instead of ending in "…" (devices, rooms, power sources, corrections, the entity sheet); in the graph they take two lines, with the full name on hover.
+- **The space is used**: a lone card, or the last one of a row, stretches to the full width (e.g. "Ignorés" with many members).
+- **Folding in the side tree**: a selected room can be folded again, every room can be folded at once, and a fold-all / unfold-all button sits under "Maison". Rooms fold and unfold with an animation.
+- **Smoother**: views and tabs settle in when they change, cards come in one after the other, buttons answer the press, sheets open with a softer motion; gentler with reduced motion.
+
 ## 0.6.0 — 2026-11-13
 
 - **Panel redesign**: icons everywhere and less text. Tabs and the Cards / Graph switch carry icons; a room shows its power, lights and temperature as tiles, its memory as one line ("Memorised at 18:03") and its actions as icon buttons; each device shows its kind's icon, lit in the device's color when on, with a pencil when it was corrected by hand.
