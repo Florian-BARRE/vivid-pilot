@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.0 — 2026-11-13
+
+- **Panel redesign**: icons everywhere and less text. Tabs and the Cards / Graph switch carry icons; a room shows its power, lights and temperature as tiles, its memory as one line ("Memorised at 18:03") and its actions as icon buttons; each device shows its kind's icon, lit in the device's color when on, with a pencil when it was corrected by hand.
+- The graph gets column titles, icon tiles and quieter links; the device sheet groups its settings in blocks with segmented choices and switches; the memories list shows icon actions and folds "How it works"; the utilities become tiles.
+- **Icon in the Marketplace and in Home Assistant**: the integration ships its brand icon (Home Assistant 2026.3 and later).
+- README with a banner and screenshots of the panel, made from a demo home (docs/design).
+
 ## 0.5.2 — 2026-11-13
 
 - **Lamp and LED groups offer their members' colors**: color modes, color, color temperature and effects are merged like a Home Assistant light group, so a card (or the more-info dialog) shows the color picker and the effect list of a WLED group. Setting a color or an effect on the group sets it on every member.

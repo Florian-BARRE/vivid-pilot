@@ -1,0 +1,609 @@
+[
+ {
+  "room": "Salon",
+  "device": "Lampadaire",
+  "entities": [
+   {
+    "domain": "light",
+    "platform": "hue",
+    "key": "salon_lampadaire",
+    "name": "Lampadaire",
+    "device_class": null,
+    "state": "on",
+    "attributes": {
+     "supported_color_modes": [
+      "color_temp"
+     ],
+     "color_mode": "color_temp",
+     "brightness": 180
+    }
+   }
+  ]
+ },
+ {
+  "room": "Salon",
+  "device": "Suspension",
+  "entities": [
+   {
+    "domain": "switch",
+    "platform": "zigbee",
+    "key": "salon_suspension",
+    "name": "Suspension",
+    "device_class": null,
+    "state": "off",
+    "attributes": {}
+   },
+   {
+    "domain": "sensor",
+    "platform": "zigbee",
+    "key": "salon_suspension_power",
+    "name": "Suspension Puissance",
+    "device_class": "power",
+    "state": "0",
+    "attributes": {
+     "unit_of_measurement": "W"
+    }
+   }
+  ]
+ },
+ {
+  "room": "Salon",
+  "device": "TV LEDs",
+  "entities": [
+   {
+    "domain": "light",
+    "platform": "wled",
+    "key": "salon_tv",
+    "name": "TV LEDs",
+    "device_class": null,
+    "state": "on",
+    "attributes": {
+     "supported_color_modes": [
+      "rgb"
+     ],
+     "color_mode": "rgb",
+     "brightness": 200,
+     "rgb_color": [
+      255,
+      95,
+      109
+     ]
+    }
+   },
+   {
+    "domain": "sensor",
+    "platform": "wled",
+    "key": "salon_tv_current",
+    "name": "TV LEDs Courant estimé",
+    "device_class": "current",
+    "state": "1400",
+    "attributes": {
+     "unit_of_measurement": "mA"
+    }
+   }
+  ]
+ },
+ {
+  "room": "Salon",
+  "device": "Buffet LEDs",
+  "entities": [
+   {
+    "domain": "light",
+    "platform": "wled",
+    "key": "salon_buffet",
+    "name": "Buffet LEDs",
+    "device_class": null,
+    "state": "on",
+    "attributes": {
+     "supported_color_modes": [
+      "rgb"
+     ],
+     "color_mode": "rgb",
+     "brightness": 140,
+     "rgb_color": [
+      138,
+      63,
+      252
+     ]
+    }
+   },
+   {
+    "domain": "sensor",
+    "platform": "wled",
+    "key": "salon_buffet_current",
+    "name": "Buffet LEDs Courant estimé",
+    "device_class": "current",
+    "state": "620",
+    "attributes": {
+     "unit_of_measurement": "mA"
+    }
+   }
+  ]
+ },
+ {
+  "room": "Salon",
+  "device": "Canapé LEDs",
+  "entities": [
+   {
+    "domain": "light",
+    "platform": "wled",
+    "key": "salon_canape",
+    "name": "Canapé LEDs",
+    "device_class": null,
+    "state": "off",
+    "attributes": {
+     "supported_color_modes": [
+      "rgb"
+     ],
+     "color_mode": "rgb"
+    }
+   },
+   {
+    "domain": "sensor",
+    "platform": "wled",
+    "key": "salon_canape_current",
+    "name": "Canapé LEDs Courant estimé",
+    "device_class": "current",
+    "state": "0",
+    "attributes": {
+     "unit_of_measurement": "mA"
+    }
+   }
+  ]
+ },
+ {
+  "room": "Salon",
+  "device": "Prise TV",
+  "entities": [
+   {
+    "domain": "switch",
+    "platform": "zigbee",
+    "key": "salon_prise_tv",
+    "name": "Prise TV",
+    "device_class": null,
+    "state": "on",
+    "attributes": {}
+   },
+   {
+    "domain": "sensor",
+    "platform": "zigbee",
+    "key": "salon_prise_tv_power",
+    "name": "Prise TV Puissance",
+    "device_class": "power",
+    "state": "86.4",
+    "attributes": {
+     "unit_of_measurement": "W"
+    }
+   }
+  ]
+ },
+ {
+  "room": "Salon",
+  "device": "Porte d'entrée",
+  "entities": [
+   {
+    "domain": "binary_sensor",
+    "platform": "zigbee",
+    "key": "salon_porte",
+    "name": "Porte d'entrée",
+    "device_class": "door",
+    "state": "off",
+    "attributes": {}
+   },
+   {
+    "domain": "sensor",
+    "platform": "zigbee",
+    "key": "salon_porte_battery",
+    "name": "Porte d'entrée Batterie",
+    "device_class": "battery",
+    "state": "86",
+    "attributes": {
+     "unit_of_measurement": "%"
+    }
+   }
+  ]
+ },
+ {
+  "room": "Salon",
+  "device": "Fenêtre",
+  "entities": [
+   {
+    "domain": "binary_sensor",
+    "platform": "zigbee",
+    "key": "salon_fenetre",
+    "name": "Fenêtre",
+    "device_class": "window",
+    "state": "on",
+    "attributes": {}
+   },
+   {
+    "domain": "sensor",
+    "platform": "zigbee",
+    "key": "salon_fenetre_battery",
+    "name": "Fenêtre Batterie",
+    "device_class": "battery",
+    "state": "64",
+    "attributes": {
+     "unit_of_measurement": "%"
+    }
+   }
+  ]
+ },
+ {
+  "room": "Salon",
+  "device": "Station d'air",
+  "entities": [
+   {
+    "domain": "sensor",
+    "platform": "esphome",
+    "key": "salon_temp",
+    "name": "Station d'air Température",
+    "device_class": "temperature",
+    "state": "21.4",
+    "attributes": {
+     "unit_of_measurement": "°C"
+    }
+   },
+   {
+    "domain": "sensor",
+    "platform": "esphome",
+    "key": "salon_hum",
+    "name": "Station d'air Humidité",
+    "device_class": "humidity",
+    "state": "46",
+    "attributes": {
+     "unit_of_measurement": "%"
+    }
+   },
+   {
+    "domain": "sensor",
+    "platform": "esphome",
+    "key": "salon_co2",
+    "name": "Station d'air CO2",
+    "device_class": "carbon_dioxide",
+    "state": "712",
+    "attributes": {
+     "unit_of_measurement": "ppm"
+    }
+   },
+   {
+    "domain": "sensor",
+    "platform": "esphome",
+    "key": "salon_pressure",
+    "name": "Station d'air Pression",
+    "device_class": "atmospheric_pressure",
+    "state": "1014",
+    "attributes": {
+     "unit_of_measurement": "hPa"
+    }
+   }
+  ]
+ },
+ {
+  "room": "Salon",
+  "device": "Présence",
+  "entities": [
+   {
+    "domain": "binary_sensor",
+    "platform": "zigbee",
+    "key": "salon_presence",
+    "name": "Présence",
+    "device_class": "occupancy",
+    "state": "on",
+    "attributes": {}
+   },
+   {
+    "domain": "sensor",
+    "platform": "zigbee",
+    "key": "salon_lux",
+    "name": "Présence Éclairement",
+    "device_class": "illuminance",
+    "state": "180",
+    "attributes": {
+     "unit_of_measurement": "lx"
+    }
+   }
+  ]
+ },
+ {
+  "room": "Chambre",
+  "device": "Lampe de chevet",
+  "entities": [
+   {
+    "domain": "light",
+    "platform": "hue",
+    "key": "chambre_chevet",
+    "name": "Lampe de chevet",
+    "device_class": null,
+    "state": "off",
+    "attributes": {
+     "supported_color_modes": [
+      "color_temp"
+     ],
+     "color_mode": "color_temp"
+    }
+   }
+  ]
+ },
+ {
+  "room": "Chambre",
+  "device": "Miroir LEDs",
+  "entities": [
+   {
+    "domain": "light",
+    "platform": "wled",
+    "key": "chambre_miroir",
+    "name": "Miroir LEDs",
+    "device_class": null,
+    "state": "off",
+    "attributes": {
+     "supported_color_modes": [
+      "rgb"
+     ],
+     "color_mode": "rgb"
+    }
+   },
+   {
+    "domain": "sensor",
+    "platform": "wled",
+    "key": "chambre_miroir_current",
+    "name": "Miroir LEDs Courant estimé",
+    "device_class": "current",
+    "state": "0",
+    "attributes": {
+     "unit_of_measurement": "mA"
+    }
+   }
+  ]
+ },
+ {
+  "room": "Chambre",
+  "device": "Thermomètre",
+  "entities": [
+   {
+    "domain": "sensor",
+    "platform": "zigbee",
+    "key": "chambre_temp",
+    "name": "Thermomètre Température",
+    "device_class": "temperature",
+    "state": "19.2",
+    "attributes": {
+     "unit_of_measurement": "°C"
+    }
+   },
+   {
+    "domain": "sensor",
+    "platform": "zigbee",
+    "key": "chambre_hum",
+    "name": "Thermomètre Humidité",
+    "device_class": "humidity",
+    "state": "52",
+    "attributes": {
+     "unit_of_measurement": "%"
+    }
+   },
+   {
+    "domain": "sensor",
+    "platform": "zigbee",
+    "key": "chambre_battery",
+    "name": "Thermomètre Batterie",
+    "device_class": "battery",
+    "state": "14",
+    "attributes": {
+     "unit_of_measurement": "%"
+    }
+   }
+  ]
+ },
+ {
+  "room": "Chambre",
+  "device": "Fenêtre chambre",
+  "entities": [
+   {
+    "domain": "binary_sensor",
+    "platform": "zigbee",
+    "key": "chambre_fenetre",
+    "name": "Fenêtre chambre",
+    "device_class": "window",
+    "state": "off",
+    "attributes": {}
+   }
+  ]
+ },
+ {
+  "room": "Cuisine",
+  "device": "Plafonnier",
+  "entities": [
+   {
+    "domain": "light",
+    "platform": "hue",
+    "key": "cuisine_plafonnier",
+    "name": "Plafonnier",
+    "device_class": null,
+    "state": "on",
+    "attributes": {
+     "supported_color_modes": [
+      "color_temp"
+     ],
+     "color_mode": "color_temp",
+     "brightness": 255
+    }
+   }
+  ]
+ },
+ {
+  "room": "Cuisine",
+  "device": "Bouilloire",
+  "entities": [
+   {
+    "domain": "switch",
+    "platform": "zigbee",
+    "key": "cuisine_bouilloire",
+    "name": "Bouilloire",
+    "device_class": null,
+    "state": "off",
+    "attributes": {}
+   },
+   {
+    "domain": "sensor",
+    "platform": "zigbee",
+    "key": "cuisine_bouilloire_power",
+    "name": "Bouilloire Puissance",
+    "device_class": "power",
+    "state": "0",
+    "attributes": {
+     "unit_of_measurement": "W"
+    }
+   }
+  ]
+ },
+ {
+  "room": "Cuisine",
+  "device": "Thermomètre cuisine",
+  "entities": [
+   {
+    "domain": "sensor",
+    "platform": "zigbee",
+    "key": "cuisine_temp",
+    "name": "Thermomètre cuisine Température",
+    "device_class": "temperature",
+    "state": "22.1",
+    "attributes": {
+     "unit_of_measurement": "°C"
+    }
+   }
+  ]
+ },
+ {
+  "room": "Bureau",
+  "device": "Lampe de bureau",
+  "entities": [
+   {
+    "domain": "switch",
+    "platform": "zigbee",
+    "key": "bureau_lampe",
+    "name": "Lampe de bureau",
+    "device_class": null,
+    "state": "on",
+    "attributes": {}
+   },
+   {
+    "domain": "sensor",
+    "platform": "zigbee",
+    "key": "bureau_lampe_power",
+    "name": "Lampe de bureau Puissance",
+    "device_class": "power",
+    "state": "9.8",
+    "attributes": {
+     "unit_of_measurement": "W"
+    }
+   }
+  ]
+ },
+ {
+  "room": "Bureau",
+  "device": "Porte bureau",
+  "entities": [
+   {
+    "domain": "binary_sensor",
+    "platform": "zigbee",
+    "key": "bureau_porte",
+    "name": "Porte bureau",
+    "device_class": "door",
+    "state": "on",
+    "attributes": {}
+   }
+  ]
+ },
+ {
+  "room": "Bureau",
+  "device": "Thermomètre bureau",
+  "entities": [
+   {
+    "domain": "sensor",
+    "platform": "zigbee",
+    "key": "bureau_temp",
+    "name": "Thermomètre bureau Température",
+    "device_class": "temperature",
+    "state": "20.6",
+    "attributes": {
+     "unit_of_measurement": "°C"
+    }
+   }
+  ]
+ },
+ {
+  "room": "Salle de bain",
+  "device": "Miroir salle de bain",
+  "entities": [
+   {
+    "domain": "light",
+    "platform": "wled",
+    "key": "sdb_miroir",
+    "name": "Miroir salle de bain",
+    "device_class": null,
+    "state": "off",
+    "attributes": {
+     "supported_color_modes": [
+      "rgb"
+     ],
+     "color_mode": "rgb"
+    }
+   },
+   {
+    "domain": "sensor",
+    "platform": "wled",
+    "key": "sdb_miroir_current",
+    "name": "Miroir salle de bain Courant estimé",
+    "device_class": "current",
+    "state": "0",
+    "attributes": {
+     "unit_of_measurement": "mA"
+    }
+   }
+  ]
+ },
+ {
+  "room": "Salle de bain",
+  "device": "Hygromètre",
+  "entities": [
+   {
+    "domain": "sensor",
+    "platform": "zigbee",
+    "key": "sdb_hum",
+    "name": "Hygromètre Humidité",
+    "device_class": "humidity",
+    "state": "68",
+    "attributes": {
+     "unit_of_measurement": "%"
+    }
+   }
+  ]
+ },
+ {
+  "room": "",
+  "device": "Prise garage",
+  "entities": [
+   {
+    "domain": "switch",
+    "platform": "zigbee",
+    "key": "garage_prise",
+    "name": "Prise garage",
+    "device_class": null,
+    "state": "off",
+    "attributes": {}
+   },
+   {
+    "domain": "sensor",
+    "platform": "zigbee",
+    "key": "garage_prise_power",
+    "name": "Prise garage Puissance",
+    "device_class": "power",
+    "state": "0",
+    "attributes": {
+     "unit_of_measurement": "W"
+    }
+   }
+  ]
+ }
+]

@@ -61,4 +61,39 @@ export const sharedStyles = css`
     font: inherit;
     color: inherit;
   }
+  /* A switch drawn from a checkbox (role="switch"). */
+  input.switch {
+    appearance: none;
+    position: relative;
+    flex: none;
+    width: 38px;
+    height: 22px;
+    margin: 0;
+    border-radius: 11px;
+    background: color-mix(in srgb, var(--vp-text) 22%, transparent);
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  input.switch::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease;
+  }
+  input.switch:checked {
+    background: var(--vp-primary);
+  }
+  input.switch:checked::after {
+    transform: translateX(16px);
+  }
+  input.switch:focus-visible {
+    outline: 2px solid var(--vp-primary);
+    outline-offset: 2px;
+  }
 `;

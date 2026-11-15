@@ -8,6 +8,7 @@ import { LitElement, css, html, nothing } from "lit";
 
 import { renderIcon, CHEVRON_ICON, HOME_ICON } from "../theme/icon";
 import { sharedStyles, themeTokens } from "../theme/styles";
+import { UI_ICONS } from "../theme/ui-icons";
 import { CATEGORIES } from "../tree/categories";
 import type { PanelModel } from "../tree/panel-model";
 import { nodeKey, type RoomNode } from "../tree/types";
@@ -47,7 +48,9 @@ export class VividPilotTree extends LitElement {
   private watts(value: number | null) {
     return value === null
       ? nothing
-      : html`<span class="power">${this.model!.aggregator.formatNumber(value)} W</span>`;
+      : html`<span class="power ${value === 0 ? "idle" : ""}"
+          >${this.model!.aggregator.formatNumber(value)} W</span
+        >`;
   }
 
   protected override render() {
@@ -67,16 +70,22 @@ export class VividPilotTree extends LitElement {
           ${this.watts(model.power(null))}
         </button>
         <div class="summary muted">
-          ${home.lightsOn}/${home.lightsTotal}
-          allumées${
+          <span title="Lumières allumées"
+            >${renderIcon(UI_ICONS.bulb, "currentColor", 13)}
+            ${home.lightsOn}/${home.lightsTotal}</span
+          >
+          ${
             home.temperature
-              ? ` · ${fmt(home.temperature.min)}–${fmt(home.temperature.max)} °C`
-              : ""
+              ? html`<span title="Températures"
+                  >${renderIcon(UI_ICONS.thermometer, "currentColor", 13)}
+                  ${fmt(home.temperature.min)}–${fmt(home.temperature.max)} °C</span
+                >`
+              : nothing
           }
         </div>
         <div class="rooms">${model.rooms.map((room) => this.renderRoom(room))}</div>
-        ${this.renderExtra("unassigned", "Sans pièce", model.payload.tree.unassigned.length, true)}
-        ${this.renderExtra("ignored", "Ignorés", model.payload.tree.ignored.length, false)}
+        ${this.renderExtra("unassigned", "Sans pièce", UI_ICONS.inbox, model.payload.tree.unassigned.length, true)}
+        ${this.renderExtra("ignored", "Ignorés", UI_ICONS.hidden, model.payload.tree.ignored.length, false)}
       </nav>
     `;
   }
@@ -100,9 +109,13 @@ export class VividPilotTree extends LitElement {
           </button>
           <button type="button" class="room-button" @click=${() => this.select(room.area_id)}>
             <span class="name">${room.name}</span>
-            <span class="muted small"
-              >${lit > 0 ? `${lit} allumée${lit > 1 ? "s" : ""}` : "éteinte"}</span
-            >
+            ${
+              lit > 0
+                ? html`<span class="lit" title=${`${lit} allumée${lit > 1 ? "s" : ""}`}
+                    >${renderIcon(UI_ICONS.bulb, "currentColor", 13)}${lit}</span
+                  >`
+                : nothing
+            }
             ${this.watts(model.power(room.area_id))}
           </button>
         </div>
@@ -131,7 +144,7 @@ export class VividPilotTree extends LitElement {
     `;
   }
 
-  private renderExtra(key: string, label: string, count: number, warn: boolean) {
+  private renderExtra(key: string, label: string, icon: string, count: number, warn: boolean) {
     if (count === 0) return nothing;
     return html`
       <button
@@ -139,8 +152,9 @@ export class VividPilotTree extends LitElement {
         class="row extra ${warn ? "warn" : ""} ${this.selected === key ? "selected" : ""}"
         @click=${() => this.select(key)}
       >
+        ${renderIcon(icon, "currentColor", 16)}
         <span class="name">${label}</span>
-        <span class="small">${count}</span>
+        <span class="count">${count}</span>
       </button>
     `;
   }
@@ -189,8 +203,31 @@ export class VividPilotTree extends LitElement {
         white-space: nowrap;
       }
       .summary {
+        display: flex;
+        gap: 12px;
         font-size: 12px;
         padding: 0 10px 8px 38px;
+      }
+      .summary span,
+      .lit {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .lit {
+        font-size: 12px;
+        font-weight: 600;
+        color: #e8a33a;
+        padding: 2px 7px 2px 5px;
+        border-radius: 999px;
+        background: color-mix(in srgb, #f5b042 16%, transparent);
+      }
+      .count {
+        font-size: 12px;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: var(--vp-raised);
       }
       .small {
         font-size: 12px;
@@ -202,6 +239,10 @@ export class VividPilotTree extends LitElement {
         min-width: 44px;
         text-align: right;
         white-space: nowrap;
+      }
+      .power.idle {
+        font-weight: 400;
+        color: var(--vp-muted);
       }
       .rooms {
         margin-left: 12px;
@@ -263,12 +304,17 @@ export class VividPilotTree extends LitElement {
         font-weight: 400;
       }
       .extra {
-        margin-top: 8px;
-        border: 1px dashed var(--vp-divider);
+        margin-top: 6px;
+        color: var(--vp-muted);
+      }
+      .extra .name {
+        color: var(--vp-text);
       }
       .extra.warn {
-        border-color: color-mix(in srgb, var(--vp-warning) 60%, transparent);
-        background: color-mix(in srgb, var(--vp-warning) 10%, transparent);
+        color: var(--vp-warning);
+      }
+      .extra.warn .count {
+        background: color-mix(in srgb, var(--vp-warning) 18%, transparent);
       }
     `,
   ];

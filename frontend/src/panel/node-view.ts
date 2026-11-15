@@ -7,6 +7,7 @@
 import { LitElement, html, nothing } from "lit";
 
 import { renderIcon } from "../theme/icon";
+import { UI_ICONS } from "../theme/ui-icons";
 import { sharedStyles, themeTokens } from "../theme/styles";
 import { nodeViewStyles } from "./node-view.styles";
 import { CATEGORIES, reasonLabel } from "../tree/categories";
@@ -20,6 +21,7 @@ import {
 } from "../tree/types";
 
 const SWITCHABLE = new Set<CategoryId>(["light", "led", "switch"]);
+const LIGHTS = new Set<CategoryId>(["light", "led"]);
 
 interface ViewData {
   key: string | null;
@@ -104,19 +106,26 @@ export class VividPilotNode extends LitElement {
 
   private renderHero(model: PanelModel, view: ViewData) {
     const fmt = (value: number) => model.aggregator.formatNumber(value);
-    const chips: Array<[string, string]> = [];
+    const chips: Array<[string, string, string, string]> = [];
     if (view.key) {
       const power = model.power(view.areaId, view.category);
-      if (power !== null) chips.push(["Puissance", `${fmt(power)} W`]);
-      const lights = view.cards.filter((node) => SWITCHABLE.has(node.category));
+      if (power !== null) chips.push([UI_ICONS.bolt, "#f5b042", "Puissance", `${fmt(power)} W`]);
+      // Lamps and LEDs, as the side tree and the room's button count them.
+      const lights = view.cards.filter((node) => LIGHTS.has(node.category));
       if (lights.length) {
         const all = lights.flatMap((node) => node.leaves);
         const on = all.filter((leaf) => model.hass.states[leaf.entity_id]?.state === "on").length;
-        chips.push(["Allumés", `${on} / ${all.length}`]);
+        chips.push([UI_ICONS.bulb, "#ff5f6d", "Lumières", `${on} / ${all.length}`]);
       }
       const temp = view.cards.find((node) => node.category === "temperature");
       const range = temp ? model.aggregator.range(temp, model.hass.states) : null;
-      if (range) chips.push(["Température", `${fmt(range.min)} – ${fmt(range.max)} °C`]);
+      if (range) {
+        const text =
+          range.min === range.max
+            ? `${fmt(range.min)} °C`
+            : `${fmt(range.min)} – ${fmt(range.max)} °C`;
+        chips.push([UI_ICONS.thermometer, "#5aa9ff", "Température", text]);
+      }
     }
     const info = view.key ? model.node(view.key) : undefined;
     const switchable = view.key && (view.category ? SWITCHABLE.has(view.category) : true) && info;
@@ -132,10 +141,15 @@ export class VividPilotNode extends LitElement {
           chips.length
             ? html`<div class="chips">
                 ${chips.map(
-                  ([label, value]) =>
+                  ([icon, color, label, value]) =>
                     html`<div class="chip">
-                      <div class="muted small">${label}</div>
-                      <div class="chip-value">${value}</div>
+                      <span class="chip-icon" style="--accent: ${color}"
+                        >${renderIcon(icon, color, 16)}</span
+                      >
+                      <div>
+                        <div class="chip-value">${value}</div>
+                        <div class="muted small">${label}</div>
+                      </div>
                     </div>`,
                 )}
               </div>`
@@ -149,13 +163,20 @@ export class VividPilotNode extends LitElement {
                   class="primary"
                   @click=${() => model.api.group("turn_on", view.key!)}
                 >
+                  ${renderIcon(info!.memory.saved_at ? UI_ICONS.restore : UI_ICONS.power, "currentColor", 17)}
                   ${info!.memory.saved_at ? "Rétablir" : "Allumer"}
                 </button>
                 <button type="button" @click=${() => model.api.group("turn_off", view.key!)}>
-                  Éteindre
+                  ${renderIcon(UI_ICONS.power, "currentColor", 17)} Éteindre
                 </button>
-                <button type="button" @click=${() => this.emit("vp-memory-edit", view.key!)}>
-                  Mémoire…
+                <button
+                  type="button"
+                  class="icon-only"
+                  title="Réglages de la mémoire"
+                  aria-label="Réglages de la mémoire"
+                  @click=${() => this.emit("vp-memory-edit", view.key!)}
+                >
+                  ${renderIcon(UI_ICONS.sliders, "currentColor", 18)}
                 </button>
               </div>`
             : nothing
@@ -169,24 +190,23 @@ export class VividPilotNode extends LitElement {
     key: string,
     memory: { active: boolean; saved_at: string | null; colors: number[][] },
   ) {
-    const when = memory.saved_at
-      ? new Date(memory.saved_at).toLocaleString(model.hass.language || "fr")
-      : null;
-    const gradient = memory.colors.length
-      ? `linear-gradient(90deg, ${memory.colors.map((c) => `rgb(${c.join(",")})`).join(", ")}${memory.colors.length === 1 ? ", rgb(" + memory.colors[0].join(",") + ")" : ""})`
-      : "var(--vp-divider)";
-    return html`<div class="memory-line">
-      <span class="bar" style="background: ${gradient}"></span>
-      <span class="muted small">
-        ${
-          !memory.active
-            ? "Mémoire désactivée"
-            : when
-              ? `État mémorisé le ${when}`
-              : "Pas encore d'état mémorisé"
-        }
-        · <span class="mono">${model.generated(key, "scene:state") ?? ""}</span>
-      </span>
+    const colors = memory.colors.map((c) => `rgb(${c.join(",")})`);
+    const swatch =
+      colors.length > 1
+        ? `linear-gradient(90deg, ${colors.join(", ")})`
+        : (colors[0] ?? "var(--vp-divider)");
+    const text = !memory.active
+      ? "Mémoire désactivée"
+      : memory.saved_at
+        ? `Mémorisé ${savedWhen(memory.saved_at, model.hass.language || "fr")}`
+        : "Rien de mémorisé";
+    return html`<div
+      class="memory-line ${memory.active ? "" : "off"}"
+      title=${model.generated(key, "scene:state") ?? ""}
+    >
+      ${renderIcon(UI_ICONS.memory, "currentColor", 14)}
+      <span>${text}</span>
+      ${memory.saved_at ? html`<span class="swatch" style="background: ${swatch}"></span>` : nothing}
     </div>`;
   }
 
@@ -213,7 +233,7 @@ export class VividPilotNode extends LitElement {
           }
         </div>
       </div>
-      <div class="aggregate">${summary.text}</div>
+      <div class="aggregate" style="--accent: ${meta.color}">${summary.text}</div>
     `;
     return html`
       <section class="card category">
@@ -229,7 +249,9 @@ export class VividPilotNode extends LitElement {
             : html`<div class="card-head">${header}</div>`
         }
         <ul>
-          ${node.leaves.map((leaf) => this.renderLeaf(model, leaf, !view.areaId && view.key !== null))}
+          ${node.leaves.map((leaf) =>
+            this.renderLeaf(model, leaf, !view.areaId && view.key !== null),
+          )}
         </ul>
       </section>
     `;
@@ -237,35 +259,56 @@ export class VividPilotNode extends LitElement {
 
   private renderLeaf(model: PanelModel, leaf: TreeLeaf, showRoom: boolean) {
     const view = model.aggregator.leaf(leaf, model.hass.states);
-    const glow = view.glow ? `background: ${view.glow}; box-shadow: 0 0 10px ${view.glow}` : "";
+    const meta = CATEGORIES[leaf.category];
+    const lit = view.glow ?? null;
     const strip = model.stripPower(leaf.entity_id);
     const room = showRoom ? model.place(leaf.entity_id)?.room?.name : undefined;
+    const manual = leaf.source === "manual";
     return html`
       <li>
         <button
           type="button"
-          class="leaf ${view.available ? "" : "unavailable"}"
+          class="leaf ${view.available ? "" : "unavailable"} ${lit ? "lit" : ""}"
+          title=${leaf.entity_id}
+          style=${lit ? `--glow: ${lit}` : ""}
           @click=${() => this.emit("vp-edit-leaf", leaf.entity_id)}
         >
-          <span class="dot" style=${glow}></span>
+          <span class="leaf-icon" style="--accent: ${meta.color}"
+            >${renderIcon(meta.icon, lit ? "#fff" : meta.color, 16)}</span
+          >
           <span class="leaf-text">
             <span class="leaf-name">${leaf.name}</span>
-            <span class="mono">${room ? `${room} · ` : ""}${leaf.entity_id}</span>
+            ${room ? html`<span class="muted small">${room}</span>` : nothing}
           </span>
-          <span
-            class="pill ${leaf.source === "manual" ? "manual" : ""}"
-            title=${reasonLabel(leaf.reason)}
-            >${leaf.source === "manual" ? "corrigé" : "auto"}</span
-          >
-          <span class="value"
-            >${view.text}${strip !== null ? html`<br /><span class="muted">${model.aggregator.formatNumber(strip)} W</span>` : nothing}</span
-          >
+          ${
+            manual
+              ? html`<span class="fixed" title=${`Corrigé à la main · ${reasonLabel(leaf.reason)}`}
+                  >${renderIcon(UI_ICONS.pencil, "currentColor", 13)}</span
+                >`
+              : nothing
+          }
+          <span class="value">
+            <span class=${view.active ? "on" : ""}>${view.text}</span>
+            ${strip !== null ? html`<span class="muted small">${model.aggregator.formatNumber(strip)} W</span>` : nothing}
+          </span>
         </button>
       </li>
     `;
   }
 
   static override styles = [themeTokens, sharedStyles, nodeViewStyles];
+}
+
+/** "à 18:03" today, "hier à 22:10", else "le 12 nov. à 9:30". */
+function savedWhen(iso: string, language: string): string {
+  const date = new Date(iso);
+  const time = date.toLocaleTimeString(language, { hour: "2-digit", minute: "2-digit" });
+  const days = Math.round(
+    (new Date().setHours(0, 0, 0, 0) - new Date(iso).setHours(0, 0, 0, 0)) / 86_400_000,
+  );
+  if (days === 0) return `à ${time}`;
+  if (days === 1) return `hier à ${time}`;
+  return `le ${date.toLocaleDateString(language, { day: "numeric", month: "short" })} à ${time}`;
 }
 
 function byCategory(leaves: TreeLeaf[]): CategoryNode[] {

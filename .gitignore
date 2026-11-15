@@ -15,3 +15,4 @@ custom_components/vivid_pilot/frontend/*
 .vscode/
 .idea/
 .DS_Store
+crops/

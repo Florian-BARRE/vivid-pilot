@@ -5,6 +5,7 @@
 import { ELEMENT_NAMES } from "./constants";
 import { VividPilotGraph } from "./panel/graph-view";
 import { VividPilotLeafEditor } from "./panel/leaf-editor";
+import { VividPilotLeafPower } from "./panel/leaf-power";
 import { VividPilotMemoryEditor } from "./panel/memory-editor";
 import { VividPilotMemoryTab } from "./panel/memory-tab";
 import { VividPilotNode } from "./panel/node-view";
@@ -20,6 +21,7 @@ const ELEMENTS: Array<[string, CustomElementConstructor]> = [
   [ELEMENT_NAMES.powerSources, VividPilotPowerSources],
   [ELEMENT_NAMES.node, VividPilotNode],
   [ELEMENT_NAMES.graph, VividPilotGraph],
+  [ELEMENT_NAMES.leafPower, VividPilotLeafPower],
   [ELEMENT_NAMES.leafEditor, VividPilotLeafEditor],
   [ELEMENT_NAMES.memoryTab, VividPilotMemoryTab],
   [ELEMENT_NAMES.memoryEditor, VividPilotMemoryEditor],
