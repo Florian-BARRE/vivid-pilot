@@ -209,9 +209,7 @@ export class VividPilotPowerSources extends LitElement {
       }
       .name,
       .text .mono {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        overflow-wrap: anywhere;
       }
       .name {
         font-weight: 500;

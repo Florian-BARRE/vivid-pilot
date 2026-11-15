@@ -5,6 +5,7 @@
 // two sheets (entity editor, memory settings).
 
 import { LitElement, css, html, nothing, type PropertyValues } from "lit";
+import { keyed } from "lit/directives/keyed.js";
 
 import { PilotApi } from "../api/pilot-api";
 import { renderIcon } from "../theme/icon";
@@ -165,7 +166,11 @@ export class VividPilotPanel extends LitElement {
         @vp-close=${this.onClose}
         @vp-toast=${this.onToast}
       >
-        ${this.tab === "tree" ? this.renderTree(model) : html`<main class="full">${this.renderTab(model)}</main>`}
+        ${
+          this.tab === "tree"
+            ? this.renderTree(model)
+            : keyed(this.tab, html`<main class="full enter">${this.renderTab(model)}</main>`)
+        }
         ${
           this.editing
             ? html`<vivid-pilot-leaf-editor
@@ -189,14 +194,22 @@ export class VividPilotPanel extends LitElement {
   private renderTree(model: PanelModel) {
     // The graph needs the whole width: it replaces the side tree.
     if (this.mode === "graph") {
-      return html`<main class="full">
-        <vivid-pilot-graph .model=${model} selected=${this.selected}></vivid-pilot-graph>
-      </main>`;
+      return keyed(
+        "graph",
+        html`<main class="full enter">
+          <vivid-pilot-graph .model=${model} selected=${this.selected}></vivid-pilot-graph>
+        </main>`,
+      );
     }
-    return html`
-      <aside><vivid-pilot-tree .model=${model} selected=${this.selected}></vivid-pilot-tree></aside>
-      <main><vivid-pilot-node .model=${model} selected=${this.selected}></vivid-pilot-node></main>
-    `;
+    return keyed(
+      "list",
+      html`
+        <aside class="enter">
+          <vivid-pilot-tree .model=${model} selected=${this.selected}></vivid-pilot-tree>
+        </aside>
+        <main><vivid-pilot-node .model=${model} selected=${this.selected}></vivid-pilot-node></main>
+      `,
+    );
   }
 
   private renderTab(model: PanelModel) {

@@ -321,9 +321,7 @@ export class VividPilotUtilitiesTab extends LitElement {
       }
       .name {
         font-weight: 500;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        overflow-wrap: anywhere;
       }
       .changes {
         display: flex;

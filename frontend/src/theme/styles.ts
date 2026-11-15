@@ -17,6 +17,8 @@ export const themeTokens = css`
     --vp-selected: color-mix(in srgb, var(--vp-primary) 16%, transparent);
     --vp-radius: var(--ha-card-border-radius, 12px);
     --vp-warning: var(--warning-color, #ffa600);
+    --vp-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --vp-ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
     color: var(--vp-text);
     font-family: var(--ha-font-family-body, Roboto, Noto, sans-serif);
     font-size: 14px;
@@ -60,6 +62,63 @@ export const sharedStyles = css`
   button {
     font: inherit;
     color: inherit;
+  }
+  /* Every button answers the press; :host raises the rule above each
+     element's own transitions so press, hover and rotation all ease. */
+  :host button {
+    transition:
+      scale 160ms var(--vp-ease-out),
+      transform 220ms var(--vp-ease-out),
+      background-color 150ms ease,
+      border-color 150ms ease,
+      color 150ms ease,
+      box-shadow 200ms ease,
+      opacity 150ms ease;
+  }
+  :host button:active:not(:disabled) {
+    scale: 0.96;
+  }
+  :host button:is(.leaf, .row, .room-button, .category, .node, .extra):active:not(:disabled) {
+    scale: 0.985;
+  }
+  /* Content that just appeared (a view, a tab) settles in. */
+  .enter {
+    animation: vp-enter 280ms var(--vp-ease-out) both;
+  }
+  .stagger > * {
+    animation: vp-enter 320ms var(--vp-ease-out) both;
+  }
+  .stagger > :nth-child(2) {
+    animation-delay: 40ms;
+  }
+  .stagger > :nth-child(3) {
+    animation-delay: 70ms;
+  }
+  .stagger > :nth-child(4) {
+    animation-delay: 95ms;
+  }
+  .stagger > :nth-child(n + 5) {
+    animation-delay: 115ms;
+  }
+  @keyframes vp-enter {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+  @keyframes vp-fade {
+    from {
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .enter,
+    .stagger > * {
+      animation-name: vp-fade;
+    }
+    :host button:active:not(:disabled) {
+      scale: 1;
+    }
   }
   /* A switch drawn from a checkbox (role="switch"). */
   input.switch {
