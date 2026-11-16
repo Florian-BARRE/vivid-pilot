@@ -1,0 +1,164 @@
+<!doctype html>
+<!--
+  Header picture of a documentation page, shared by Vivid Cards and Vivid
+  Pilot (the same file in both repositories). render-headers.mjs fills
+  window.HEADER from headers.json: product, logo, kicker, title, text, accent
+  and up to three pictures laid out on the right.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+      }
+      body {
+        width: 1280px;
+        height: 400px;
+        overflow: hidden;
+        position: relative;
+        font-family: "Inter", system-ui, sans-serif;
+        color: #f2f0f7;
+        background:
+          radial-gradient(460px 320px at 6% 0%, rgba(255, 140, 50, 0.16), transparent 70%),
+          radial-gradient(560px 380px at 96% 100%, rgba(138, 63, 252, 0.26), transparent 70%),
+          #0e0d13;
+      }
+      .grain {
+        position: absolute;
+        inset: 0;
+        opacity: 0.08;
+        background-image: radial-gradient(rgba(255, 255, 255, 0.6) 0.6px, transparent 0.6px);
+        background-size: 4px 4px;
+      }
+      .glow {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(70px);
+        opacity: 0.45;
+      }
+      .left {
+        position: absolute;
+        left: 60px;
+        top: 0;
+        bottom: 0;
+        width: 540px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .brand img {
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
+        box-shadow: 0 10px 30px rgba(255, 95, 109, 0.3);
+      }
+      .brand .product {
+        font-size: 17px;
+        font-weight: 700;
+        letter-spacing: -0.2px;
+      }
+      .brand .product b {
+        background: linear-gradient(100deg, #ffb347 0%, #ff5f6d 45%, #b25cff 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .brand .kicker {
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #9a96a8;
+        margin-top: 2px;
+      }
+      h1 {
+        margin: 26px 0 0;
+        font-size: 54px;
+        line-height: 1;
+        letter-spacing: -1.8px;
+        font-weight: 800;
+      }
+      h1 .mono {
+        font-family: "JetBrains Mono", "Roboto Mono", ui-monospace, monospace;
+        font-size: 40px;
+        letter-spacing: -1px;
+      }
+      p {
+        margin: 16px 0 0;
+        font-size: 19px;
+        line-height: 1.45;
+        color: #b9b5c6;
+      }
+      .shot {
+        position: absolute;
+        overflow: hidden;
+        border-radius: 16px;
+        box-shadow:
+          0 26px 60px rgba(0, 0, 0, 0.55),
+          0 0 0 1px rgba(255, 255, 255, 0.07);
+        background: #111;
+      }
+      .shot img {
+        display: block;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grain"></div>
+    <div id="glow" class="glow" style="left: 760px; top: 40px; width: 420px; height: 260px"></div>
+    <div id="shots"></div>
+    <div class="left">
+      <div class="brand">
+        <img id="logo" alt="" />
+        <div>
+          <div class="product" id="product"></div>
+          <div class="kicker" id="kicker"></div>
+        </div>
+      </div>
+      <h1 id="title"></h1>
+      <p id="text"></p>
+    </div>
+    <script>
+      // Slots for one, two or three pictures: left, top, width, max height, tilt.
+      const LAYOUTS = {
+        1: [[660, 46, 560, 310, 1.5]],
+        2: [
+          [640, 34, 430, 250, -3],
+          [830, 150, 400, 230, 2.5],
+        ],
+        3: [
+          [630, 40, 360, 210, -4],
+          [880, 26, 350, 200, 3],
+          [730, 200, 440, 180, -1],
+        ],
+      };
+      const header = window.HEADER;
+      const [vivid, ...rest] = header.product.split(" ");
+      document.getElementById("product").innerHTML = `<b>${vivid}</b> ${rest.join(" ")}`;
+      document.getElementById("kicker").textContent = header.kicker;
+      document.getElementById("logo").src = header.logo;
+      document.getElementById("title").innerHTML = header.title;
+      document.getElementById("text").textContent = header.text;
+      document.getElementById("glow").style.background = header.accent;
+      const slots = LAYOUTS[header.images.length] ?? LAYOUTS[3];
+      document.getElementById("shots").innerHTML = header.images
+        .slice(0, 3)
+        .map((src, index) => {
+          const [left, top, width, height, tilt] = slots[index];
+          return `<div class="shot" style="left:${left}px;top:${top}px;width:${width}px;max-height:${height}px;transform:rotate(${tilt}deg)"><img src="${src}" /></div>`;
+        })
+        .join("");
+    </script>
+  </body>
+</html>

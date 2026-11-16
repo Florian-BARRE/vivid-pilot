@@ -1,0 +1,222 @@
+<!doctype html>
+<!--
+  "Vivid Pilot + Vivid Cards" picture, the same in both repositories
+  (docs/assets/ecosystem.png). It reads pictures of both projects, so it
+  expects the two repositories side by side (vivid-cards/ and vivid-pilot/)
+  with their crops rendered. render-headers.mjs --ecosystem renders it.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+      }
+      body {
+        width: 1280px;
+        height: 560px;
+        overflow: hidden;
+        position: relative;
+        font-family: "Inter", system-ui, sans-serif;
+        color: #f2f0f7;
+        background:
+          radial-gradient(520px 380px at 10% 20%, rgba(3, 169, 244, 0.18), transparent 70%),
+          radial-gradient(520px 380px at 90% 80%, rgba(255, 95, 109, 0.22), transparent 70%),
+          radial-gradient(400px 260px at 50% 50%, rgba(138, 63, 252, 0.16), transparent 70%),
+          #0e0d13;
+      }
+      .grain {
+        position: absolute;
+        inset: 0;
+        opacity: 0.08;
+        background-image: radial-gradient(rgba(255, 255, 255, 0.6) 0.6px, transparent 0.6px);
+        background-size: 4px 4px;
+      }
+      .side {
+        position: absolute;
+        top: 40px;
+        width: 470px;
+        height: 480px;
+        border-radius: 28px;
+        background: rgba(255, 255, 255, 0.035);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        overflow: hidden;
+      }
+      .side.pilot {
+        left: 40px;
+      }
+      .side.cards {
+        right: 40px;
+      }
+      .head {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 24px 26px 0;
+      }
+      .head img {
+        width: 56px;
+        height: 56px;
+        border-radius: 15px;
+      }
+      .name {
+        font-size: 26px;
+        font-weight: 800;
+        letter-spacing: -0.6px;
+      }
+      .name b {
+        background: linear-gradient(100deg, #ffb347 0%, #ff5f6d 45%, #b25cff 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .role {
+        font-size: 14px;
+        color: #a9a5b6;
+        margin-top: 2px;
+      }
+      .shot {
+        position: absolute;
+        overflow: hidden;
+        border-radius: 14px;
+        box-shadow:
+          0 24px 50px rgba(0, 0, 0, 0.55),
+          0 0 0 1px rgba(255, 255, 255, 0.07);
+      }
+      .shot img {
+        display: block;
+        width: 100%;
+      }
+      .middle {
+        position: absolute;
+        left: 520px;
+        top: 70px;
+        width: 240px;
+        height: 420px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+      .flow {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+      }
+      .chip {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        height: 40px;
+        padding: 0 14px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .chip i {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        flex: none;
+      }
+      .arrow {
+        width: 100%;
+        height: 26px;
+        position: relative;
+      }
+      .arrow::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 14px;
+        top: 12px;
+        height: 3px;
+        border-radius: 2px;
+        background: linear-gradient(90deg, #03a9f4, #8a3ffc, #ff5f6d);
+      }
+      .arrow::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 4px;
+        border: 9px solid transparent;
+        border-left: 15px solid #ff5f6d;
+        border-right: 0;
+      }
+      .caption {
+        font-size: 12px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #8f8b9d;
+        font-weight: 600;
+      }
+      code {
+        font-family: "JetBrains Mono", "Roboto Mono", ui-monospace, monospace;
+        font-size: 12px;
+        color: #c9c5d6;
+        text-align: center;
+        line-height: 1.5;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grain"></div>
+    <section class="side pilot">
+      <div class="head">
+        <img src="../../../vivid-pilot/docs/assets/logo.svg" alt="" />
+        <div>
+          <div class="name"><b>Vivid</b> Pilot</div>
+          <div class="role">Integration · sorts your home</div>
+        </div>
+      </div>
+      <div class="shot" style="left: 26px; top: 112px; width: 170px; height: 340px; transform: rotate(-2deg)">
+        <img src="../../../vivid-pilot/docs/design/crops/tree.png" />
+      </div>
+      <div class="shot" style="left: 170px; top: 120px; width: 280px; transform: rotate(1.5deg)">
+        <img src="../../../vivid-pilot/docs/design/crops/hero.png" />
+      </div>
+      <div class="shot" style="left: 190px; top: 255px; width: 260px; transform: rotate(-1deg)">
+        <img src="../../../vivid-pilot/docs/design/crops/leds.png" />
+      </div>
+    </section>
+    <div class="middle">
+      <div class="caption">Vivid Pilot builds</div>
+      <div class="flow">
+        <div class="chip"><i style="background: #f5b042"></i>Rooms &amp; kinds</div>
+        <div class="chip"><i style="background: #8a3ffc"></i>Groups</div>
+        <div class="chip"><i style="background: #ff5f6d"></i>Power &amp; energy</div>
+        <div class="chip"><i style="background: #4fc3f7"></i>Climate &amp; sensors</div>
+        <div class="chip"><i style="background: #b25cff"></i>Lighting memory</div>
+      </div>
+      <div class="arrow"></div>
+      <div class="caption">Vivid Cards shows</div>
+      <code>pilot: salon<br />pilot: salon__led</code>
+    </div>
+    <section class="side cards">
+      <div class="head">
+        <img src="../../../vivid-cards/docs/assets/logo.svg" alt="" />
+        <div>
+          <div class="name"><b>Vivid</b> Cards</div>
+          <div class="role">Dashboard · shows it, glowing</div>
+        </div>
+      </div>
+      <div class="shot" style="left: 24px; top: 112px; width: 420px; transform: rotate(-1.5deg)">
+        <img src="../../../vivid-cards/docs/design/crops/room-header.png" />
+      </div>
+      <div class="shot" style="left: 40px; top: 205px; width: 400px; transform: rotate(1.5deg)">
+        <img src="../../../vivid-cards/docs/assets/led-group.png" />
+      </div>
+      <div class="shot" style="left: 70px; top: 405px; width: 360px; transform: rotate(-1deg)">
+        <img src="../../../vivid-cards/docs/assets/ambilight.png" />
+      </div>
+    </section>
+  </body>
+</html>

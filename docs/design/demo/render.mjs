@@ -80,6 +80,33 @@ const CROPS = [
     set: { tab: "memory" },
     selector: "vivid-pilot-memory-tab .list",
   },
+  {
+    name: "power",
+    width: 1060,
+    set: { tab: "tree", mode: "list", selected: "salon__led" },
+    selector: "vivid-pilot-power-sources",
+  },
+  {
+    name: "sheet",
+    height: 1300,
+    set: { tab: "tree", mode: "list", selected: "salon" },
+    after: { editing: "light.salon_tv_leds" },
+    selector: "vivid-pilot-leaf-editor .sheet",
+  },
+  {
+    name: "memory-sheet",
+    height: 1100,
+    set: { tab: "tree", mode: "list", selected: "salon" },
+    after: { memoryNode: "salon" },
+    selector: "vivid-pilot-memory-editor .sheet",
+  },
+  {
+    name: "graph",
+    height: 760,
+    set: { tab: "tree", mode: "graph", selected: "salon" },
+    selector: "vivid-pilot-graph .frame",
+  },
+  { name: "utilities", set: { tab: "utilities" }, selector: "vivid-pilot-utilities-tab" },
 ];
 
 const browser = await chromium.launch(
