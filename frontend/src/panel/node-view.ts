@@ -1,12 +1,13 @@
 // ====== Code Summary ======
-// VividPilotNode: the right-hand view of the selected node — Maison, a room,
-// a category of a room, "Sans pièce" or "Ignorés". A hero with live
+// VividPilotNode: the right-hand view of the selected node — home, a room,
+// a category of a room, "no room" or "ignored". A hero with live
 // aggregates and actions (restore, turn off, memory settings), then one card
 // per category; a card header opens that category, a leaf opens its editor.
 
 import { LitElement, html, nothing } from "lit";
 import { keyed } from "lit/directives/keyed.js";
 
+import { plural, savedWhen, t } from "../i18n";
 import { renderIcon } from "../theme/icon";
 import { UI_ICONS } from "../theme/ui-icons";
 import { sharedStyles, themeTokens } from "../theme/styles";
@@ -53,11 +54,9 @@ export class VividPilotNode extends LitElement {
       const unassigned = this.selected === "unassigned";
       return {
         key: null,
-        eyebrow: unassigned ? "À ranger" : "Exclus",
-        heading: unassigned ? "Sans pièce" : "Ignorés",
-        note: unassigned
-          ? "Ces appareils n'ont pas de zone dans Home Assistant. Ouvre-les pour leur donner une pièce, ou ignore-les."
-          : "Mis de côté à la main : ils n'entrent dans aucun groupe, total ni mémoire.",
+        eyebrow: unassigned ? t("node_to_sort") : t("node_excluded"),
+        heading: unassigned ? t("node_unassigned") : t("node_ignored"),
+        note: unassigned ? t("node_unassigned_note") : t("node_ignored_note"),
         cards: byCategory(unassigned ? tree.unassigned : tree.ignored),
         areaId: null,
         category: null,
@@ -71,9 +70,13 @@ export class VividPilotNode extends LitElement {
     const cards = byCategory(leaves).filter((node) => !category || node.category === category);
     return {
       key: this.selected,
-      eyebrow: category ? `Maison › ${room?.name ?? "Tout"}` : room ? "Maison › Pièce" : "Tout",
-      heading: category ? CATEGORIES[category].label : (room?.name ?? "Maison"),
-      note: room || category ? "" : `${tree.rooms.length} pièce${tree.rooms.length > 1 ? "s" : ""}`,
+      eyebrow: category
+        ? t("crumb", { room: room?.name ?? t("all") })
+        : room
+          ? t("crumb_room")
+          : t("all"),
+      heading: category ? CATEGORIES[category].label : (room?.name ?? t("home")),
+      note: room || category ? "" : plural("rooms", tree.rooms.length),
       cards,
       areaId,
       category,
@@ -91,7 +94,7 @@ export class VividPilotNode extends LitElement {
         ${this.renderHero(model, view)}
         ${
           view.cards.length === 0
-            ? html`<p class="muted empty">Rien à afficher ici.</p>`
+            ? html`<p class="muted empty">${t("nothing_here")}</p>`
             : html`<div
                 class="grid stagger ${view.category || view.cards.length === 1 ? "single" : ""}"
               >
@@ -116,13 +119,14 @@ export class VividPilotNode extends LitElement {
     const chips: Array<[string, string, string, string]> = [];
     if (view.key) {
       const power = model.power(view.areaId, view.category);
-      if (power !== null) chips.push([UI_ICONS.bolt, "#f5b042", "Puissance", `${fmt(power)} W`]);
+      if (power !== null)
+        chips.push([UI_ICONS.bolt, "#f5b042", t("chip_power"), `${fmt(power)} W`]);
       // Lamps and LEDs, as the side tree and the room's button count them.
       const lights = view.cards.filter((node) => LIGHTS.has(node.category));
       if (lights.length) {
         const all = lights.flatMap((node) => node.leaves);
         const on = all.filter((leaf) => model.hass.states[leaf.entity_id]?.state === "on").length;
-        chips.push([UI_ICONS.bulb, "#ff5f6d", "Lumières", `${on} / ${all.length}`]);
+        chips.push([UI_ICONS.bulb, "#ff5f6d", t("chip_lights"), `${on} / ${all.length}`]);
       }
       const temp = view.cards.find((node) => node.category === "temperature");
       const range = temp ? model.aggregator.range(temp, model.hass.states) : null;
@@ -131,7 +135,7 @@ export class VividPilotNode extends LitElement {
           range.min === range.max
             ? `${fmt(range.min)} °C`
             : `${fmt(range.min)} – ${fmt(range.max)} °C`;
-        chips.push([UI_ICONS.thermometer, "#5aa9ff", "Température", text]);
+        chips.push([UI_ICONS.thermometer, "#5aa9ff", t("chip_temperature"), text]);
       }
     }
     const info = view.key ? model.node(view.key) : undefined;
@@ -171,16 +175,16 @@ export class VividPilotNode extends LitElement {
                   @click=${() => model.api.group("turn_on", view.key!)}
                 >
                   ${renderIcon(info!.memory.saved_at ? UI_ICONS.restore : UI_ICONS.power, "currentColor", 17)}
-                  ${info!.memory.saved_at ? "Rétablir" : "Allumer"}
+                  ${info!.memory.saved_at ? t("restore") : t("turn_on")}
                 </button>
                 <button type="button" @click=${() => model.api.group("turn_off", view.key!)}>
-                  ${renderIcon(UI_ICONS.power, "currentColor", 17)} Éteindre
+                  ${renderIcon(UI_ICONS.power, "currentColor", 17)} ${t("turn_off")}
                 </button>
                 <button
                   type="button"
                   class="icon-only"
-                  title="Réglages de la mémoire"
-                  aria-label="Réglages de la mémoire"
+                  title=${t("memory_settings")}
+                  aria-label=${t("memory_settings")}
                   @click=${() => this.emit("vp-memory-edit", view.key!)}
                 >
                   ${renderIcon(UI_ICONS.sliders, "currentColor", 18)}
@@ -203,10 +207,10 @@ export class VividPilotNode extends LitElement {
         ? `linear-gradient(90deg, ${colors.join(", ")})`
         : (colors[0] ?? "var(--vp-divider)");
     const text = !memory.active
-      ? "Mémoire désactivée"
+      ? t("memory_disabled")
       : memory.saved_at
-        ? `Mémorisé ${savedWhen(memory.saved_at, model.hass.language || "fr")}`
-        : "Rien de mémorisé";
+        ? t("memory_saved", { when: savedWhen(memory.saved_at) })
+        : t("memory_nothing");
     return html`<div
       class="memory-line ${memory.active ? "" : "off"}"
       title=${model.generated(key, "scene:state") ?? ""}
@@ -234,8 +238,7 @@ export class VividPilotNode extends LitElement {
       <div class="head-text">
         <h2>${meta.label}</h2>
         <div class="muted small">
-          ${node.leaves.length}
-          membre${node.leaves.length > 1 ? "s" : ""}${
+          ${plural("members", node.leaves.length)}${
             power !== null ? ` · ${model.aggregator.formatNumber(power)} W` : ""
           }
         </div>
@@ -289,7 +292,9 @@ export class VividPilotNode extends LitElement {
           </span>
           ${
             manual
-              ? html`<span class="fixed" title=${`Corrigé à la main · ${reasonLabel(leaf.reason)}`}
+              ? html`<span
+                  class="fixed"
+                  title=${t("fixed_by_hand", { reason: reasonLabel(leaf.reason) })}
                   >${renderIcon(UI_ICONS.pencil, "currentColor", 13)}</span
                 >`
               : nothing
@@ -304,18 +309,6 @@ export class VividPilotNode extends LitElement {
   }
 
   static override styles = [themeTokens, sharedStyles, nodeViewStyles];
-}
-
-/** "à 18:03" today, "hier à 22:10", else "le 12 nov. à 9:30". */
-function savedWhen(iso: string, language: string): string {
-  const date = new Date(iso);
-  const time = date.toLocaleTimeString(language, { hour: "2-digit", minute: "2-digit" });
-  const days = Math.round(
-    (new Date().setHours(0, 0, 0, 0) - new Date(iso).setHours(0, 0, 0, 0)) / 86_400_000,
-  );
-  if (days === 0) return `à ${time}`;
-  if (days === 1) return `hier à ${time}`;
-  return `le ${date.toLocaleDateString(language, { day: "numeric", month: "short" })} à ${time}`;
 }
 
 function byCategory(leaves: TreeLeaf[]): CategoryNode[] {

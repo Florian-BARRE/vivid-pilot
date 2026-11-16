@@ -4,6 +4,7 @@
 // aggregator — with lookups the views need (generated entities of a node,
 // live values, leaves, rooms, power sources). Rebuilt on every hass update.
 
+import { t } from "../i18n";
 import type { PilotApi } from "../api/pilot-api";
 import type { HomeAssistant } from "../types/home-assistant";
 import type { LiveAggregator } from "./live-aggregator";
@@ -108,12 +109,12 @@ export class PanelModel {
     return list.sort((a, b) => a.name.localeCompare(b.name));
   }
 
-  /** Store a node's state now and describe the outcome in French. */
+  /** Store a node's state now and describe the outcome in the user's language. */
   async saveMemory(key: NodeKey): Promise<string> {
     const { reason } = await this.api.saveMemory(key);
-    if (reason === "saved") return "État mémorisé.";
-    if (reason === "disabled") return "Cette mémoire est désactivée : active-la d'abord.";
-    return "Rien n'est allumé dans ce nœud : il n'y a rien à mémoriser. Allume au moins une lumière, son état sera mémorisé tout seul.";
+    if (reason === "saved") return t("save_done");
+    if (reason === "disabled") return t("save_disabled");
+    return t("save_nothing");
   }
 
   stateName(entityId: string): string {

@@ -4,6 +4,8 @@
 
 import { describe, expect, it } from "vitest";
 
+import { savedWhen, setLanguage, t } from "../src/i18n";
+import { STRINGS } from "../src/i18n/strings";
 import { LiveAggregator } from "../src/tree/live-aggregator";
 import type { CategoryNode, HomeTree, RoomNode, TreeLeaf } from "../src/tree/types";
 import type { HassEntityState } from "../src/types/home-assistant";
@@ -54,6 +56,7 @@ const salon: RoomNode = {
 
 describe("LiveAggregator", () => {
   const aggregator = new LiveAggregator("fr-FR");
+  setLanguage("fr-FR");
 
   it("describes leaves", () => {
     expect(aggregator.leaf(leaf("light.lamp", "light"), states).text).toBe("80 %");
@@ -91,5 +94,33 @@ describe("LiveAggregator", () => {
       power: 76.5,
       temperature: { min: 20.9, max: 21.8 },
     });
+  });
+});
+
+describe("panel language", () => {
+  it("follows Home Assistant's language, English for any other", () => {
+    setLanguage("en-GB");
+    expect(t("turn_off")).toBe("Turn off");
+    setLanguage("fr");
+    expect(t("turn_off")).toBe("Éteindre");
+    setLanguage("de");
+    expect(t("turn_off")).toBe("Turn off");
+    expect(t("rooms_other", { count: 3 })).toBe("3 rooms");
+  });
+
+  it("says when a memory was saved", () => {
+    setLanguage("en");
+    const now = new Date("2026-11-16T12:00:00");
+    expect(savedWhen("2026-11-16T09:30:00", now)).toMatch(/^at /);
+    expect(savedWhen("2026-11-15T09:30:00", now)).toMatch(/^yesterday at /);
+    setLanguage("fr");
+    expect(savedWhen("2026-11-10T09:30:00", now)).toMatch(/^le .* à /);
+  });
+
+  it("has every word in both languages", () => {
+    for (const [key, text] of Object.entries(STRINGS.fr)) {
+      expect(text, key).not.toBe("");
+      expect(STRINGS.en[key as keyof typeof STRINGS.en], key).toBeTruthy();
+    }
   });
 });

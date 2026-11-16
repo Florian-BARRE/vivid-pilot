@@ -30,7 +30,11 @@ WS_PREFIX: Final = DOMAIN
 
 # ====== Generated entities ======
 SIGNAL_REFRESH: Final = f"{DOMAIN}_refresh"
-HOME_DEVICE_NAME: Final = "Maison"
+# The node devices' name and model, in Home Assistant's language (English for
+# any other): device names are not translated by Home Assistant itself.
+HOME_DEVICE_NAMES: Final = {"en": "Home", "fr": "Maison"}
+NODE_MODELS: Final = {"en": ("Home", "Room"), "fr": ("Maison", "Pièce")}
+
 
 # ====== Power ======
 # WLED's sensor of the estimated current drawn by the strip (mA).

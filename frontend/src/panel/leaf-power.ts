@@ -4,6 +4,7 @@
 // nominal power), the strip voltage, the meter upstream and whether it counts
 // in the totals. Every change is sent right away; a failure shows as a toast.
 
+import { t } from "../i18n";
 import { LitElement, css, html, nothing } from "lit";
 
 import { renderIcon } from "../theme/icon";
@@ -49,10 +50,10 @@ export class VividPilotLeafPower extends LitElement {
     const choice = model.payload.power_choices?.[leaf.entity_id];
     const effective = choice?.effective;
     const labels: Record<string, string> = {
-      measured: "Mesure existante",
-      wled: "Calcul WLED",
-      nominal: "Nominale",
-      none: "Aucune",
+      measured: t("src_measured_existing"),
+      wled: t("src_wled"),
+      nominal: t("src_nominal"),
+      none: t("src_none"),
     };
     const meters = areaId
       ? model.meters(areaId).filter((meter) => meter.entity_id !== leaf.entity_id)
@@ -60,10 +61,14 @@ export class VividPilotLeafPower extends LitElement {
     const fmt = (value: number | null) =>
       value === null ? "—" : `${model.aggregator.formatNumber(value)} W`;
     const sourceLabel = (kind: string, factor: number) =>
-      kind === "measured" ? "Mesurée" : kind === "wled" ? `WLED · ${factor} V` : "Nominale";
+      kind === "measured"
+        ? t("src_measured")
+        : kind === "wled"
+          ? `WLED · ${factor} V`
+          : t("src_nominal");
     return html`
       <section class="block">
-        <h2>${renderIcon(UI_ICONS.bolt, "currentColor", 16)} Puissance</h2>
+        <h2>${renderIcon(UI_ICONS.bolt, "currentColor", 16)} ${t("power")}</h2>
         ${
           sources.length
             ? html`<ul class="sources">
@@ -72,20 +77,19 @@ export class VividPilotLeafPower extends LitElement {
                     html`<li class=${source.counted ? "" : "off"} title=${source.entity_id}>
                       <span class="kind">${sourceLabel(source.kind, source.factor)}</span>
                       <span class="mono">${source.entity_id}</span>
-                      ${source.counted ? nothing : html`<span class="pill">hors total</span>`}
+                      ${source.counted ? nothing : html`<span class="pill">${t("out_of_total")}</span>`}
                       <strong>${fmt(source.value)}</strong>
                     </li>`,
                 )}
               </ul>`
             : html`<div class="note">
-                ${renderIcon(UI_ICONS.info, "currentColor", 14)} Aucune puissance connue pour
-                l'instant.
+                ${renderIcon(UI_ICONS.info, "currentColor", 14)} ${t("no_power_yet")}
               </div>`
         }
         ${
           choice
             ? html`<div class="field">
-                <span class="label">Source</span>
+                <span class="label">${t("source")}</span>
                 <div class="segmented wrap">
                   ${(["auto", ...choice.available] as const).map(
                     (kind) =>
@@ -93,17 +97,13 @@ export class VividPilotLeafPower extends LitElement {
                         type="button"
                         class=${choice.chosen === kind ? "on" : ""}
                         aria-pressed=${choice.chosen === kind ? "true" : "false"}
-                        title=${
-                          kind === "auto"
-                            ? "La mesure de l'appareil, sinon le calcul WLED, sinon la puissance nominale"
-                            : ""
-                        }
+                        title=${kind === "auto" ? t("auto_title") : ""}
                         @click=${() => set("power_source", kind === "auto" ? null : kind)}
                       >
                         ${
                           kind === "auto"
-                            ? html`${renderIcon(UI_ICONS.sparkle, "currentColor", 14)} Auto ·
-                              ${labels[choice.effective]}`
+                            ? html`${renderIcon(UI_ICONS.sparkle, "currentColor", 14)} ${t("auto")}
+                              · ${labels[choice.effective]}`
                             : labels[kind]
                         }
                       </button>`,
@@ -115,7 +115,7 @@ export class VividPilotLeafPower extends LitElement {
         ${
           effective === "wled"
             ? html`<div class="field">
-                <span class="label">Tension du bandeau</span>
+                <span class="label">${t("strip_voltage")}</span>
                 <div class="segmented">
                   ${VOLTAGES.map(
                     (volts) =>
@@ -135,7 +135,7 @@ export class VividPilotLeafPower extends LitElement {
         ${
           effective === "nominal" || choice?.chosen === "nominal"
             ? html`<label class="field"
-                ><span class="label">Puissance allumé</span>
+                ><span class="label">${t("power_when_on")}</span>
                 <span class="unit"
                   ><input
                     type="number"
@@ -153,15 +153,11 @@ export class VividPilotLeafPower extends LitElement {
             : nothing
         }
         <label class="field"
-          ><span
-            class="label"
-            title="Si une prise mesure déjà cet appareil, il sort des totaux pour ne pas compter deux fois"
-            >Déjà mesuré par</span
-          >
+          ><span class="label" title=${t("upstream_title")}>${t("upstream")}</span>
           <select
             @change=${(event: Event) => set("upstream", (event.target as HTMLSelectElement).value || null)}
           >
-            <option value="" ?selected=${!options.upstream}>Rien, branché directement</option>
+            <option value="" ?selected=${!options.upstream}>${t("upstream_none")}</option>
             ${meters.map(
               (meter) =>
                 html`<option
@@ -174,7 +170,7 @@ export class VividPilotLeafPower extends LitElement {
           </select></label
         >
         <label class="field toggle"
-          ><span class="label">Compté dans les totaux</span>
+          ><span class="label">${t("counted")}</span>
           <input
             type="checkbox"
             role="switch"

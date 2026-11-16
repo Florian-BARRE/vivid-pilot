@@ -1,11 +1,12 @@
 // ====== Code Summary ======
-// VividPilotMemoryTab: every memory of the tree in one list — Maison, each
+// VividPilotMemoryTab: every memory of the tree in one list — home, each
 // room and its lights / LEDs / switches. Per memory: on / off switch,
 // status, stored colours and date, Restore / Save now / Forget, and its
 // settings. On top: the global switch, the debounce and the filters.
 
 import { LitElement, html, nothing } from "lit";
 
+import { savedWhen, t } from "../i18n";
 import { HOME_ICON, renderIcon } from "../theme/icon";
 import { sharedStyles, themeTokens } from "../theme/styles";
 import { UI_ICONS } from "../theme/ui-icons";
@@ -16,18 +17,6 @@ import { parseNodeKey, type NodeKey } from "../tree/types";
 
 type Filter = "all" | "on" | "off";
 const ROOM_ICON = "M4 21V9l8-6 8 6v12M9 21v-6h6v6";
-
-/** "à 18:03" today, "hier à 22:10", else "le 12 nov. à 9:30". */
-function savedWhen(iso: string, language: string): string {
-  const date = new Date(iso);
-  const time = date.toLocaleTimeString(language, { hour: "2-digit", minute: "2-digit" });
-  const days = Math.round(
-    (new Date().setHours(0, 0, 0, 0) - new Date(iso).setHours(0, 0, 0, 0)) / 86_400_000,
-  );
-  if (days === 0) return `à ${time}`;
-  if (days === 1) return `hier à ${time}`;
-  return `le ${date.toLocaleDateString(language, { day: "numeric", month: "short" })} à ${time}`;
-}
 
 export class VividPilotMemoryTab extends LitElement {
   static override properties = {
@@ -46,7 +35,7 @@ export class VividPilotMemoryTab extends LitElement {
 
   private label(key: NodeKey): string {
     const { areaId, category } = parseNodeKey(key);
-    const room = areaId ? (this.model!.room(areaId)?.name ?? areaId) : "Maison";
+    const room = areaId ? (this.model!.room(areaId)?.name ?? areaId) : t("home");
     return category ? `${room} · ${CATEGORIES[category].label}` : room;
   }
 
@@ -61,17 +50,17 @@ export class VividPilotMemoryTab extends LitElement {
     );
     const settings = model.payload.settings;
     const filters: Array<[Filter, string]> = [
-      ["all", `Toutes · ${keys.length}`],
-      ["on", `Actives · ${on}`],
-      ["off", `Désactivées · ${keys.length - on}`],
+      ["all", t("filter_all", { count: keys.length })],
+      ["on", t("filter_on", { count: on })],
+      ["off", t("filter_off", { count: keys.length - on })],
     ];
     return html`
       <section class="card head">
         <div class="title">
           <span class="title-icon">${renderIcon(UI_ICONS.memory, "#8a3ffc", 20)}</span>
           <div>
-            <h1>Mémoires</h1>
-            <div class="muted small">Le dernier éclairage de chaque pièce, rétabli d'un geste.</div>
+            <h1>${t("memories")}</h1>
+            <div class="muted small">${t("memories_sub")}</div>
           </div>
         </div>
         <label class="setting"
@@ -82,9 +71,9 @@ export class VividPilotMemoryTab extends LitElement {
             .checked=${settings.memory_master}
             @change=${(e: Event) => model.api.updateSettings({ memory_master: (e.target as HTMLInputElement).checked })}
           />
-          Automatique</label
+          ${t("automatic")}</label
         >
-        <label class="setting" title="Attente après le dernier changement avant d'enregistrer"
+        <label class="setting" title=${t("debounce_title")}
           >${renderIcon(UI_ICONS.clock, "currentColor", 15)}
           <input
             type="number"
@@ -98,38 +87,32 @@ export class VividPilotMemoryTab extends LitElement {
         >
       </section>
       <details class="card how">
-        <summary>${renderIcon(UI_ICONS.info, "currentColor", 16)} Comment ça marche</summary>
+        <summary>${renderIcon(UI_ICONS.info, "currentColor", 16)} ${t("how_it_works")}</summary>
         <ul>
           <li>
             ${renderIcon(UI_ICONS.sparkle, "#8a3ffc", 15)}
             <span
-              ><strong>Automatique</strong> : un changement dans une mémoire est enregistré
-              ${settings.memory_debounce} s plus tard, tant qu'un membre est allumé.</span
+              ><strong>${t("automatic")}</strong> :
+              ${t("how_auto", { seconds: settings.memory_debounce })}</span
             >
           </li>
           <li>
             ${renderIcon(UI_ICONS.power, "#ff5f6d", 15)}
-            <span
-              ><strong>Jamais « tout éteint »</strong> : tout éteindre ne s'écrit pas ; Rétablir
-              rallume le dernier état allumé.</span
-            >
+            <span><strong>${t("how_never_off_title")}</strong> : ${t("how_never_off")}</span>
           </li>
           <li>
             ${renderIcon(UI_ICONS.save, "#03a9f4", 15)}
-            <span><strong>Mémoriser</strong> enregistre tout de suite ce qui est allumé.</span>
+            <span><strong>${t("save")}</strong> ${t("how_save")}</span>
           </li>
           <li>
             ${renderIcon(UI_ICONS.hidden, "var(--vp-muted)", 15)}
-            <span
-              ><strong>Désactivée</strong> : plus de mise à jour, la scène est indisponible ; le
-              groupe marche toujours.</span
-            >
+            <span><strong>${t("status_off")}</strong> : ${t("how_off")}</span>
           </li>
         </ul>
       </details>
       <section class="card list">
         <div class="list-head">
-          <div class="filters" role="group" aria-label="Filtre">
+          <div class="filters" role="group" aria-label=${t("filter")}>
             ${filters.map(
               ([id, label]) =>
                 html`<button
@@ -164,17 +147,19 @@ export class VividPilotMemoryTab extends LitElement {
         ? `linear-gradient(90deg, ${colors.join(", ")})`
         : (colors[0] ?? "var(--vp-divider)");
     const status = !enabled ? "off" : empty ? "empty" : "ok";
-    const statusText = { off: "Désactivée", empty: "Vide", ok: "À jour" }[status];
+    const statusText = { off: t("status_off"), empty: t("status_empty"), ok: t("status_ok") }[
+      status
+    ];
     const when = memory.saved_at
-      ? `${savedWhen(memory.saved_at, model.hass.language || "fr")}${memory.count ? ` · ${memory.on}/${memory.count}` : ""}`
-      : "Rien de mémorisé";
+      ? `${savedWhen(memory.saved_at)}${memory.count ? ` · ${memory.on}/${memory.count}` : ""}`
+      : t("memory_nothing");
     return html`
       <div class="row level-${level} ${enabled ? "" : "disabled"}">
         <input
           type="checkbox"
           role="switch"
           class="switch"
-          aria-label=${`Mémoire ${this.label(key)}`}
+          aria-label=${t("memory_label", { name: this.label(key) })}
           .checked=${info.settings.memory_enabled}
           @change=${(e: Event) => model.api.updateNode(key, { memory_enabled: (e.target as HTMLInputElement).checked })}
         />
@@ -194,13 +179,13 @@ export class VividPilotMemoryTab extends LitElement {
             ?disabled=${empty}
             @click=${() => model.api.memory("restore", key)}
           >
-            ${renderIcon(UI_ICONS.restore, "currentColor", 15)} Rétablir
+            ${renderIcon(UI_ICONS.restore, "currentColor", 15)} ${t("restore")}
           </button>
           <button
             type="button"
             class="icon"
-            title="Mémoriser maintenant"
-            aria-label="Mémoriser maintenant"
+            title=${t("save_now")}
+            aria-label=${t("save_now")}
             ?disabled=${!enabled}
             @click=${async () => this.toast(await model.saveMemory(key))}
           >
@@ -209,8 +194,8 @@ export class VividPilotMemoryTab extends LitElement {
           <button
             type="button"
             class="icon"
-            title="Oublier l'état mémorisé"
-            aria-label="Oublier l'état mémorisé"
+            title=${t("forget_saved")}
+            aria-label=${t("forget_saved")}
             ?disabled=${empty}
             @click=${() => model.api.memory("forget", key)}
           >
@@ -219,8 +204,8 @@ export class VividPilotMemoryTab extends LitElement {
           <button
             type="button"
             class="icon"
-            title="Réglages de la mémoire"
-            aria-label="Réglages de la mémoire"
+            title=${t("memory_settings")}
+            aria-label=${t("memory_settings")}
             @click=${() => this.dispatchEvent(new CustomEvent("vp-memory-edit", { detail: key, bubbles: true, composed: true }))}
           >
             ${renderIcon(UI_ICONS.sliders, "currentColor", 16)}

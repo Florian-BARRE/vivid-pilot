@@ -18,7 +18,9 @@ from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity import Entity
 
+from ..const import NODE_MODELS
 from ..control import GroupController
+from ..language import in_language
 from ..memory import MemoryEngine
 from ..nodes import NodeMembers
 from ..power import PowerModel
@@ -57,7 +59,9 @@ class PilotEntity(Entity):
             identifiers={(context.domain, spec.device.identifier)},
             name=spec.device.name,
             manufacturer="Vivid Pilot",
-            model="Maison" if spec.device.area_id is None else "Pièce",
+            model=in_language(NODE_MODELS, context.hass.config.language)[
+                0 if spec.device.area_id is None else 1
+            ],
             # Matched by name to the existing area of the room.
             suggested_area=spec.device.name if spec.device.area_id else None,
         )

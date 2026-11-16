@@ -24,7 +24,7 @@ from .const import (
     DOMAIN,
     ENERGY_INTERVAL_SECONDS,
     EXCLUDED_PLATFORMS,
-    HOME_DEVICE_NAME,
+    HOME_DEVICE_NAMES,
     MEMORY_DEBOUNCE_SECONDS,
     PANEL_BUNDLE_FILE,
     PANEL_ELEMENT_NAME,
@@ -41,6 +41,7 @@ from .const import (
 )
 from .control import GroupController
 from .entities import FACTORIES, EntityCatalog, EntitySpec, EntitySync, PilotContext
+from .language import in_language
 from .memory import MemoryEngine
 from .nodes import NodeMembers
 from .panel import PanelRegistrar, PanelSettings
@@ -138,7 +139,7 @@ class PilotRuntime:
             power=power,
             memory=memory,
             groups=groups,
-            catalog=EntityCatalog(HOME_DEVICE_NAME),
+            catalog=EntityCatalog(in_language(HOME_DEVICE_NAMES, hass.config.language)),
             entities=EntitySync(hass, context, FACTORIES),
             hub=hub,
             panel=panel,

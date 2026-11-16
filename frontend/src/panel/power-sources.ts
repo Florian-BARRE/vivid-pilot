@@ -1,9 +1,10 @@
 // ====== Code Summary ======
-// VividPilotPowerSources: the "Puissance calculée" card of a node view. It
+// VividPilotPowerSources: the "computed power" card of a node view. It
 // lists the power Vivid Pilot computes itself, with no meter behind it — WLED
 // estimates (current × voltage) and nominal powers — with its live value and
 // whether it is counted. Measured meters already have their own card.
 
+import { t } from "../i18n";
 import { LitElement, css, html, nothing } from "lit";
 
 import { renderIcon } from "../theme/icon";
@@ -14,9 +15,9 @@ import type { CategoryId, PowerSourceInfo } from "../tree/types";
 
 type ComputedKind = Exclude<PowerSourceInfo["kind"], "measured">;
 
-const KIND_LABELS: Record<ComputedKind, string> = {
-  wled: "WLED",
-  nominal: "Nominale",
+const KIND_LABELS: Record<ComputedKind, () => string> = {
+  wled: () => "WLED",
+  nominal: () => t("src_nominal"),
 };
 
 export class VividPilotPowerSources extends LitElement {
@@ -74,10 +75,10 @@ export class VividPilotPowerSources extends LitElement {
             >${renderIcon(CATEGORIES.power.icon, CATEGORIES.power.color)}</span
           >
           <div class="head-text">
-            <h2>Puissance calculée</h2>
-            <div class="muted small">Estimée par Vivid Pilot, sans compteur</div>
+            <h2>${t("computed_power")}</h2>
+            <div class="muted small">${t("computed_power_sub")}</div>
           </div>
-          <span class="total" title="Compté dans les totaux">${fmt(counted)} W</span>
+          <span class="total" title=${t("counted")}>${fmt(counted)} W</span>
         </div>
         <ul>
           ${sources.map((source) => {
@@ -110,9 +111,9 @@ export class VividPilotPowerSources extends LitElement {
                   }
                 </span>
                 <span class="pill kind-${source.kind}"
-                  >${KIND_LABELS[source.kind as ComputedKind]}</span
+                  >${KIND_LABELS[source.kind as ComputedKind]()}</span
                 >
-                ${source.counted ? nothing : html`<span class="pill">hors total</span>`}
+                ${source.counted ? nothing : html`<span class="pill">${t("out_of_total")}</span>`}
                 <span class="value">${value === null ? "—" : `${fmt(value)} W`}</span>
               </button>
             </li>`;

@@ -3,6 +3,7 @@
 // categories it covers, and for each detected member whether the node's
 // group drives it and whether its memory restores it.
 
+import { t } from "../i18n";
 import { LitElement, css, html, nothing } from "lit";
 
 import { renderIcon } from "../theme/icon";
@@ -46,7 +47,7 @@ export class VividPilotMemoryEditor extends LitElement {
     if (!model || !info) return nothing;
     const settings = info.settings;
     const { areaId, category } = parseNodeKey(this.node);
-    const title = `${areaId ? (model.room(areaId)?.name ?? areaId) : "Maison"}${category ? ` · ${CATEGORIES[category].label}` : ""}`;
+    const title = `${areaId ? (model.room(areaId)?.name ?? areaId) : t("home")}${category ? ` · ${CATEGORIES[category].label}` : ""}`;
     const update = (patch: Parameters<PanelModel["api"]["updateNode"]>[1]) =>
       model.api.updateNode(this.node, patch);
     const toggleList = (
@@ -68,25 +69,30 @@ export class VividPilotMemoryEditor extends LitElement {
     const scene = model.generated(this.node, "scene:state") ?? "";
     return html`
       <div class="backdrop" @click=${this.close}></div>
-      <section class="sheet card" role="dialog" aria-modal="true" aria-label=${`Mémoire ${title}`}>
+      <section
+        class="sheet card"
+        role="dialog"
+        aria-modal="true"
+        aria-label=${t("memory_label", { name: title })}
+      >
         <header>
           <div class="badge" style="background: color-mix(in srgb, #8a3ffc 18%, transparent)">
             ${renderIcon(UI_ICONS.memory, "#8a3ffc", 22)}
           </div>
           <div class="head-text">
-            <h1>Mémoire · ${title}</h1>
+            <h1>${t("memory_of", { name: title })}</h1>
             <div class="mono">${scene}</div>
           </div>
           <input
             type="checkbox"
             role="switch"
             class="switch"
-            title="Mémoire active"
-            aria-label="Mémoire active"
+            title=${t("memory_active")}
+            aria-label=${t("memory_active")}
             .checked=${settings.memory_enabled}
             @change=${(e: Event) => update({ memory_enabled: (e.target as HTMLInputElement).checked })}
           />
-          <button type="button" class="icon" aria-label="Fermer" @click=${this.close}>
+          <button type="button" class="icon" aria-label=${t("close")} @click=${this.close}>
             ${renderIcon(UI_ICONS.close, "currentColor", 18)}
           </button>
         </header>
@@ -94,7 +100,7 @@ export class VividPilotMemoryEditor extends LitElement {
           category
             ? nothing
             : html`<section class="block">
-                <h2>${renderIcon(UI_ICONS.layers, "currentColor", 16)} Ce qu'elle couvre</h2>
+                <h2>${renderIcon(UI_ICONS.layers, "currentColor", 16)} ${t("covers")}</h2>
                 <div class="choices">
                   ${CAPABLE.map((value) => {
                     const on = settings.memory_categories.includes(value);
@@ -113,11 +119,11 @@ export class VividPilotMemoryEditor extends LitElement {
               </section>`
         }
         <section class="block">
-          <h2>${renderIcon(UI_ICONS.device, "currentColor", 16)} Membres</h2>
+          <h2>${renderIcon(UI_ICONS.device, "currentColor", 16)} ${t("members")}</h2>
           <div class="members">
             <span></span>
-            <span class="col" title="Ce que ce nœud allume et éteint">Groupe</span>
-            <span class="col" title="Ce que ce nœud rétablit">Mémoire</span>
+            <span class="col" title=${t("node_switches")}>${t("group")}</span>
+            <span class="col" title=${t("node_restores")}>${t("memory")}</span>
             ${this.leaves(model).map((leaf) => {
               const meta = CATEGORIES[leaf.category];
               const coveredCategory =
@@ -129,7 +135,7 @@ export class VividPilotMemoryEditor extends LitElement {
                   type="checkbox"
                   role="switch"
                   class="switch"
-                  aria-label=${`${leaf.name} : groupe`}
+                  aria-label=${t("label_group", { name: leaf.name })}
                   .checked=${!settings.group_excluded.includes(leaf.entity_id)}
                   @change=${(e: Event) => toggleList("group_excluded", leaf.entity_id, (e.target as HTMLInputElement).checked)}
                 />
@@ -137,7 +143,7 @@ export class VividPilotMemoryEditor extends LitElement {
                   type="checkbox"
                   role="switch"
                   class="switch"
-                  aria-label=${`${leaf.name} : mémoire`}
+                  aria-label=${t("label_memory", { name: leaf.name })}
                   ?disabled=${!coveredCategory}
                   .checked=${coveredCategory && !settings.memory_excluded.includes(leaf.entity_id)}
                   @change=${(e: Event) => toggleList("memory_excluded", leaf.entity_id, (e.target as HTMLInputElement).checked)}
@@ -152,7 +158,7 @@ export class VividPilotMemoryEditor extends LitElement {
               class="ghost"
               @click=${() => model.api.memory("forget", this.node)}
             >
-              ${renderIcon(UI_ICONS.forget, "currentColor", 16)} Oublier
+              ${renderIcon(UI_ICONS.forget, "currentColor", 16)} ${t("forget")}
             </button>
             <button
               type="button"
@@ -166,7 +172,7 @@ export class VividPilotMemoryEditor extends LitElement {
                   }),
                 )}
             >
-              ${renderIcon(UI_ICONS.save, "currentColor", 16)} Mémoriser
+              ${renderIcon(UI_ICONS.save, "currentColor", 16)} ${t("save")}
             </button>
           </span>
           <button
@@ -174,7 +180,7 @@ export class VividPilotMemoryEditor extends LitElement {
             class="primary"
             @click=${() => model.api.memory("restore", this.node)}
           >
-            ${renderIcon(UI_ICONS.restore, "currentColor", 16)} Rétablir
+            ${renderIcon(UI_ICONS.restore, "currentColor", 16)} ${t("restore")}
           </button>
         </footer>
       </section>

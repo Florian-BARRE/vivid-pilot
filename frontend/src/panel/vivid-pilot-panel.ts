@@ -1,13 +1,14 @@
 // ====== Code Summary ======
 // VividPilotPanel: the sidebar panel shell. It subscribes to the payload,
 // builds the shared PanelModel on every update, and routes between the tabs
-// (Arbre — list or graph —, Mémoire, Automatisations, Utilitaires) and the
+// (tree — list or graph —, memory, utilities) and the
 // two sheets (entity editor, memory settings).
 
 import { LitElement, css, html, nothing, type PropertyValues } from "lit";
 import { keyed } from "lit/directives/keyed.js";
 
 import { PilotApi } from "../api/pilot-api";
+import { setLanguage, t, type StringKey } from "../i18n";
 import { renderIcon } from "../theme/icon";
 import { sharedStyles, themeTokens } from "../theme/styles";
 import { UI_ICONS } from "../theme/ui-icons";
@@ -17,14 +18,14 @@ import type { PilotPayload } from "../tree/types";
 import type { HomeAssistant } from "../types/home-assistant";
 
 type Tab = "tree" | "memory" | "utilities";
-const TABS: Array<[Tab, string, string]> = [
-  ["tree", "Arbre", UI_ICONS.tree],
-  ["memory", "Mémoire", UI_ICONS.memory],
-  ["utilities", "Utilitaires", UI_ICONS.utilities],
+const TABS: Array<[Tab, StringKey, string]> = [
+  ["tree", "tab_tree", UI_ICONS.tree],
+  ["memory", "tab_memory", UI_ICONS.memory],
+  ["utilities", "tab_utilities", UI_ICONS.utilities],
 ];
-const MODES: Array<["list" | "graph", string, string]> = [
-  ["list", "Cartes", UI_ICONS.cards],
-  ["graph", "Graphe", UI_ICONS.graph],
+const MODES: Array<["list" | "graph", StringKey, string]> = [
+  ["list", "mode_cards", UI_ICONS.cards],
+  ["graph", "mode_graph", UI_ICONS.graph],
 ];
 
 export class VividPilotPanel extends LitElement {
@@ -68,9 +69,14 @@ export class VividPilotPanel extends LitElement {
     this.unsubscribe = undefined;
   }
 
+  protected override willUpdate(changed: PropertyValues): void {
+    // Before any view renders, so every word is in the user's language.
+    if (changed.has("hass")) setLanguage(this.hass?.language);
+  }
+
   protected override updated(changed: PropertyValues): void {
     if (changed.has("hass") && this.hass) {
-      this.aggregator ??= new LiveAggregator(this.hass.language || "fr");
+      this.aggregator ??= new LiveAggregator(this.hass.language || "en");
       this.api = new PilotApi(this.hass);
       if (!this.unsubscribe) this.subscribe(this.hass);
     }
@@ -115,7 +121,7 @@ export class VividPilotPanel extends LitElement {
           <vivid-pilot-logo size="34"></vivid-pilot-logo>
           <span>Vivid Pilot</span>
         </div>
-        <nav aria-label="Modules">
+        <nav aria-label=${t("nav_modules")}>
           ${TABS.map(
             ([id, label, icon]) =>
               html`<button
@@ -124,23 +130,23 @@ export class VividPilotPanel extends LitElement {
                 aria-current=${this.tab === id ? "page" : "false"}
                 @click=${() => (this.tab = id)}
               >
-                ${renderIcon(icon, "currentColor", 17)}<span>${label}</span>
+                ${renderIcon(icon, "currentColor", 17)}<span>${t(label)}</span>
               </button>`,
           )}
         </nav>
         ${
           this.tab === "tree"
-            ? html`<div class="modes" role="group" aria-label="Affichage">
+            ? html`<div class="modes" role="group" aria-label=${t("nav_view")}>
                 ${MODES.map(
                   ([id, label, icon]) =>
                     html`<button
                       type="button"
                       class=${this.mode === id ? "on" : ""}
-                      title=${label}
+                      title=${t(label)}
                       aria-pressed=${this.mode === id ? "true" : "false"}
                       @click=${() => (this.mode = id)}
                     >
-                      ${renderIcon(icon, "currentColor", 17)}<span>${label}</span>
+                      ${renderIcon(icon, "currentColor", 17)}<span>${t(label)}</span>
                     </button>`,
                 )}
               </div>`
@@ -152,9 +158,9 @@ export class VividPilotPanel extends LitElement {
   }
 
   private renderBody() {
-    if (this.error) return html`<p class="message">Erreur : ${this.error}</p>`;
+    if (this.error) return html`<p class="message">${t("error", { message: this.error })}</p>`;
     if (!this.hass || !this.payload || !this.aggregator || !this.api) {
-      return html`<p class="message muted">Chargement…</p>`;
+      return html`<p class="message muted">${t("loading")}</p>`;
     }
     const model = new PanelModel(this.hass, this.payload, this.api, this.aggregator);
     return html`
