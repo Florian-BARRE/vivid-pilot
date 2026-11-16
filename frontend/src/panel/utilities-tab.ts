@@ -5,6 +5,7 @@
 
 import { LitElement, css, html, nothing } from "lit";
 
+import { t, type StringKey } from "../i18n";
 import { renderIcon } from "../theme/icon";
 import { sharedStyles, themeTokens } from "../theme/styles";
 import { UI_ICONS } from "../theme/ui-icons";
@@ -13,21 +14,21 @@ import type { PanelModel } from "../tree/panel-model";
 import type { TreeLeaf } from "../tree/types";
 
 /** How each generated domain is shown: label, icon, accent. */
-const DOMAINS: Record<string, [string, string, string]> = {
-  light: ["Groupes de lumières", UI_ICONS.bulb, "#f5b042"],
-  switch: ["Groupes d'interrupteurs", UI_ICONS.power, "#5aa9ff"],
-  sensor: ["Capteurs", UI_ICONS.bolt, "#ff5f6d"],
-  binary_sensor: ["Capteurs ouvert / fermé", UI_ICONS.entity, "#43b581"],
-  scene: ["Scènes mémoire", UI_ICONS.memory, "#8a3ffc"],
+const DOMAINS: Record<string, [StringKey, string, string]> = {
+  light: ["dom_light", UI_ICONS.bulb, "#f5b042"],
+  switch: ["dom_switch", UI_ICONS.power, "#5aa9ff"],
+  sensor: ["dom_sensor", UI_ICONS.bolt, "#ff5f6d"],
+  binary_sensor: ["dom_binary", UI_ICONS.entity, "#43b581"],
+  scene: ["dom_scene", UI_ICONS.memory, "#8a3ffc"],
 };
 
 /** Words for what a correction changed. */
-const OPTION_WORDS: Record<string, string> = {
-  power_source: "source de puissance",
-  voltage: "tension",
-  nominal_power: "puissance nominale",
-  upstream: "déjà mesuré",
-  counted: "hors total",
+const OPTION_WORDS: Record<string, StringKey> = {
+  power_source: "opt_power_source",
+  voltage: "opt_voltage",
+  nominal_power: "opt_nominal",
+  upstream: "opt_upstream",
+  counted: "opt_counted",
 };
 
 const BATTERY_ICON = "M7 6h10v15H7zM10 3h4v3M10 11v6M14 11v6";
@@ -74,10 +75,8 @@ export class VividPilotUtilitiesTab extends LitElement {
             >${renderIcon(UI_ICONS.refresh, "#03a9f4", 18)}</span
           >
           <div class="tool-text">
-            <h2>Rescanner</h2>
-            <p class="muted">
-              ${this.scanned ? "Scan relancé." : "Après une grosse réorganisation des pièces."}
-            </p>
+            <h2>${t("rescan")}</h2>
+            <p class="muted">${this.scanned ? t("rescanned") : t("rescan_when")}</p>
           </div>
           <button
             type="button"
@@ -87,7 +86,7 @@ export class VividPilotUtilitiesTab extends LitElement {
               this.scanned = true;
             }}
           >
-            Lancer
+            ${t("run")}
           </button>
         </section>
         <section class="card tool">
@@ -95,8 +94,8 @@ export class VividPilotUtilitiesTab extends LitElement {
             >${renderIcon(BATTERY_ICON, "#43b581", 18)}</span
           >
           <div class="tool-text">
-            <h2>Batterie faible</h2>
-            <p class="muted">Seuil des alertes de batteries.</p>
+            <h2>${t("battery_low")}</h2>
+            <p class="muted">${t("battery_low_sub")}</p>
           </div>
           <label class="unit"
             ><input
@@ -116,15 +115,18 @@ export class VividPilotUtilitiesTab extends LitElement {
           <vivid-pilot-logo size="40"></vivid-pilot-logo>
           <div class="tool-text">
             <h2>Vivid Pilot ${model.payload.version}</h2>
-            <p class="muted">${generated.length} entités générées</p>
+            <p class="muted">${t("generated_count", { count: generated.length })}</p>
           </div>
         </section>
       </div>
       <section class="card">
-        <h2>${renderIcon(UI_ICONS.layers, "currentColor", 16)} Entités générées</h2>
+        <h2>${renderIcon(UI_ICONS.layers, "currentColor", 16)} ${t("generated")}</h2>
         <div class="domains">
           ${[...byDomain.entries()].map(([domain, count]) => {
-            const [label, icon, color] = DOMAINS[domain] ?? [domain, UI_ICONS.entity, "#9aa0a6"];
+            const known = DOMAINS[domain];
+            const [label, icon, color] = known
+              ? [t(known[0]), known[1], known[2]]
+              : [domain, UI_ICONS.entity, "#9aa0a6"];
             return html`<div class="domain">
               <span class="tile" style="--accent: ${color}">${renderIcon(icon, color, 16)}</span>
               <div>
@@ -135,17 +137,18 @@ export class VividPilotUtilitiesTab extends LitElement {
           })}
         </div>
         <p class="muted small">
-          Toutes commencent par <span class="mono">vivid_pilot_</span> et suivent l'arbre.
+          ${t("generated_note_before")} <span class="mono">vivid_pilot_</span>
+          ${t("generated_note_after")}
         </p>
       </section>
       <section class="card">
         <h2>
-          ${renderIcon(UI_ICONS.pencil, "currentColor", 16)} Corrections
+          ${renderIcon(UI_ICONS.pencil, "currentColor", 16)} ${t("corrections")}
           <span class="badge">${corrected.length}</span>
         </h2>
         ${
           corrected.length === 0
-            ? html`<p class="muted small">Aucune : tout vient de la détection automatique.</p>`
+            ? html`<p class="muted small">${t("no_corrections")}</p>`
             : html`<ul>
                 ${corrected.map((leaf) => this.renderCorrection(model, leaf))}
               </ul>`
@@ -157,8 +160,10 @@ export class VividPilotUtilitiesTab extends LitElement {
   private renderCorrection(model: PanelModel, leaf: TreeLeaf) {
     const meta = CATEGORIES[leaf.category];
     const changes = [
-      ...(leaf.source === "manual" ? ["catégorie"] : []),
-      ...Object.keys(leaf.options ?? {}).map((key) => OPTION_WORDS[key] ?? key),
+      ...(leaf.source === "manual" ? [t("opt_category")] : []),
+      ...Object.keys(leaf.options ?? {}).map((key) =>
+        OPTION_WORDS[key] ? t(OPTION_WORDS[key]) : key,
+      ),
     ];
     const room = model.place(leaf.entity_id)?.room?.name;
     return html`<li>
@@ -173,7 +178,7 @@ export class VividPilotUtilitiesTab extends LitElement {
         >
         <span class="who">
           <span class="name">${leaf.name}</span>
-          <span class="muted small">${room ?? "Sans pièce"} · ${meta.label}</span>
+          <span class="muted small">${room ?? t("node_unassigned")} · ${meta.label}</span>
         </span>
         <span class="changes"
           >${changes.map((change) => html`<span class="pill manual">${change}</span>`)}</span

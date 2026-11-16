@@ -3,6 +3,7 @@
 // texts the panel shows (leaf value, category summary, room and home
 // summaries). Pure logic, no DOM, unit-tested.
 
+import { t } from "../i18n";
 import type { HassEntityState } from "../types/home-assistant";
 import { CATEGORIES } from "./categories";
 import type { CategoryNode, HomeTree, RoomNode, TreeLeaf } from "./types";
@@ -47,7 +48,7 @@ export class LiveAggregator {
     const state = states[leaf.entity_id];
     const meta = CATEGORIES[leaf.category];
     if (!state || UNAVAILABLE.has(state.state)) {
-      return { text: "indisponible", active: false, available: false, glow: null };
+      return { text: t("unavailable"), active: false, available: false, glow: null };
     }
     if (meta.kind === "switchable") {
       const on = state.state === "on";
@@ -56,7 +57,7 @@ export class LiveAggregator {
       const percent =
         on && typeof brightness === "number" ? Math.round((brightness / 255) * 100) : null;
       return {
-        text: on ? (percent === null ? "allumée" : `${percent} %`) : "éteinte",
+        text: on ? (percent === null ? t("on_f") : `${percent} %`) : t("off_f"),
         active: on,
         available: true,
         glow: on ? (rgb ? `rgb(${rgb.join(",")})` : meta.color) : null,
@@ -98,7 +99,9 @@ export class LiveAggregator {
     }
     if (meta.kind === "lowest") {
       return {
-        text: `min ${this.number.format(Math.min(...values))} ${unit}`.trim(),
+        text: t("min_value", {
+          value: `${this.number.format(Math.min(...values))} ${unit}`.trim(),
+        }),
         active: 0,
         total,
       };

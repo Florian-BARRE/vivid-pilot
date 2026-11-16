@@ -1,9 +1,10 @@
 // ====== Code Summary ======
 // VividPilotTree: the left-hand tree (Maison → rooms → categories). Rooms
-// expand in place; Maison, a room, a category, "Sans pièce" and "Ignorés"
+// expand in place; home, a room, a category, "no room" and "ignored"
 // are all clickable and fire "vp-select" with the node key ("all",
 // "<area>", "<area>__<category>", "unassigned", "ignored").
 
+import { plural, t } from "../i18n";
 import { LitElement, css, html, nothing, type PropertyValues } from "lit";
 
 import { renderIcon, CHEVRON_ICON, HOME_ICON } from "../theme/icon";
@@ -74,24 +75,24 @@ export class VividPilotTree extends LitElement {
     const allOpen =
       model.rooms.length > 0 && model.rooms.every((room) => this.expanded.has(room.area_id));
     return html`
-      <nav aria-label="Arbre" class="card">
+      <nav aria-label=${t("tree")} class="card">
         <button
           type="button"
           class="row home ${this.selected === "all" ? "selected" : ""}"
           @click=${() => this.select("all")}
         >
           ${renderIcon(HOME_ICON, "currentColor")}
-          <span class="name">Maison</span>
+          <span class="name">${t("home")}</span>
           ${this.watts(model.power(null))}
         </button>
         <div class="summary muted">
-          <span title="Lumières allumées"
+          <span title=${t("lights_on")}
             >${renderIcon(UI_ICONS.bulb, "currentColor", 13)}
             ${home.lightsOn}/${home.lightsTotal}</span
           >
           ${
             home.temperature
-              ? html`<span title="Températures"
+              ? html`<span title=${t("temperatures")}
                   >${renderIcon(UI_ICONS.thermometer, "currentColor", 13)}
                   ${fmt(home.temperature.min)}–${fmt(home.temperature.max)} °C</span
                 >`
@@ -100,16 +101,16 @@ export class VividPilotTree extends LitElement {
           <button
             type="button"
             class="fold-all"
-            title=${allOpen ? "Tout replier" : "Tout déplier"}
-            aria-label=${allOpen ? "Tout replier" : "Tout déplier"}
+            title=${allOpen ? t("fold_all") : t("unfold_all")}
+            aria-label=${allOpen ? t("fold_all") : t("unfold_all")}
             @click=${this.toggleAll}
           >
             ${renderIcon(allOpen ? FOLD_ICON : UNFOLD_ICON, "currentColor", 15)}
           </button>
         </div>
         <div class="rooms">${model.rooms.map((room) => this.renderRoom(room))}</div>
-        ${this.renderExtra("unassigned", "Sans pièce", UI_ICONS.inbox, model.payload.tree.unassigned.length, true)}
-        ${this.renderExtra("ignored", "Ignorés", UI_ICONS.hidden, model.payload.tree.ignored.length, false)}
+        ${this.renderExtra("unassigned", t("node_unassigned"), UI_ICONS.inbox, model.payload.tree.unassigned.length, true)}
+        ${this.renderExtra("ignored", t("node_ignored"), UI_ICONS.hidden, model.payload.tree.ignored.length, false)}
       </nav>
     `;
   }
@@ -126,7 +127,7 @@ export class VividPilotTree extends LitElement {
             type="button"
             class="chevron ${open ? "open" : ""}"
             aria-expanded=${open ? "true" : "false"}
-            aria-label=${open ? `Replier ${room.name}` : `Déplier ${room.name}`}
+            aria-label=${open ? t("fold", { name: room.name }) : t("unfold", { name: room.name })}
             @click=${() => this.toggle(room.area_id)}
           >
             ${renderIcon(CHEVRON_ICON, "currentColor", 14)}
@@ -135,7 +136,7 @@ export class VividPilotTree extends LitElement {
             <span class="name">${room.name}</span>
             ${
               lit > 0
-                ? html`<span class="lit" title=${`${lit} allumée${lit > 1 ? "s" : ""}`}
+                ? html`<span class="lit" title=${plural("lit", lit)}
                     >${renderIcon(UI_ICONS.bulb, "currentColor", 13)}${lit}</span
                   >`
                 : nothing

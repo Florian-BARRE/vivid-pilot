@@ -3,7 +3,8 @@
 //   node docs/design/demo/render.mjs [out-dir] [shot-name]
 // Needs Playwright (`npm i -g playwright`, found through NODE_PATH) and a
 // Chrome or Chromium; set CHROME to its path when Playwright has no browser of
-// its own. Build the panel first (cd frontend && npm run build).
+// its own. Build the panel first (cd frontend && npm run build). The panel
+// speaks English, as the documentation does; PANEL_LANG=fr renders it in French.
 
 import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
@@ -13,7 +14,10 @@ const here = import.meta.dirname;
 const root = path.resolve(here, "../../..");
 const { chromium } = createRequire(import.meta.url)("playwright");
 
-const snapshot = readFileSync(path.join(here, "snapshot.json"), "utf8");
+const snapshot = JSON.stringify({
+  ...JSON.parse(readFileSync(path.join(here, "snapshot.json"), "utf8")),
+  language: process.env.PANEL_LANG ?? "en",
+});
 // Modules do not load from file:// pages: the repository is served from a
 // made-up origin instead, straight from the disk.
 const ORIGIN = "http://vivid-pilot.preview";

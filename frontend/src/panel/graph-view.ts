@@ -1,11 +1,12 @@
 // ====== Code Summary ======
-// VividPilotGraph: the tree drawn as a graph — Maison → rooms → the focused
+// VividPilotGraph: the tree drawn as a graph — home → rooms → the focused
 // room's categories → the focused category's (or the room's lights')
 // entities, with live values and curved links. Clicking a node selects it
 // ("vp-select"); clicking an entity opens its editor ("vp-edit-leaf").
 
 import { LitElement, css, html, nothing, svg } from "lit";
 
+import { plural, t, type StringKey } from "../i18n";
 import { HOME_ICON, renderIcon } from "../theme/icon";
 import { sharedStyles, themeTokens } from "../theme/styles";
 import { UI_ICONS } from "../theme/ui-icons";
@@ -19,7 +20,7 @@ const ROW = 56;
 const GAP = 10;
 /** Room of the graph's second column. */
 const ROOM_ICON = "M4 21V9l8-6 8 6v12M9 21v-6h6v6";
-const COLUMN_TITLES = ["Maison", "Pièces", "Catégories", "Entités"];
+const COLUMN_TITLES: StringKey[] = ["col_home", "col_rooms", "col_categories", "col_entities"];
 
 interface GraphNode {
   id: string;
@@ -67,8 +68,8 @@ export class VividPilotGraph extends LitElement {
         "all",
         0,
         0,
-        "Maison",
-        `${home.lightsOn}/${home.lightsTotal} allumées`,
+        t("home"),
+        t("lit_of", { on: home.lightsOn, total: home.lightsTotal }),
         fmt(model.power(null)),
         "#8a3ffc",
         HOME_ICON,
@@ -86,9 +87,7 @@ export class VividPilotGraph extends LitElement {
           1,
           index,
           room.name,
-          summary.lightsOn
-            ? `${summary.lightsOn} allumée${summary.lightsOn > 1 ? "s" : ""}`
-            : "éteinte",
+          summary.lightsOn ? plural("lit", summary.lightsOn) : t("off_f"),
           fmt(model.power(room.area_id)),
           "#03a9f4",
           ROOM_ICON,
@@ -167,7 +166,7 @@ export class VividPilotGraph extends LitElement {
           ${COLUMN_TITLES.map(
             (title, index) =>
               html`<span style="left: ${COLUMNS[index]}px; width: ${WIDTHS[index]}px"
-                >${title}</span
+                >${t(title)}</span
               >`,
           )}
         </div>
@@ -204,14 +203,14 @@ export class VividPilotGraph extends LitElement {
                 </span>
                 ${
                   node.memory
-                    ? html`<span class="mark" title="A une mémoire (dernier état)"
+                    ? html`<span class="mark" title=${t("has_memory")}
                         >${renderIcon(UI_ICONS.memory, "currentColor", 13)}</span
                       >`
                     : nothing
                 }
                 ${
                   node.fixed
-                    ? html`<span class="mark fixed" title="Corrigé à la main"
+                    ? html`<span class="mark fixed" title=${t("set_by_hand")}
                         >${renderIcon(UI_ICONS.pencil, "currentColor", 12)}</span
                       >`
                     : nothing

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.2 — 2026-11-16
+
+- **The panel speaks your language**: every word of the panel follows the language of Home Assistant, English or French (English for any other), with dates and numbers written its way. It was French only.
+- **Device names too**: the home device is "Home" in English and "Maison" in French, and the node models "Home" / "Room" or "Maison" / "Pièce", so an English Home Assistant no longer shows "Maison Switches". A device you renamed keeps its name.
+- The documentation's panel pictures are in English, like the documentation.
+
 ## 0.6.1 — 2026-11-15
 
 - **No more cut names**: long names wrap instead of ending in "…" (devices, rooms, power sources, corrections, the entity sheet); in the graph they take two lines, with the full name on hover.

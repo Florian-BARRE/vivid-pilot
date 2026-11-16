@@ -5,6 +5,7 @@
 // memories. Every change is sent right away;
 // the integration answers with a new payload.
 
+import { t } from "../i18n";
 import { LitElement, html, nothing } from "lit";
 
 import { renderIcon } from "../theme/icon";
@@ -84,7 +85,7 @@ export class VividPilotLeafEditor extends LitElement {
           >
             ${live.text}
           </div>
-          <button type="button" class="icon" aria-label="Fermer" @click=${this.close}>
+          <button type="button" class="icon" aria-label=${t("close")} @click=${this.close}>
             ${renderIcon(UI_ICONS.close, "currentColor", 18)}
           </button>
         </header>
@@ -104,12 +105,12 @@ export class VividPilotLeafEditor extends LitElement {
           <button
             type="button"
             class="ghost"
-            title="Oublie toutes les corrections de cette entité"
+            title=${t("reset_all_title")}
             @click=${() => this.run(() => model.api.resetLeaf(leaf.entity_id))}
           >
-            ${renderIcon(UI_ICONS.refresh, "currentColor", 16)} Tout remettre en auto
+            ${renderIcon(UI_ICONS.refresh, "currentColor", 16)} ${t("reset_all")}
           </button>
-          <button type="button" class="primary" @click=${this.close}>Terminé</button>
+          <button type="button" class="primary" @click=${this.close}>${t("done")}</button>
         </footer>
       </section>
     `;
@@ -121,7 +122,7 @@ export class VividPilotLeafEditor extends LitElement {
     const manual = leaf.source === "manual";
     return html`
       <section class="block">
-        <h2>${renderIcon(UI_ICONS.layers, "currentColor", 16)} Catégorie</h2>
+        <h2>${renderIcon(UI_ICONS.layers, "currentColor", 16)} ${t("category")}</h2>
         <div class="choices">
           ${EDITABLE.map(
             (category) =>
@@ -143,16 +144,16 @@ export class VividPilotLeafEditor extends LitElement {
             style="--accent: var(--vp-muted)"
             @click=${() => pick("ignored")}
           >
-            ${renderIcon(UI_ICONS.hidden, "currentColor", 15)} Ignorer
+            ${renderIcon(UI_ICONS.hidden, "currentColor", 15)} ${t("ignore")}
           </button>
         </div>
         <div class="note ${manual ? "manual" : ""}">
           ${renderIcon(manual ? UI_ICONS.pencil : UI_ICONS.sparkle, "currentColor", 14)}
-          ${manual ? "Choisi à la main" : `Détecté : ${reasonLabel(leaf.reason)}`}
+          ${manual ? t("chosen_by_hand") : t("detected_as", { reason: reasonLabel(leaf.reason) })}
           ${
             manual
               ? html`<button type="button" class="link" @click=${() => pick(null)}>
-                  Revenir à la détection
+                  ${t("back_to_detection")}
                 </button>`
               : nothing
           }
@@ -167,15 +168,15 @@ export class VividPilotLeafEditor extends LitElement {
       void this.run(() => model.api.moveLeaf(leaf.entity_id, value, this.scope));
     };
     const scopes: Array<["device" | "entity", string, string]> = [
-      ["device", "Tout l'appareil", UI_ICONS.device],
-      ["entity", "Cette entité", UI_ICONS.entity],
+      ["device", t("scope_device"), UI_ICONS.device],
+      ["entity", t("scope_entity"), UI_ICONS.entity],
     ];
     return html`
       <section class="block">
-        <h2>${renderIcon(ROOM_ICON, "currentColor", 16)} Pièce</h2>
+        <h2>${renderIcon(ROOM_ICON, "currentColor", 16)} ${t("room")}</h2>
         <div class="row">
-          <select aria-label="Pièce" @change=${move}>
-            <option value="" ?selected=${areaId === null}>Sans pièce</option>
+          <select aria-label=${t("room")} @change=${move}>
+            <option value="" ?selected=${areaId === null}>${t("node_unassigned")}</option>
             ${model
               .areas()
               .map(
@@ -187,7 +188,7 @@ export class VividPilotLeafEditor extends LitElement {
           </select>
           ${
             leaf.device_id
-              ? html`<div class="segmented" role="group" aria-label="Ce qui change de pièce">
+              ? html`<div class="segmented" role="group" aria-label=${t("what_moves")}>
                   ${scopes.map(
                     ([scope, label, icon]) =>
                       html`<button
@@ -207,8 +208,8 @@ export class VividPilotLeafEditor extends LitElement {
           ${renderIcon(UI_ICONS.info, "currentColor", 14)}
           ${
             leaf.device_id && this.scope === "entity"
-              ? "Seule cette entité change de zone dans Home Assistant ; le reste de l'appareil reste où il est."
-              : "Change la zone de l'appareil dans Home Assistant, avec toutes ses entités."
+              ? t("scope_entity_note")
+              : t("scope_device_note")
           }
         </div>
       </section>
@@ -222,7 +223,7 @@ export class VividPilotLeafEditor extends LitElement {
         `${model.room(areaId)?.name} · ${CATEGORIES[leaf.category].label}`,
       ],
       [nodeKey(areaId), model.room(areaId)?.name ?? areaId],
-      ["all", "Maison"],
+      ["all", t("home")],
     ];
     const toggle = (
       key: NodeKey,
@@ -239,11 +240,11 @@ export class VividPilotLeafEditor extends LitElement {
     const shown = parents.filter(([key]) => model.node(key));
     return html`
       <section class="block">
-        <h2>${renderIcon(UI_ICONS.memory, "currentColor", 16)} Groupes et mémoires</h2>
+        <h2>${renderIcon(UI_ICONS.memory, "currentColor", 16)} ${t("groups_and_memories")}</h2>
         <div class="members">
           <span></span>
-          <span class="col" title="Le nœud allume et éteint cette entité">Groupe</span>
-          <span class="col" title="Le nœud rétablit l'état de cette entité">Mémoire</span>
+          <span class="col" title=${t("group_title")}>${t("group")}</span>
+          <span class="col" title=${t("memory_title")}>${t("memory")}</span>
           ${shown.map(([key, label]) => {
             const settings = model.node(key)!.settings;
             return html`<span class="name">${label}</span>
@@ -251,7 +252,7 @@ export class VividPilotLeafEditor extends LitElement {
                 type="checkbox"
                 role="switch"
                 class="switch"
-                aria-label=${`${label} : groupe`}
+                aria-label=${t("label_group", { name: label })}
                 .checked=${!settings.group_excluded.includes(leaf.entity_id)}
                 @change=${(e: Event) => toggle(key, "group_excluded", (e.target as HTMLInputElement).checked)}
               />
@@ -259,7 +260,7 @@ export class VividPilotLeafEditor extends LitElement {
                 type="checkbox"
                 role="switch"
                 class="switch"
-                aria-label=${`${label} : mémoire`}
+                aria-label=${t("label_memory", { name: label })}
                 .checked=${!settings.memory_excluded.includes(leaf.entity_id)}
                 @change=${(e: Event) => toggle(key, "memory_excluded", (e.target as HTMLInputElement).checked)}
               />`;
